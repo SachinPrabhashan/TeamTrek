@@ -61,7 +61,7 @@
                                 @csrf
                                 <div class="form-floating mb-3">
                                     <input type="email" class="form-control" id="floatingInput"
-                                        placeholder="name@example.com" id="email" @error('email') is-invalid @enderror" name="email"
+                                        placeholder="name@example.com" id="email" @error('email') is-invalid @enderror name="email"
                                         value="{{ old('email') }}" required autocomplete="email">
 
                                     <label for="floatingInput">Email address</label>
@@ -74,7 +74,7 @@
 
                                 <div class="form-floating mb-4">
                                     <input type="password" class="form-control" id="floatingPassword"
-                                        placeholder="Password" id="password" @error('password') is-invalid @enderror" name="password"
+                                        placeholder="Password" @error('password') is-invalid @enderror name="password"
                                         required autocomplete="current-password">
                                     <label for="floatingPassword">Password</label>
                                     @error('password')

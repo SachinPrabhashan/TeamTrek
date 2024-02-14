@@ -25,3 +25,10 @@ Route::get('/reg', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+// root
+
+Route::get('/root-modelpermission', function () {
+    return view('root.modelpermission');
+});
