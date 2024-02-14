@@ -31,10 +31,12 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 
+    {{-- Datatable --}}
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.semanticui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.2/semantic.min.js"></script>
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.2/semantic.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.semanticui.min.css">
@@ -43,7 +45,7 @@
 
     <script src="js/other.js"></script>
     <script>
-        new DataTable('#example');
+        $('#example').DataTable();
     </script>
 </head>
 
@@ -249,7 +251,7 @@
 
             <!-- Blank Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="row vh-100 bg-light rounded align-items-center justify-content-center mx-0">
+                <div class="row vh-100 bg-light rounded">
                     <div class="col-md-6 text-center">
 
 

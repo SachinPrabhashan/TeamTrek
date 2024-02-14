@@ -29,6 +29,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 // root
 
-Route::get('/root-modelpermission', function () {
-    return view('root.modelpermission');
+Route::get('/root-modulepermission', function () {
+    return view('root.modulepermission');
 });

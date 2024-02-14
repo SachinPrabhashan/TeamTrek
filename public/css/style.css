@@ -290,3 +290,9 @@
 .navbar-expand .navbar-nav .dropdown-menu {
     border: none;
 }
+
+div.rolebtn{
+    margin-left: auto;
+    display: flex;
+}
+
