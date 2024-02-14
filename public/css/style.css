@@ -283,3 +283,10 @@
     background: var(--dark);
     border-color: var(--primary);
 }
+
+
+/* Sachin CSS */
+
+.navbar-expand .navbar-nav .dropdown-menu {
+    border: none;
+}
