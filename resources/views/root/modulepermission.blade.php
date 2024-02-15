@@ -17,135 +17,23 @@
             <table id="example" class="ui celled table" style="width:150%">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Add</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                        <th>View</th>
-                        <th>Access Granting</th>
+                        <th>Modules/Permissions</th>
+                        @foreach ($permissions as $permission)
+                            <th>{{ $permission->name }}</th>
+                        @endforeach
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>Dashboard</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>User Management</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>SC Handling</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>SC Instance Handling</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>SC Access Granting</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>SC Reports</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>SC Task Monitor</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>SC Analysis View</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>Employee Performance</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>Financial Health</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>Resource Utilization</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>Roles</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>Permissions</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>Module</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
-                    <tr>
-                        <th>Module-Permission</th>
-                        <td><input class="ms-2" type="checkbox" name="add" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="edit" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="delete" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="view" id=""></td>
-                        <td><input class="ms-2" type="checkbox" name="accessgranting" id=""></td>
-                    </tr>
+                    @foreach ($modules as $module)
+                        <tr>
+                            <td>{{ $module->name }}</td>
+                            @foreach ($permissions as $permission)
+                                <td>
+                                    <input class="ms-2" type="checkbox" name="permissions[{{ $permission->id }}][{{ $module->id }}]" id="">
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
