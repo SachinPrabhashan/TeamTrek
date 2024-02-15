@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RootPermissionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 // root
 
-Route::get('/root-modulepermission', function () {
-    return view('root.modulepermission');
-});
+Route::get('/root/modulepermission', [RootPermissionController::class, 'index4'])->name('root.modulepermission');
+
+// Route::get('/root-modulepermission', function () {
+//     return view('root.modulepermission');
+// });
