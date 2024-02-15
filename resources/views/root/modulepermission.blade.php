@@ -12,7 +12,7 @@
         </select>
     </div>
     <div class="mt-3">
-        <h3>Module Permission</h3>
+        <h3>Module Permission New</h3>
         <hr>
         <table id="example" class="ui celled table" style="width:150%">
             <thead>
