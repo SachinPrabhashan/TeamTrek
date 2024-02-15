@@ -29,7 +29,7 @@
                             <td>{{ $module->name }}</td>
                             @foreach ($permissions as $permission)
                                 <td>
-                                    <input class="ms-2" type="checkbox" name="permissions[{{ $permission->id }}][{{ $module->id }}]" id="">
+                                    <input class="ms-2 module-permission-checkbox" type="checkbox" data-module-id="{{ $module->id }}" data-permission-id="{{ $permission->id }}" {{ isset($modulePermissions[$module->id][$permission->id]) ? 'checked' : '' }}>
                                 </td>
                             @endforeach
                         </tr>
@@ -38,4 +38,80 @@
             </table>
         </div>
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.module-permission-checkbox').on('change', function() {
+                var moduleId = $(this).data('module-id');
+                var permissionId = $(this).data('permission-id');
+                var isChecked = $(this).prop('checked');
+
+                $.ajax({
+                    url: '/save-module-permission',
+                    method: 'POST',
+                    data: {
+                        moduleId: moduleId,
+                        permissionId: permissionId,
+                        isChecked: isChecked,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+
+            // Function to check checkboxes based on existing module permissions
+            function checkExistingPermissions(existingPermissions) {
+                $('.module-permission-checkbox').each(function() {
+                    var moduleId = $(this).data('module-id');
+                    var permissionId = $(this).data('permission-id');
+                    if (existingPermissions[moduleId] && existingPermissions[moduleId].includes(permissionId)) {
+                        $(this).prop('checked', true);
+                    }
+                });
+            }
+
+            // Retrieve existing module permissions from the server
+            $.ajax({
+                url: '/get-existing-module-permissions',
+                method: 'GET',
+                success: function(response) {
+                    // Check checkboxes based on existing module permissions
+                    checkExistingPermissions(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+
+            // Handle deselection of checkboxes
+            $('.module-permission-checkbox').on('change', function() {
+                if (!$(this).prop('checked')) {
+                    var moduleId = $(this).data('module-id');
+                    var permissionId = $(this).data('permission-id');
+
+                    $.ajax({
+                        url: '/delete-module-permission',
+                        method: 'POST',
+                        data: {
+                            moduleId: moduleId,
+                            permissionId: permissionId,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            console.log(response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 @endsection
