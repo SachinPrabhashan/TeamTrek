@@ -11,10 +11,10 @@
                 <option value="client">Client</option>
             </select>
         </div>
-        <div class="modpertb mt-3">
+        <div class="mt-3">
             <h3>Module Permission</h3>
             <hr>
-            <table id="example" class="ui celled table" style="width:150%; background-color:transparent;">
+            <table id="example" class="ui celled table" style="width:150%">
                 <thead>
                     <tr>
                         <th>Modules/Permissions</th>
