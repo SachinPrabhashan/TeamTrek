@@ -33,7 +33,13 @@ Route::get('/dashboard', [Controller::class, 'home'])->name('dashboard');
 // root
 
 Route::get('/root/modulepermission', [RootPermissionController::class, 'index4'])->name('root.modulepermission');
+Route::post('/save-module-permission', [RootPermissionController::class, 'save']);
+
 
 // Route::get('/root-modulepermission', function () {
 //     return view('root.modulepermission');
 // });
+//Route::get('/get-existing-module-permissions', [RootPermissionController::class,'getExistingModulePermissions']);
+Route::post('/delete-module-permission', [RootPermissionController::class,'delete']);
+Route::get('/get-module-permissions', [RootPermissionController::class,'getExistingPermissions'])->name('get.module.permissions');
+
