@@ -13,6 +13,7 @@ class ModulePermission extends Model
         'module_id',
         'permission_id',
         'name',
+        'role_id',
     ];
 
     protected $table = 'module_permissions';
