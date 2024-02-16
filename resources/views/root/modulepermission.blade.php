@@ -4,11 +4,10 @@
 <div class="container mt-4 col-12">
     <div class="rolebtn bg-light rounded h-100 p-4">
         <select class="btn btn-secondary dropdown-toggle" id="roleDropdown" type="button">
-            <!--option value="#">Select Role Here</option-->
-            <option value="1">ROOT</option>
-            <option value="2">Admin</option>
-            <option value="3">Employee</option>
-            <option value="4">Client</option>
+            <option value="1" {{ $roleId == 1 ? 'selected' : '' }}>ROOT</option>
+            <option value="2" {{ $roleId == 2 ? 'selected' : '' }}>Admin</option>
+            <option value="3" {{ $roleId == 3 ? 'selected' : '' }}>Employee</option>
+            <option value="4" {{ $roleId == 4 ? 'selected' : '' }}>Client</option>
         </select>
 
 
@@ -23,7 +22,7 @@
                     @endforeach
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="example-tbody">
                 @foreach ($modules as $module)
                     <tr>
                         <td>{{ $module->name }}</td>
@@ -34,7 +33,7 @@
                                        data-module-id="{{ $module->id }}"
                                        data-permission-id="{{ $permission->id }}"
                                        data-role-id="{{ $roleId }}"
-                                       {{ isset($existingModulePermissions[$module->id]) && in_array($permission->id, $existingModulePermissions[$module->id]) ? 'checked' : '' }}>
+                                       {{ isset($existingModulePermissions[$module->id]) && in_array($permission->id, $existingModulePermissions[$module->id]) ? 'checked="checked"' : '' }}>
                             </td>
                         @endforeach
                     </tr>
@@ -43,50 +42,9 @@
         </table>
     </div>
 </div>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Default role ID
-            var defaultRoleId = 1;
-
-            // Retrieve existing module permissions from the server based on default role ID
-            retrieveModulePermissions(defaultRoleId);
-
-            // Function to retrieve existing module permissions
-            function retrieveModulePermissions(roleId) {
-                $.ajax({
-                    url: '/get-module-permissions',
-                    method: 'GET',
-                    data: {
-                        roleId: roleId
-                    },
-                    success: function(response) {
-                        // Check checkboxes based on existing module permissions
-                        checkExistingPermissions(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            }
-
-            // Function to check checkboxes based on existing module permissions
-            function checkExistingPermissions(existingPermissions) {
-                $('.module-permission-checkbox').each(function() {
-                    var moduleId = $(this).data('module-id');
-                    var permissionId = $(this).data('permission-id');
-                    if (existingPermissions[moduleId] && existingPermissions[moduleId].includes(permissionId)) {
-                        $(this).prop('checked', true);
-                    }
-                });
-            }
-
-            // Change event handler for role dropdown
-            $('#roleDropdown').on('change', function() {
-                var roleId = $(this).val();
-                retrieveModulePermissions(roleId);
-            });
 
             // Function to handle saving module permissions
             function saveModulePermission(moduleId, permissionId, isChecked, roleId) {
@@ -109,6 +67,15 @@
                 });
             }
 
+            // Function to handle saving or deleting module permissions
+            function saveOrDeleteModulePermission(moduleId, permissionId, isChecked, roleId) {
+                if (isChecked) {
+                    saveModulePermission(moduleId, permissionId, isChecked, roleId);
+                } else {
+                    deleteModulePermission(moduleId, permissionId, roleId);
+                }
+            }
+
             // Change event handler for module permission checkboxes
             $('.module-permission-checkbox').on('change', function() {
                 var moduleId = $(this).data('module-id');
@@ -116,8 +83,11 @@
                 var isChecked = $(this).prop('checked');
                 var roleId = $('#roleDropdown').val(); // Get the currently selected role ID
 
-                saveModulePermission(moduleId, permissionId, isChecked, roleId);
+                // Call the function to save or delete module permission based on checkbox state
+                saveOrDeleteModulePermission(moduleId, permissionId, isChecked, roleId);
             });
+
+
 
             // Function to handle deleting module permissions
             function deleteModulePermission(moduleId, permissionId, roleId) {
@@ -139,16 +109,42 @@
                 });
             }
 
-            // Change event handler for module permission checkboxes (to handle deletion)
-            $('.module-permission-checkbox').on('change', function() {
-                var moduleId = $(this).data('module-id');
-                var permissionId = $(this).data('permission-id');
-                var roleId = $('#roleDropdown').val(); // Get the currently selected role ID
+        // Function to retrieve existing module permissions for the selected role
+        function retrieveModulePermissions(roleId) {
+            $.ajax({
+                url: '/get-module-permissions',
+                method: 'GET',
+                data: {
+                    roleId: roleId
+                },
+                success: function(response) {
+                    // Uncheck all checkboxes
+                    $('.module-permission-checkbox').prop('checked', false);
 
-                if (!$(this).prop('checked')) {
-                    deleteModulePermission(moduleId, permissionId, roleId);
+                    // Check checkboxes based on existing module permissions for the selected role
+                    $.each(response, function(moduleId, permissionIds) {
+                        $.each(permissionIds, function(index, permissionId) {
+                            var checkbox = $('input[data-module-id="' + moduleId + '"][data-permission-id="' + permissionId + '"]');
+                            checkbox.prop('checked', true);
+                        });
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
                 }
             });
+        }
+
+        // Change event handler for role dropdown
+        $('#roleDropdown').on('change', function() {
+            var roleId = $(this).val();
+            retrieveModulePermissions(roleId);
         });
-    </script>
+
+        // Initial retrieval of module permissions for the selected role
+        var initialRoleId = $('#roleDropdown').val();
+        retrieveModulePermissions(initialRoleId);
+});
+
+</script>
 @endsection
