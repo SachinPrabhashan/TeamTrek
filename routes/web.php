@@ -41,3 +41,8 @@ Route::post('/save-module-permission', [RootPermissionController::class, 'save']
 Route::post('/delete-module-permission', [RootPermissionController::class,'delete']);
 Route::get('/get-module-permissions', [RootPermissionController::class,'getExistingPermissions'])->name('get.module.permissions');
 
+//Admin
+
+Route::get('/admin/usermanagement', function(){
+    return view('admin.usermanagement');
+});

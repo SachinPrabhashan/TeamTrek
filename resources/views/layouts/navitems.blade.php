@@ -251,16 +251,16 @@
 
             <!-- Blank Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="row vh-100 bg-light rounded">
-                    <div class="col-md-6 text-center">
+                {{-- <div class="row vh-100 bg-light rounded">
+                    <div class="col-md-6 text-center"> --}}
 
 
                         @yield('content')
 
-
+{{--
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- Blank End -->
 
 

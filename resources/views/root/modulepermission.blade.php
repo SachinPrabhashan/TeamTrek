@@ -1,8 +1,8 @@
 @extends('layouts.navitems')
 
 @section('content')
-<div class="container mt-4">
-    <div class="rolebtn">
+<div class="container mt-4 col-12">
+    <div class="rolebtn bg-light rounded h-100 p-4">
         <select class="btn btn-secondary dropdown-toggle" id="roleDropdown" type="button">
             <!--option value="#">Select Role Here</option-->
             <option value="1">ROOT</option>
@@ -10,11 +10,11 @@
             <option value="3">Employee</option>
             <option value="4">Client</option>
         </select>
-    </div>
-    <div class="mt-3">
+
+
         <h3>Module Permission New</h3>
         <hr>
-        <table id="example" class="ui celled table" style="width:150%">
+        <table id="example" class="ui celled table" style="width:100%">
             <thead>
                 <tr>
                     <th>Modules/Permissions</th>
