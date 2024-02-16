@@ -11,6 +11,8 @@
     <!-- Favicon -->
     <link href="{{asset('img/favicon.ico')}}" rel="icon">
 
+    <link type="image/png" sizes="32x32" rel="icon" href="{{asset('img/icons8-developer-32.png')}}">
+
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
