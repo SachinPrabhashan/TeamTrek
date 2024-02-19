@@ -42,4 +42,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function hasPermission($moduleName, $permissionName)
+    {
+        return $this->roles()
+            ->whereHas('permissions', function ($query) use ($moduleName, $permissionName) {
+                $query->where('modules.name', $moduleName)
+                    ->where('permissions.name', $permissionName);
+            })
+            ->exists();
+    }
 }
