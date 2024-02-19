@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\RootPermissionController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -46,3 +47,5 @@ Route::get('/get-module-permissions', [RootPermissionController::class,'getExist
 Route::get('/admin/usermanagement', function(){
     return view('admin.usermanagement');
 });
+
+Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard.show');
