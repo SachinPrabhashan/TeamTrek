@@ -23,9 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        $this->middleware('permission:dashboard,view');
-
         return view('home');
     }
 }
