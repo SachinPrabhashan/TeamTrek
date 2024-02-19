@@ -78,10 +78,6 @@
                 </div>
                 <div class="navbar-nav w-100">
                     <a href="#" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-<<<<<<< HEAD
-
-=======
->>>>>>> dcb201e4153dcb34644f7452898a9e7db0ee977d
                     <a href="#" class="nav-item nav-link"><i class="fa-solid fa-users me-2"></i>User Management</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Support Contract</a>
