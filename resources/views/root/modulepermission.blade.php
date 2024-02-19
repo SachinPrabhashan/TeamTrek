@@ -1,48 +1,7 @@
 @extends('layouts.navitems')
 
 @section('content')
-<div class="container mt-4 col-12">
-    <div class="rolebtn bg-light rounded h-100 p-4">
-        <select class="btn btn-secondary dropdown-toggle" id="roleDropdown" type="button">
-            <option value="1" {{ $roleId == 1 ? 'selected' : '' }}>ROOT</option>
-            <option value="2" {{ $roleId == 2 ? 'selected' : '' }}>Admin</option>
-            <option value="3" {{ $roleId == 3 ? 'selected' : '' }}>Employee</option>
-            <option value="4" {{ $roleId == 4 ? 'selected' : '' }}>Client</option>
-        </select>
-
-
-        <h3>Module Permission New</h3>
-        <hr>
-        <table id="example" class="ui celled table" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Modules/Permissions</th>
-                    @foreach ($permissions as $permission)
-                        <th>{{ $permission->name }}</th>
-                    @endforeach
-                </tr>
-            </thead>
-            <tbody id="example-tbody">
-                @foreach ($modules as $module)
-                    <tr>
-                        <td>{{ $module->name }}</td>
-                        @foreach ($permissions as $permission)
-                            <td>
-                                <input class="ms-2 module-permission-checkbox"
-                                       type="checkbox"
-                                       data-module-id="{{ $module->id }}"
-                                       data-permission-id="{{ $permission->id }}"
-                                       data-role-id="{{ $roleId }}"
-                                       {{ isset($existingModulePermissions[$module->id]) && in_array($permission->id, $existingModulePermissions[$module->id]) ? 'checked="checked"' : '' }}>
-                            </td>
-                        @endforeach
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
 
@@ -145,6 +104,46 @@
         var initialRoleId = $('#roleDropdown').val();
         retrieveModulePermissions(initialRoleId);
 });
-
 </script>
+
+<div class="container mt-4 col-12">
+    <div class="rolebtn bg-light rounded h-100 p-4">
+        <select class="btn btn-secondary dropdown-toggle" id="roleDropdown" type="button">
+            <option value="1" {{ $roleId == 1 ? 'selected' : '' }}>ROOT</option>
+            <option value="2" {{ $roleId == 2 ? 'selected' : '' }}>Admin</option>
+            <option value="3" {{ $roleId == 3 ? 'selected' : '' }}>Employee</option>
+            <option value="4" {{ $roleId == 4 ? 'selected' : '' }}>Client</option>
+        </select>
+
+        <h3>Module Permissions</h3>
+        <hr>
+        <table id="example" class="ui celled table" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Modules/Permissions</th>
+                    @foreach ($permissions as $permission)
+                        <th>{{ $permission->name }}</th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody id="example-tbody">
+                @foreach ($modules as $module)
+                    <tr>
+                        <td>{{ $module->name }}</td>
+                        @foreach ($permissions as $permission)
+                            <td>
+                                <input class="ms-2 module-permission-checkbox"
+                                       type="checkbox"
+                                       data-module-id="{{ $module->id }}"
+                                       data-permission-id="{{ $permission->id }}"
+                                       data-role-id="{{ $roleId }}"
+                                       {{ isset($existingModulePermissions[$module->id]) && in_array($permission->id, $existingModulePermissions[$module->id]) ? 'checked="checked"' : '' }}>
+                            </td>
+                        @endforeach
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection
