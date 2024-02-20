@@ -80,7 +80,7 @@
 
                     <a href="{{ route('dashboard.show') }}" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     @Admin
-                    <a href="#" class="nav-item nav-link"><i class="fa-solid fa-users me-2"></i>User Management</a>
+                    <a href="/admin/usermanagement" class="nav-item nav-link"><i class="fa-solid fa-users me-2"></i>User Management</a>
                     @endAdmin
 
                     <div class="nav-item dropdown">
