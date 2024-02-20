@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\RootPermissionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\RoleViewController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,14 +40,13 @@ Route::post('/save-module-permission', [RootPermissionController::class, 'save']
 // Route::get('/root-modulepermission', function () {
 //     return view('root.modulepermission');
 // });
-//Route::get('/get-existing-module-permissions', [RootPermissionController::class,'getExistingModulePermissions']);
+
 Route::post('/delete-module-permission', [RootPermissionController::class,'delete']);
 Route::get('/get-module-permissions', [RootPermissionController::class,'getExistingPermissions'])->name('get.module.permissions');
 
 //Admin
 
-Route::get('/admin/usermanagement', function(){
-    return view('admin.usermanagement');
-});
+
 
 Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard.show');
+Route::get('/admin/UserManagement',[UserManagementController::class,'UserManagementView']);
