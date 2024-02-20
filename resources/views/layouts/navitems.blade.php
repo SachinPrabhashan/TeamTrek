@@ -73,14 +73,14 @@
                     </div>
                     <div class="ms-3">
                         <h6 class="mb-0">{{ Auth::user()->name }}</h6>
-                        <span>Admin</span>
+                        <span>{{ Auth::user()->role->name }}</span>
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
                     <a href="{{ route('dashboard.show') }}" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                    @isRootOrAdmin
+
                     <a href="#" class="nav-item nav-link"><i class="fa-solid fa-users me-2"></i>User Management</a>
-                    @endisRootOrAdmin
+
 
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Support Contract</a>
