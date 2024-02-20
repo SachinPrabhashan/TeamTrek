@@ -54,20 +54,5 @@ class AppServiceProvider extends ServiceProvider
             $userRoleID = auth()->user()->role_id;
             return $userRoleID === 2 || $userRoleID === 4 || $userRoleID === 1;
         });
-
-        // Blade::if('Admin', function(){
-        //     $userRoleID = auth()->user()->role_id;
-        //     return $userRoleID === 2;
-        // });
-
-        // Blade::if('Employee', function(){
-        //     $userRoleID = auth()->user()->role_id;
-        //     return $userRoleID === 3;
-        // });
-
-        // Blade::if('Client', function(){
-        //     $userRoleID = auth()->user()->role_id;
-        //     return $userRoleID === 4;
-        // });
     }
 }

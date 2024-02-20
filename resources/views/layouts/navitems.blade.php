@@ -77,31 +77,46 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
+
                     <a href="{{ route('dashboard.show') }}" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-
+                    @Admin
                     <a href="#" class="nav-item nav-link"><i class="fa-solid fa-users me-2"></i>User Management</a>
-
+                    @endAdmin
 
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Support Contract</a>
                         <div class="dropdown-menu bg-transparent border-0">
+                            @AdminOrEmployee
                             <a href="#" class="dropdown-item">SC Handling</a>
                             <a href="#" class="dropdown-item">SC Instance Handling</a>
+                            @Admin
                             <a href="#" class="dropdown-item">SC Access Granting</a>
+                            @endAdmin
                             <a href="#" class="dropdown-item">SC Task Monitor</a>
                             <a href="#" class="dropdown-item">SC Reports</a>
+                            @endAdminOrEmployee
+                            @Client
+                            <a href="#" class="dropdown-item">Support Contract View</a>
+                            @endClient
                         </div>
                     </div>
+
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-chart-simple me-2"></i>Performance</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="#" class="dropdown-item">SC Analysis View</a>
+                            @AdminOrEmployee
                             <a href="#" class="dropdown-item">Employee Performance</a>
                             <a href="#" class="dropdown-item">Financial Health</a>
                             <a href="#" class="dropdown-item">Resource Utilization</a>
+                            @endAdminOrEmployee
                         </div>
                     </div>
+                    @AdminOrEmployee
+                    <a href="#" class="nav-item nav-link"><i class="fa-solid fa-user me-2"></i></i>My Profile</a>
+                    @endAdminOrEmployee
 
+                    @Root
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-gears me-2"></i>Permissions</a>
                         <div class="dropdown-menu bg-transparent border-0">
@@ -111,7 +126,7 @@
                             <a href="{{route('root.modulepermission')}}" class="dropdown-item">Module Permission</a>
                         </div>
                     </div>
-
+                    @endRoot
                     {{-- <a href="#" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
                     <a href="#" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
                     <a href="#" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a> --}}
