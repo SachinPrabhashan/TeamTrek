@@ -23,7 +23,7 @@ class DashboardPolicy
     public function view(User $user, Dashboard $dashboard)
     {
         $permissionName = 'Dashboard-View';
-      
+
         return \DB::table('module_permissions')
             ->where('role_id', $user->role_id)
             ->where('name', $permissionName)
