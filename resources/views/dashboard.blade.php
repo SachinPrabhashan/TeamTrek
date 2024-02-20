@@ -46,7 +46,8 @@
         </div>
     </div>
     <!-- Sale & Revenue End -->
-    @isAdmin
+
+
     <!-- Sales Chart Start -->
     <div class="container-fluid pt-4 px-4">
         <div class="row g-4">
@@ -71,6 +72,6 @@
         </div>
     </div>
     <!-- Sales Chart End -->
-    @endisAdmin
+
 </div>
 @endsection
