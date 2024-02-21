@@ -78,10 +78,7 @@
     });
 </script>
 <script>
-    $(document).ready(function() {
 
-        new DataTable('#example');
-    });
 </script>
 <div class="container-fluid pt-4 px-4" ng-app="userApp" ng-controller="UserController">
     <h1>Employee Management</h1>
@@ -89,8 +86,8 @@
     <button type="button" class="btn btn-primary" ng-click="openModal('#addUserModal')">Add Users</button>
     <br>
 <br>
-<div class="table-responsive">
-    <table id="example1" class="table table-bordered" >
+<div>
+    <table id="example" class="table table-stripped"style="width:100%" >
         <thead>
             <tr>
                 <th>Name</th>
