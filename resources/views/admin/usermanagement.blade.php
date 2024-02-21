@@ -10,6 +10,7 @@
 
 <div class="container-fluid pt-4 px-4" ng-app="userApp" ng-controller="UserController">
     <h1>User Management</h1>
+    
     <hr>
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">
