@@ -45,9 +45,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.semanticui.min.css">
 
 
-    <script>
-        $('#example').DataTable();
-    </script>
+
 </head>
 
 <body>
@@ -181,9 +179,9 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-                <form class="d-none d-md-flex ms-4">
+                {{-- <form class="d-none d-md-flex ms-4">
                     <input class="form-control border-0" type="search" placeholder="Search">
-                </form>
+                </form> --}}
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -370,6 +368,19 @@
 
         <!-- Template Javascript -->
         <script src="{{ asset('js/main.js') }}"></script>
+
+
+        {{-- ----------------------------------------------------- --}}
+        {{-- Data Table Successfully Functioning Now --}}
+        <script>
+            new DataTable('#example');
+        </script>
+
+        <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
+        <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
 </body>
 
 </html>
