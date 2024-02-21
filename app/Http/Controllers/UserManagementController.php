@@ -18,42 +18,34 @@ class UserManagementController extends Controller
     }
 
     public function addUser(Request $request)
-{
-    // Log request data for debugging
-    \Log::info('Request data:', $request->all());
+    {
 
-    // Validate the form data
-    $validatedData = $request->validate([
-        'name' => 'required|string',
-        'email' => 'required|email|unique:users',
-        'dob' => 'required|date_format:Y-m-d', // Specify the date format
-        'address' => 'required|string',
-        'phone' => 'required|string',
-        'role_id' => 'required|numeric',
-        'user_type' => 'required|string',
-        'password' => 'required|string',
-    ]);
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'dob' => 'required|date_format:Y-m-d',
+            'address' => 'required|string',
+            'phone' => 'required|string',
+            'role_id' => 'required|numeric',
+            'user_type' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
-    // Convert the date format before saving to the database
-    //$dob = Carbon::createFromFormat('d-m-Y', $validatedData['dob'])->format('Y-m-d');
+        $phone = (int) $validatedData['phone'];
 
-    // Cast phone to integer
-    $phone = (int) $validatedData['phone'];
+        // Create a new user record
+        $user = new User();
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        $user->dob = $validatedData['dob'];
+        $user->address = $validatedData['address'];
+        $user->phone = $phone;
+        $user->role_id = $validatedData['role_id'];
+        $user->user_type = $validatedData['user_type'];
+        $user->password = bcrypt($validatedData['password']);
+        $user->save();
 
-    // Create a new user record
-    $user = new User();
-    $user->name = $validatedData['name'];
-    $user->email = $validatedData['email'];
-    $user->dob = $validatedData['dob']; // Use the converted date
-    $user->address = $validatedData['address'];
-    $user->phone = $phone; // Use the converted phone
-    $user->role_id = $validatedData['role_id'];
-    $user->user_type = $validatedData['user_type'];
-    $user->password = bcrypt($validatedData['password']);
-    $user->save();
-
-    // Return a response
-    return response()->json(['message' => 'User created successfully'], 200);
-}
+        return response()->json(['message' => 'User created successfully'], 200);
+    }
 
 }
