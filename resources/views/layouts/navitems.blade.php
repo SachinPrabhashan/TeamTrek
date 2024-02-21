@@ -9,9 +9,9 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="{{asset('img/favicon.ico')}}" rel="icon">
+    <link href="{{ asset('img/favicon.ico') }}" rel="icon">
 
-    <link type="image/png" sizes="32x32" rel="icon" href="{{asset('img/icons8-developer-32.png')}}">
+    <link type="image/png" sizes="32x32" rel="icon" href="{{ asset('img/icons8-developer-32.png') }}">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,14 +24,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="{{asset('lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
-    <link href="{{asset('lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css')}}" rel="stylesheet" />
+    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet" />
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{asset('css/style.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     {{-- Datatable --}}
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -52,7 +52,8 @@
 <body>
     <div class="container-xxl position-relative bg-white d-flex p-0">
         <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div id="spinner"
+            class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
@@ -68,8 +69,22 @@
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
-                        <img class="rounded-circle" src="{{asset('img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
-                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                        @if (Auth::user()->role->id == 1)
+                            <img class="rounded-circle" src="{{ asset('img/root.png') }}" alt=""
+                                style="width: 40px; height: 40px;">
+                        @elseif(Auth::user()->role->id == 2)
+                            <img class="rounded-circle" src="{{ asset('img/admin.jpg') }}" alt=""
+                                style="width: 40px; height: 40px;">
+                        @elseif(Auth::user()->role->id == 3)
+                            <img class="rounded-circle" src="{{ asset('img/employee.jpg') }}" alt=""
+                                style="width: 40px; height: 40px;">
+                        @else
+                            <img class="rounded-circle" src="{{ asset('img/user.jpg') }}" alt=""
+                                style="width: 40px; height: 40px;">
+                        @endif
+                        <div
+                            class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
+                        </div>
                     </div>
                     <div class="ms-3">
                         <h6 class="mb-0">{{ Auth::user()->name }}</h6>
@@ -79,53 +94,58 @@
                 <div class="navbar-nav w-100">
 
                     <a href="{{ route('dashboard.show') }}" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                    @RootOrAdmin
-                    <a href="/admin/UserManagement" class="nav-item nav-link"><i class="fa-solid fa-users me-2"></i>User Management</a>
-                    @endRootOrAdmin
+
+                    <a href="/admin/usermanagement" class="nav-item nav-link"><i class="fa-solid fa-users me-2"></i>User Management</a>
+
 
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Support Contract</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                class="fa fa-laptop me-2"></i>Support Contract</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             @AdminOrEmployee
-                            <a href="#" class="dropdown-item">SC Handling</a>
-                            <a href="#" class="dropdown-item">SC Instance Handling</a>
-                            @Admin
-                            <a href="#" class="dropdown-item">SC Access Granting</a>
-                            @endAdmin
-                            <a href="#" class="dropdown-item">SC Task Monitor</a>
-                            <a href="#" class="dropdown-item">SC Reports</a>
+                                <a href="#" class="dropdown-item">SC Handling</a>
+                                <a href="#" class="dropdown-item">SC Instance Handling</a>
+                                @Admin
+                                    <a href="#" class="dropdown-item">SC Access Granting</a>
+                                @endAdmin
+                                <a href="#" class="dropdown-item">SC Task Monitor</a>
+                                <a href="#" class="dropdown-item">SC Reports</a>
                             @endAdminOrEmployee
                             @Client
-                            <a href="#" class="dropdown-item">Support Contract View</a>
+                                <a href="#" class="dropdown-item">Support Contract View</a>
                             @endClient
                         </div>
                     </div>
 
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-chart-simple me-2"></i>Performance</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                class="fa-solid fa-chart-simple me-2"></i>Performance</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="#" class="dropdown-item">SC Analysis View</a>
                             @AdminOrEmployee
-                            <a href="#" class="dropdown-item">Employee Performance</a>
-                            <a href="#" class="dropdown-item">Financial Health</a>
-                            <a href="#" class="dropdown-item">Resource Utilization</a>
+                                <a href="#" class="dropdown-item">Employee Performance</a>
+                                <a href="#" class="dropdown-item">Financial Health</a>
+                                <a href="#" class="dropdown-item">Resource Utilization</a>
                             @endAdminOrEmployee
                         </div>
                     </div>
                     @AdminOrEmployee
-                    <a href="#" class="nav-item nav-link"><i class="fa-solid fa-user me-2"></i></i>My Profile</a>
+                        <a href="#" class="nav-item nav-link"><i class="fa-solid fa-user me-2"></i></i>My
+                            Profile</a>
                     @endAdminOrEmployee
 
                     @Root
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-gears me-2"></i>Permissions</a>
-                        <div class="dropdown-menu bg-transparent border-0">
-                            <a href="#" class="dropdown-item">Roles</a>
-                            <a href="#" class="dropdown-item">Permissions</a>
-                            <a href="#" class="dropdown-item">Module</a>
-                            <a href="{{route('root.modulepermission')}}" class="dropdown-item">Module Permission</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                    class="fa-solid fa-gears me-2"></i>Permissions</a>
+                            <div class="dropdown-menu bg-transparent border-0">
+                                <a href="#" class="dropdown-item">Roles</a>
+                                <a href="#" class="dropdown-item">Permissions</a>
+                                <a href="#" class="dropdown-item">Module</a>
+                                <a href="{{ route('root.modulepermission') }}" class="dropdown-item">Module
+                                    Permission</a>
+                            </div>
                         </div>
-                    </div>
                     @endRoot
                     {{-- <a href="#" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
                     <a href="#" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
@@ -159,7 +179,8 @@
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">
                                 <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="{{asset('img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
+                                    <img class="rounded-circle" src="{{ asset('img/user.jpg') }}" alt=""
+                                        style="width: 40px; height: 40px;">
                                     <div class="ms-2">
                                         <h6 class="fw-normal mb-0">Jhon send you a message</h6>
                                         <small>15 minutes ago</small>
@@ -169,7 +190,8 @@
                             <hr class="dropdown-divider">
                             <a href="#" class="dropdown-item">
                                 <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="{{asset('img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
+                                    <img class="rounded-circle" src="{{ asset('img/user.jpg') }}" alt=""
+                                        style="width: 40px; height: 40px;">
                                     <div class="ms-2">
                                         <h6 class="fw-normal mb-0">Jhon send you a message</h6>
                                         <small>15 minutes ago</small>
@@ -179,7 +201,8 @@
                             <hr class="dropdown-divider">
                             <a href="#" class="dropdown-item">
                                 <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="{{asset('img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
+                                    <img class="rounded-circle" src="{{ asset('img/user.jpg') }}" alt=""
+                                        style="width: 40px; height: 40px;">
                                     <div class="ms-2">
                                         <h6 class="fw-normal mb-0">Jhon send you a message</h6>
                                         <small>15 minutes ago</small>
@@ -216,7 +239,19 @@
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="{{asset('img/user.jpg')}}" alt="" style="width: 40px; height: 40px;">
+                            @if (Auth::user()->role->id == 1)
+                                <img class="rounded-circle me-lg-2" src="{{ asset('img/root.png') }}" alt=""
+                                    style="width: 40px; height: 40px;">
+                            @elseif(Auth::user()->role->id == 2)
+                                <img class="rounded-circle me-lg-2" src="{{ asset('img/admin.jpg') }}" alt=""
+                                    style="width: 40px; height: 40px;">
+                            @elseif(Auth::user()->role->id == 3)
+                                <img class="rounded-circle me-lg-2" src="{{ asset('img/employee.jpg') }}" alt=""
+                                    style="width: 40px; height: 40px;">
+                            @else
+                                <img class="rounded-circle me-lg-2" src="{{ asset('img/user.jpg') }}" alt=""
+                                    style="width: 40px; height: 40px;">
+                            @endif
                             <span class="d-none d-lg-inline-flex">{{ Auth::user()->name }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
@@ -243,18 +278,20 @@
                                 @endif
                             @else
                                 <li class="nav-item">
-                                    <a id="navbarDropdown" class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <a id="navbarDropdown" class="nav-link" href="#" role="button"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         <i class="fa-solid fa-right-from-bracket"></i>
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
+                                            onclick="event.preventDefault();
                                                          document.getElementById('logout-form').submit();">
                                             <i class="fa-solid fa-right-from-bracket me-2"></i>{{ __('Logout') }}
                                         </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            class="d-none">
                                             @csrf
                                         </form>
                                     </div>
@@ -273,16 +310,16 @@
                     <div class="col-md-6 text-center"> --}}
 
 
-                        @yield('content')
+                @yield('content')
 
-{{--
+                {{--
                     </div>
                 </div>
             </div> --}}
-            <!-- Blank End -->
+                <!-- Blank End -->
 
 
-            {{-- <!-- Footer Start -->
+                {{-- <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
@@ -297,27 +334,28 @@
                 </div>
             </div>
             <!-- Footer End --> --}}
+            </div>
+            <!-- Content End -->
+
+
+            <!-- Back to Top -->
+            <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i
+                    class="bi bi-arrow-up"></i></a>
         </div>
-        <!-- Content End -->
 
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{{ asset('lib/chart/chart.min.js') }}"></script>
+        <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
+        <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
+        <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+        <script src="{{ asset('lib/tempusdominus/js/moment.min.js') }}"></script>
+        <script src="{{ asset('lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
+        <script src="{{ asset('lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{asset('lib/chart/chart.min.js')}}"></script>
-    <script src="{{asset('lib/easing/easing.min.js')}}"></script>
-    <script src="{{asset('lib/waypoints/waypoints.min.js')}}"></script>
-    <script src="{{asset('lib/owlcarousel/owl.carousel.min.js')}}"></script>
-    <script src="{{asset('lib/tempusdominus/js/moment.min.js')}}"></script>
-    <script src="{{asset('lib/tempusdominus/js/moment-timezone.min.js')}}"></script>
-    <script src="{{asset('lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js')}}"></script>
-
-    <!-- Template Javascript -->
-    <script src="{{asset('js/main.js')}}"></script>
+        <!-- Template Javascript -->
+        <script src="{{ asset('js/main.js') }}"></script>
 </body>
 
 </html>
