@@ -12,10 +12,12 @@ use Illuminate\Support\Carbon;
 class UserManagementController extends Controller
 {
     public function UserManagementView(UserManagement $usermanagement)
-    {
-        $this->authorize('view',$usermanagement);
-        return view('admin.usermanagement');
-    }
+{
+    $this->authorize('view', $usermanagement);
+    $users = User::all();
+
+    return view('admin.usermanagement', ['users' => $users]);
+}
 
     public function addUser(Request $request)
     {
