@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     @AdminOrEmployee
-                        <a href="#" class="nav-item nav-link"><i class="fa-solid fa-user me-2"></i></i>My
+                        <a href="{{ route('myprofile') }}" class="nav-item nav-link"><i class="fa-solid fa-user me-2"></i></i>My
                             Profile</a>
                     @endAdminOrEmployee
 
@@ -256,7 +256,7 @@
                             <span class="d-none d-lg-inline-flex">{{ Auth::user()->name }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="{{ route('myprofile') }}" class="dropdown-item">My Profile</a>
                             <a href="#" class="dropdown-item">Settings</a>
 
                         </div>

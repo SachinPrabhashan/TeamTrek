@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\RootPermissionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\RoleViewController;
 use Illuminate\Support\Facades\Auth;
@@ -51,3 +52,7 @@ Route::get('/get-module-permissions', [RootPermissionController::class,'getExist
 Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard.show');
 Route::get('/admin/UserManagement',[UserManagementController::class,'UserManagementView']);
 Route::post('/add-user', [UserManagementController::class, 'addUser'])->name('add.user');
+
+
+//All Users
+Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');
