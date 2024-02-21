@@ -14,6 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Dashboard::class => DashboardPolicy::class,
+        UserManagement::class=>UserManagementPolicy::class,
     ];
 
     /**

@@ -28,28 +28,6 @@ class RootPermissionController extends Controller
         return view('root.modulepermission', compact('modules', 'permissions', 'existingModulePermissions', 'roleId'));
     }
 
-    /*public function save(Request $request)
-    {
-        $moduleId = $request->input('moduleId');
-        $permissionId = $request->input('permissionId');
-        $isChecked = $request->input('isChecked');
-        $roleId = $request->input('roleId');
-
-        $moduleName = Module::find($moduleId)->name;
-        $permissionName = Permission::find($permissionId)->name;
-
-        $name = $moduleName . '-' . $permissionName;
-
-        if ($isChecked) {
-            $modulePermission = ModulePermission::updateOrCreate(
-                ['module_id' => $moduleId, 'permission_id' => $permissionId, 'role_id' => $roleId],
-                ['name' => $name],
-            );
-            $modulePermission->save();
-        }
-
-        return response()->json(['status' => 'success', 'message' => 'Module permission saved successfully']);
-    }*/
     public function save(Request $request)
     {
         $moduleId = $request->input('moduleId');
@@ -67,7 +45,7 @@ class RootPermissionController extends Controller
                 'module_id' => $moduleId,
                 'permission_id' => $permissionId,
                 'role_id' => $roleId,
-                'name' => $name, 
+                'name' => $name,
             ]);
         }
 
