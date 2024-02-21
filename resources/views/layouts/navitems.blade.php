@@ -32,6 +32,7 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/smain.css') }}" rel="stylesheet">
 
     {{-- Datatable --}}
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -93,10 +94,21 @@
                 </div>
                 <div class="navbar-nav w-100">
 
-                    <a href="{{ route('dashboard.show') }}" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <a href="{{ route('dashboard.show') }}" class="nav-item nav-link"><i
+                            class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
 
                     @RootOrAdmin
-                    <a href="/admin/UserManagement" class="nav-item nav-link"><i class="fa-solid fa-users me-2"></i>User Management</a>
+                        {{-- <a href="/admin/UserManagement" class="nav-item nav-link"><i class="fa-solid fa-users me-2"></i>User Management</a> --}}
+
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                    class="fa-solid fa-users me-2"></i>User Management</a>
+                            <div class="dropdown-menu bg-transparent border-0">
+                                <a href="/admin/UserManagement" class="dropdown-item">Create Admin</a>
+                                <a href="#" class="dropdown-item">Create Employee</a>
+                                <a href="#" class="dropdown-item">Create Client</a>
+                            </div>
+                        </div>
                     @endRootOrAdmin
 
                     <div class="nav-item dropdown">
@@ -131,7 +143,8 @@
                         </div>
                     </div>
                     @AdminOrEmployee
-                        <a href="{{ route('myprofile') }}" class="nav-item nav-link"><i class="fa-solid fa-user me-2"></i></i>My
+                        <a href="{{ route('myprofile') }}" class="nav-item nav-link"><i
+                                class="fa-solid fa-user me-2"></i></i>My
                             Profile</a>
                     @endAdminOrEmployee
 
@@ -244,11 +257,11 @@
                                 <img class="rounded-circle me-lg-2" src="{{ asset('img/root.png') }}" alt=""
                                     style="width: 40px; height: 40px;">
                             @elseif(Auth::user()->role->id == 2)
-                                <img class="rounded-circle me-lg-2" src="{{ asset('img/admin.jpg') }}" alt=""
-                                    style="width: 40px; height: 40px;">
+                                <img class="rounded-circle me-lg-2" src="{{ asset('img/admin.jpg') }}"
+                                    alt="" style="width: 40px; height: 40px;">
                             @elseif(Auth::user()->role->id == 3)
-                                <img class="rounded-circle me-lg-2" src="{{ asset('img/employee.jpg') }}" alt=""
-                                    style="width: 40px; height: 40px;">
+                                <img class="rounded-circle me-lg-2" src="{{ asset('img/employee.jpg') }}"
+                                    alt="" style="width: 40px; height: 40px;">
                             @else
                                 <img class="rounded-circle me-lg-2" src="{{ asset('img/user.jpg') }}" alt=""
                                     style="width: 40px; height: 40px;">
