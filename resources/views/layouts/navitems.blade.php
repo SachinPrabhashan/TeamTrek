@@ -95,8 +95,9 @@
 
                     <a href="{{ route('dashboard.show') }}" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
 
+                    @RootOrAdmin
                     <a href="/admin/usermanagement" class="nav-item nav-link"><i class="fa-solid fa-users me-2"></i>User Management</a>
-
+                    @endRootOrAdmin
 
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
