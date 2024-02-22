@@ -117,7 +117,7 @@
 
         <h3>Module Permissions</h3>
         <hr>
-        <table id="example" class="ui celled table" style="width:100%">
+        <table id="example" class="table table-hover" style="width:100%">
             <thead>
                 <tr>
                     <th>Modules/Permissions</th>
