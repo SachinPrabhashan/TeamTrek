@@ -105,7 +105,7 @@
                                 @Root
                                 <a href="#" class="dropdown-item">Create Admin</a>
                                 @endRoot
-                                <a href="/admin/UserManagement/Employee" class="dropdown-item">Create Employee</a>
+                                <a href="{{ route('new.employee')}}" class="dropdown-item">Create Employee</a>
                                 <a href="#" class="dropdown-item">Create Client</a>
                             </div>
                         </div>
