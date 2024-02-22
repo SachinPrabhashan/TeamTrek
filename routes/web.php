@@ -45,6 +45,7 @@ Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard.
 Route::get('/user-managements/employee',[UserManagementController::class,'UserManagementView'])->name('new.employee');
 Route::post('/add-user', [UserManagementController::class, 'addUser'])->name('add.user');
 Route::get('/fetch/Employees', [UserManagementController::class, 'fetchEmployees'])->name('users.fetch');
+Route::delete('/delete-admin/{id}', [UserManagementController::class,'deleteAdmin'])->name('delete.admin');
 
 
 

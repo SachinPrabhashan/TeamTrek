@@ -17,7 +17,7 @@
 
     <script>
         var app = angular.module('userApp', []);
-
+//Handling modals-------------------------------------------------
         // Define your service for managing modals
         app.service('ModalService', function($q) {
             this.modalInstance = null;
@@ -48,6 +48,7 @@
             $scope.user = {};
             $scope.users = [];
 
+//Updating the table--------------------------------------------------------
             function fetchUsers() {
             $.ajax({
                 url: '/fetch/Employees',
@@ -84,7 +85,7 @@
             });
         }
 
-
+//Adding user-------------------------------------------------------------------------------
             $scope.submitUser = function() {
                 var dob = moment($scope.user.dob, 'YYYY-MM-DD').format('YYYY-MM-DD');
                 $scope.user.dob = dob;
@@ -115,7 +116,10 @@
             ModalService.closeModal();
         };
         //fetchUsers();
-    });
+
+
+
+});
 </script>
 
 <div class="container-fluid pt-4 px-4" ng-app="userApp" ng-controller="UserController">
@@ -155,9 +159,10 @@
                         </a>
                     </div>
                     <div class="d-inline-block mx-1">
-                        <a href="#">
+                        <a href="#" ng-click="showDeleteModal('{{ $user->id }}')">
                             <i class="fa-solid fa-trash" style="color: red;"></i>
                         </a>
+
                     </div>
                     <div class="d-inline-block mx-1">
                         <a href="#">
@@ -247,4 +252,7 @@
             </div>
         </div>
     </div>
+
+    
+
 @endsection

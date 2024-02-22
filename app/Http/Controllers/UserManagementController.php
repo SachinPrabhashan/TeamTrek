@@ -58,4 +58,32 @@ class UserManagementController extends Controller
         return response()->json(['message' => 'User created successfully'], 200);
     }
 
+    public function deleteAdmin($id)
+    {
+        try {
+            // Find the user by ID
+            $user = User::find($id);
+
+            if (!$user) { 
+                return response()->json(['message' => 'User not found.'], 404);
+            }
+
+            // Attempt to delete the user
+            $deleted = $user->delete();
+
+            if ($deleted) {
+                return response()->json(['message' => 'User deleted successfully.']);
+            } else {
+                return response()->json(['message' => 'Failed to delete user.'], 500);
+            }
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+            \Log::error('Error deleting user: ' . $e->getMessage());
+
+            // Return a generic error message
+            return response()->json(['message' => 'An error occurred while deleting the user.'], 500);
+        }
+    }
+
+
 }
