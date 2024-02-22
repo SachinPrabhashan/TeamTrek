@@ -46,6 +46,19 @@
         // Define your controller
         app.controller('UserController', function($scope, $http, ModalService) {
             $scope.user = {};
+            $scope.users = [];
+
+             // Function to fetch updated user data from the server
+             var fetchUsers = function() {
+                $http.get('/admin/UserManagement/Employee') // Assuming '/users' is the endpoint to fetch user data
+                    .then(function(response) {
+                        $scope.users = response.data; // Update the users array with the fetched data
+                    })
+                    .catch(function(error) {
+                        console.error(error);
+                    });
+            };
+
 
             $scope.submitUser = function() {
                 var dob = moment($scope.user.dob, 'YYYY-MM-DD').format('YYYY-MM-DD');
@@ -56,6 +69,7 @@
                         console.log(response.data);
                         $scope.user = {};
                         ModalService.closeModal();
+                        fetchUsers();
                     })
                     .catch(function(error) {
                         console.error(error);
@@ -75,22 +89,18 @@
         $scope.closeModal = function() {
             ModalService.closeModal();
         };
+        fetchUsers();
     });
 </script>
-<script>
-    $(document).ready(function() {
 
-        new DataTable('#example');
-    });
-</script>
 <div class="container-fluid pt-4 px-4" ng-app="userApp" ng-controller="UserController">
     <h1>Employee Management</h1>
     <hr>
     <button type="button" class="btn btn-primary" ng-click="openModal('#addUserModal')">Add Users</button>
     <br>
 <br>
-<div class="table-responsive">
-    <table id="example1" class="table table-bordered" >
+<div>
+    <table id="example" class="table table-bordered">
         <thead>
             <tr>
                 <th>Name</th>
@@ -116,17 +126,17 @@
                 <td class="text-center">
                     <div class="d-inline-block mx-1">
                         <a href="#">
-                            <i class="fa-solid fa-pen-to-square"style="color: green;"></i>
+                            <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
                         </a>
                     </div>
                     <div class="d-inline-block mx-1">
                         <a href="#">
-                            <i class="fa-solid fa-trash"style="color: red;"></i>
+                            <i class="fa-solid fa-trash" style="color: red;"></i>
                         </a>
                     </div>
                     <div class="d-inline-block mx-1">
                         <a href="#">
-                            <i class="fa-solid fa-circle-info"style="color: black;"></i>
+                            <i class="fa-solid fa-circle-info" style="color: black;"></i>
                         </a>
                     </div>
                 </td>
