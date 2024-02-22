@@ -48,16 +48,41 @@
             $scope.user = {};
             $scope.users = [];
 
-             // Function to fetch updated user data from the server
-             var fetchUsers = function() {
-                $http.get('/admin/UserManagement/Employee') // Assuming '/users' is the endpoint to fetch user data
-                    .then(function(response) {
-                        $scope.users = response.data; // Update the users array with the fetched data
-                    })
-                    .catch(function(error) {
-                        console.error(error);
+            function fetchUsers() {
+            $.ajax({
+                url: '/fetch/Employees',
+                method: 'GET',
+                success: function(data) {
+                    // Replace the existing table contents with the new data
+                    $('#example tbody').empty(); // Clear existing rows
+                    data.forEach(function(user) {
+                        // Create a row for each user
+                        var row = $('<tr>');
+                        row.append('<td>' + user.name + '</td>');
+                        row.append('<td>' + user.email + '</td>');
+                        row.append('<td>' + user.dob + '</td>');
+                        row.append('<td>' + user.address + '</td>');
+                        row.append('<td>' + user.phone + '</td>');
+                        row.append('<td>' + user.role_id + '</td>');
+                        row.append('<td>' + user.user_type + '</td>');
+
+                        // Add action buttons
+                        var actions = $('<td class="text-center">');
+                        actions.append('<div class="d-inline-block mx-1"><a href="#"><i class="fa-solid fa-pen-to-square" style="color: green;"></i></a></div>');
+                        actions.append('<div class="d-inline-block mx-1"><a href="#"><i class="fa-solid fa-trash" style="color: red;"></i></a></div>');
+                        actions.append('<div class="d-inline-block mx-1"><a href="#"><i class="fa-solid fa-circle-info" style="color: black;"></i></a></div>');
+
+                        row.append(actions);
+
+                        // Append the row to the table body
+                        $('#example tbody').append(row);
                     });
-            };
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
 
 
             $scope.submitUser = function() {
@@ -89,7 +114,7 @@
         $scope.closeModal = function() {
             ModalService.closeModal();
         };
-        fetchUsers();
+        //fetchUsers();
     });
 </script>
 

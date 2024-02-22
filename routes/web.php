@@ -44,6 +44,7 @@ Route::get('/get-module-permissions', [RootPermissionController::class,'getExist
 Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard.show');
 Route::get('/admin/UserManagement/Employee',[UserManagementController::class,'UserManagementView']);
 Route::post('/add-user', [UserManagementController::class, 'addUser'])->name('add.user');
+Route::get('/fetch/Employees', [UserManagementController::class, 'fetchEmployees'])->name('users.fetch');
 
 
 

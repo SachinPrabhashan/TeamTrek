@@ -12,12 +12,20 @@ use Illuminate\Support\Carbon;
 class UserManagementController extends Controller
 {
     public function UserManagementView(UserManagement $usermanagement)
-{
-    $this->authorize('view', $usermanagement);
-    $users = User::all();
+    {
+        $this->authorize('view', $usermanagement);
+        $users = User::all();
 
-    return view('admin.usermanagement', ['users' => $users]);
-}
+        return view('admin.usermanagement', compact('users'));
+    }
+
+    public function fetchEmployees(Request $request)
+    {
+        $users=User::all();
+        return response()->json($users);
+    }
+
+
 
     public function addUser(Request $request)
     {
