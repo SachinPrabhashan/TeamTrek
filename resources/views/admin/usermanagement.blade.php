@@ -46,6 +46,19 @@
         // Define your controller
         app.controller('UserController', function($scope, $http, ModalService) {
             $scope.user = {};
+            $scope.users = [];
+
+             // Function to fetch updated user data from the server
+             var fetchUsers = function() {
+                $http.get('/admin/UserManagement/Employee') // Assuming '/users' is the endpoint to fetch user data
+                    .then(function(response) {
+                        $scope.users = response.data; // Update the users array with the fetched data
+                    })
+                    .catch(function(error) {
+                        console.error(error);
+                    });
+            };
+
 
             $scope.submitUser = function() {
                 var dob = moment($scope.user.dob, 'YYYY-MM-DD').format('YYYY-MM-DD');
@@ -56,6 +69,7 @@
                         console.log(response.data);
                         $scope.user = {};
                         ModalService.closeModal();
+                        fetchUsers();
                     })
                     .catch(function(error) {
                         console.error(error);
@@ -71,65 +85,66 @@
                 ModalService.openModal(modalId);
             };
 
-            // Function to close the modal
-            $scope.closeModal = function() {
-                ModalService.closeModal();
-            };
-        });
-    </script>
+        // Function to close the modal
+        $scope.closeModal = function() {
+            ModalService.closeModal();
+        };
+        fetchUsers();
+    });
+</script>
 
-    <div class="container-fluid pt-4 px-4" ng-app="userApp" ng-controller="UserController">
-        <h1>Employee Management</h1>
-        <hr>
-        <button type="button" class="btn btn-primary" ng-click="openModal('#addUserModal')">Add Users</button>
-        <br>
-        <br>
-        <div>
-            <table id="example" class="table table-hover" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Date of Birth</th>
-                        <th>Address</th>
-                        <th>Phone</th>
-                        <th>Role ID</th>
-                        <th>User Type</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($users as $user)
-                        <tr>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->dob }}</td>
-                            <td>{{ $user->address }}</td>
-                            <td>{{ $user->phone }}</td>
-                            <td>{{ $user->role_id }}</td>
-                            <td>{{ $user->user_type }}</td>
-                            <td class="text-center">
-                                <div class="d-inline-block mx-1">
-                                    <a href="#">
-                                        <i class="fa-solid fa-pen-to-square"style="color: green;"></i>
-                                    </a>
-                                </div>
-                                <div class="d-inline-block mx-1">
-                                    <a href="#">
-                                        <i class="fa-solid fa-trash"style="color: red;"></i>
-                                    </a>
-                                </div>
-                                <div class="d-inline-block mx-1">
-                                    <a href="#">
-                                        <i class="fa-solid fa-circle-info"style="color: black;"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+<div class="container-fluid pt-4 px-4" ng-app="userApp" ng-controller="UserController">
+    <h1>Employee Management</h1>
+    <hr>
+    <button type="button" class="btn btn-primary" ng-click="openModal('#addUserModal')">Add Users</button>
+    <br>
+<br>
+<div>
+    <table id="example" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Date of Birth</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Role ID</th>
+                <th>User Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($users as $user)
+            <tr>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->email }}</td>
+                <td>{{ $user->dob }}</td>
+                <td>{{ $user->address }}</td>
+                <td>{{ $user->phone }}</td>
+                <td>{{ $user->role_id }}</td>
+                <td>{{ $user->user_type }}</td>
+                <td class="text-center">
+                    <div class="d-inline-block mx-1">
+                        <a href="#">
+                            <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
+                        </a>
+                    </div>
+                    <div class="d-inline-block mx-1">
+                        <a href="#">
+                            <i class="fa-solid fa-trash" style="color: red;"></i>
+                        </a>
+                    </div>
+                    <div class="d-inline-block mx-1">
+                        <a href="#">
+                            <i class="fa-solid fa-circle-info" style="color: black;"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 
         <!--Add Modal -->
         <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

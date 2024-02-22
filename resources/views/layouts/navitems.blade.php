@@ -103,9 +103,9 @@
                                     class="fa-solid fa-users me-2"></i>User Management</a>
                             <div class="dropdown-menu bg-transparent border-0">
                                 @Root
-                                <a href="/admin/UserManagement" class="dropdown-item">Create Admin</a>
+                                <a href="#" class="dropdown-item">Create Admin</a>
                                 @endRoot
-                                <a href="#" class="dropdown-item">Create Employee</a>
+                                <a href="/admin/UserManagement/Employee" class="dropdown-item">Create Employee</a>
                                 <a href="#" class="dropdown-item">Create Client</a>
                             </div>
                         </div>

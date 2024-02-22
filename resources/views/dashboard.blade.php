@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>Dashboard - Common</h1>
-
+    <hr>
     <!-- Sale & Revenue Start -->
     <div class="container-fluid pt-4 px-4">
         <div class="row g-4">
