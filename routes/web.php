@@ -29,29 +29,23 @@ Route::get('/reg', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 // root
-
-Route::get('/root/modulepermission', [RootPermissionController::class, 'index4'])->name('root.modulepermission');
+Route::get('/permissions/module-permission', [RootPermissionController::class, 'index4'])->name('root.modulepermission');
 Route::post('/save-module-permission', [RootPermissionController::class, 'save']);
 
-
-// Route::get('/root-modulepermission', function () {
-//     return view('root.modulepermission');
-// });
 
 Route::post('/delete-module-permission', [RootPermissionController::class,'delete']);
 Route::get('/get-module-permissions', [RootPermissionController::class,'getExistingPermissions'])->name('get.module.permissions');
 
 //Admin
-
-
-
 Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard.show');
 Route::get('/admin/UserManagement/Employee',[UserManagementController::class,'UserManagementView']);
 Route::post('/add-user', [UserManagementController::class, 'addUser'])->name('add.user');
+
+
 
 
 //All Users
