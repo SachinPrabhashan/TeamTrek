@@ -35,6 +35,7 @@ Auth::routes();
 // root
 Route::get('/permissions/module-permission', [RootPermissionController::class, 'index4'])->name('root.modulepermission');
 Route::post('/save-module-permission', [RootPermissionController::class, 'save']);
+Route::get('/permissions/manage-permissions', [RootPermissionController::class, 'index2'])->name('root.permissions');
 
 
 Route::post('/delete-module-permission', [RootPermissionController::class,'delete']);

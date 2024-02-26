@@ -1,13 +1,25 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Module;
 use App\Models\Permission;
-use App\Models\ModulePermission;
 use Illuminate\Http\Request;
+use App\Models\ModulePermission;
+use Illuminate\Support\Facades\DB;
 
 class RootPermissionController extends Controller
 {
+
+    public function index2()
+    {
+
+        $permissions = DB::table('permissions')
+            ->select('name')
+            ->get();
+
+        return view('root.permissions', compact('permissions'));
+    }
 
     public function index4()
     {
@@ -83,8 +95,4 @@ class RootPermissionController extends Controller
 
         return response()->json(['message' => 'Module permission deleted successfully']);
     }
-
-
-
-
 }
