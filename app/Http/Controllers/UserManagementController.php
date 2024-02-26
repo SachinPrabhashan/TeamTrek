@@ -20,16 +20,13 @@ class UserManagementController extends Controller
         return view('admin.usermanagement', compact('users'));
     }
 
-
     public function fetchEmployees(Request $request)
     {
         $users = User::where('role_id', 3)->get();
         return response()->json($users);
     }
 
-
-
-    public function addUser(Request $request)
+    public function addEmp(Request $request)
     {
 
         $validatedData = $request->validate([
@@ -60,7 +57,8 @@ class UserManagementController extends Controller
         return response()->json(['message' => 'User created successfully'], 200);
     }
 
-    public function delete($id) {
+    public function deleteEmp($id)
+    {
         $user = User::find($id);
         if ($user) {
             $user->delete();
@@ -69,4 +67,20 @@ class UserManagementController extends Controller
             return response()->json(['error' => 'User not found'], 404);
         }
     }
+
+    public function updateEmpType(Request $request, $userId) {
+        try {
+            $user = User::findOrFail($userId);
+            $user->update($request->all());
+            //Log::info('User after update: ' . $user->toJson()); // Log the updated user information
+            return response()->json($user, 200); // Return the updated user as JSON
+        } catch (\Exception $e) {
+            //Log::error('Error updating user type: ' . $e->getMessage()); // Log any errors
+            return response()->json(['error' => 'Failed to update user type.'], 500);
+        }
+    }
+
+
+
+
 }
