@@ -44,9 +44,12 @@ Route::get('/get-module-permissions', [RootPermissionController::class,'getExist
 //Admin
 Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard.show');
 Route::get('/user-managements/employee',[UserManagementController::class,'UserManagementView'])->name('new.employee');
-Route::post('/add-user', [UserManagementController::class, 'addUser'])->name('add.user');
+Route::post('/add-Emp', [UserManagementController::class, 'addEmp'])->name('add.Emp')->name('add.Emp');
 Route::get('/fetch/Employees', [UserManagementController::class, 'fetchEmployees'])->name('users.fetch');
-Route::delete('/delete-user/{id}', [UserManagementController::class,'delete']);
+Route::delete('/delete-Emp/{id}', [UserManagementController::class,'deleteEmp'])->name('delete.Emp');
+Route::put('/update-Emp-type/{id}', [UserManagementController::class,'updateEmpType'])->name('update.Emp');
+
+
 
 
 
