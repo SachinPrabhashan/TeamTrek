@@ -48,14 +48,17 @@ Route::post('/delete-module-permission', [RootPermissionController::class,'delet
 Route::get('/get-module-permissions', [RootPermissionController::class,'getExistingPermissions'])->name('get.module.permissions');
 
 //Admin
+    //Usermanagement-Employee management
 Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard.show');
 Route::get('/user-managements/employee',[UserManagementController::class,'UserManagementView'])->name('new.employee');
-Route::post('/add-Emp', [UserManagementController::class, 'addEmp'])->name('add.Emp')->name('add.Emp');
+Route::post('/add-Emp', [UserManagementController::class, 'addEmp'])->name('add.Emp');
 Route::get('/fetch/Employees', [UserManagementController::class, 'fetchEmployees'])->name('users.fetch');
 Route::delete('/delete-Emp/{id}', [UserManagementController::class,'deleteEmp'])->name('delete.Emp');
 Route::put('/update-Emp-type/{id}', [UserManagementController::class,'updateEmpType'])->name('update.Emp');
 
-
+     //Usermanagement-Admin management
+Route::get('/user-managements/admin',[UserManagementController::class,'AdminManagementView'])->name('new.admins');
+Route::post('/add-Admin', [UserManagementController::class, 'addAdmin'])->name('add.admins');
 
 
 

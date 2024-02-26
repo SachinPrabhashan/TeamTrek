@@ -11,13 +11,13 @@ use Illuminate\Support\Carbon;
 
 class UserManagementController extends Controller
 {
-
+//User Management-Employee Management
     public function UserManagementView(UserManagement $usermanagement)
     {
         $this->authorize('view', $usermanagement);
         $users = User::where('role_id', 3)->get();
 
-        return view('admin.usermanagement', compact('users'));
+        return view('admin.EmpManagement', compact('users'));
     }
 
     public function fetchEmployees(Request $request)
@@ -80,7 +80,39 @@ class UserManagementController extends Controller
         }
     }
 
+//User Management-Admin Management
+    public function AdminManagementView(UserManagement $usermanagement)
+    {
+        $this->authorize('view', $usermanagement);
+        $users = User::where('role_id', 2)->get();
 
+        return view('admin.AdminManagement', compact('users'));
+    }
+
+    public function addAdmin(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'role_id' => 'required|numeric',
+            'password' => 'required|string',
+        ]);
+
+        try {
+            // Create a new user record
+            $user = new User();
+            $user->name = $validatedData['name'];
+            $user->email = $validatedData['email'];
+            $user->role_id = $validatedData['role_id'];
+            $user->password = bcrypt($validatedData['password']);
+            $user->save();
+
+            return response()->json(['message' => 'User created successfully'], 200);
+        } catch (\Exception $e) {
+            // Handle any exceptions (e.g., database errors)
+            return response()->json(['message' => 'Failed to create user', 'error' => $e->getMessage()], 500);
+        }
+    }
 
 
 }
