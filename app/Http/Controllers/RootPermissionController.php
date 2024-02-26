@@ -37,7 +37,26 @@ class RootPermissionController extends Controller
     }
 
 
-    
+    public function index3(){
+        $modules = DB::table('modules')
+            ->select('name')
+            ->get();
+
+        return view('root.modules', compact('modules'));
+    }
+
+    public function addmodule(Request $request){
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $module = new Module();
+
+        $module->name = $validatedData['name'];
+        $module->save();
+
+        return response()->json(['message' => 'Module create successfull!']);
+    }
 
     public function index4()
     {

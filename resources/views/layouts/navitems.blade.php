@@ -155,7 +155,7 @@
                             <div class="dropdown-menu bg-transparent border-0">
                                 <a href="#" class="dropdown-item">Roles</a>
                                 <a href="{{ route('root.permissions') }}" class="dropdown-item">Permissions</a>
-                                <a href="#" class="dropdown-item">Module</a>
+                                <a href="{{ route('root.modules') }}" class="dropdown-item">Module</a>
                                 <a href="{{ route('root.modulepermission') }}" class="dropdown-item">Module
                                     Permission</a>
                             </div>
