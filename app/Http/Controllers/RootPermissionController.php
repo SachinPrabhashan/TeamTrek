@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class RootPermissionController extends Controller
 {
-
+    // index2
     public function index2()
     {
 
@@ -20,6 +20,24 @@ class RootPermissionController extends Controller
 
         return view('root.permissions', compact('permissions'));
     }
+
+    public function addpermission(Request $request){
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $permission = new Permission();
+
+        $permission->name = $validatedData['name'];
+        $permission->save();
+
+
+        return response()->json(['message' => 'Permission create successfull!']);
+    }
+
+
+    
 
     public function index4()
     {

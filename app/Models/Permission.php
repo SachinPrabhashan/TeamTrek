@@ -15,6 +15,10 @@ class Permission extends Model
      */
     protected $table = 'permissions';
 
+    protected $fillable = [
+        'name'
+    ];
+
     /**
      * Define the relationship between Module and ModulePermission.
      */
