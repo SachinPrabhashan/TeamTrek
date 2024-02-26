@@ -117,7 +117,7 @@
             </select>
 
             <div class="float-end">
-                <a href="#"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Module</button></a>
+                <a href="{{ route('root.modules') }}"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Module</button></a>
                 <a href="{{ route('root.permissions') }}"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Permission</button></a>
 
             </div>

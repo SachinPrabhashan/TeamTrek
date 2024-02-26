@@ -9,14 +9,14 @@
     <div class="container mt-4 col-12">
 
         <div class="bg-light rounded h-100 p-4 ">
-            <h2>Permission Manager</h2>
+            <h2>Module Manager</h2>
             <hr>
             <div class="d-flex justify-content-center">
                 <div class="w-50 justify-content-center">
-                    <h3>Exisiting Permissions</h3>
-                    <ul id="permissionList">
-                        @foreach ($permissions as $permission)
-                            <li>{{ $permission->name }}</li>
+                    <h3>Exisiting Modules</h3>
+                    <ul id="moduleList">
+                        @foreach ($modules as $module)
+                            <li>{{ $module->name }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -29,12 +29,12 @@
     <div class="container mt-4 col-12">
         <div class="bg-light rounded h-100 p-4 d-flex justify-content-center">
             <div class="w-50 justify-content-center">
-                <h3>Deploy New Permission</h3>
+                <h3>Deploy New Module</h3>
                 <div id="permissionForm">
-                    <input class="form-control" type="text" name="name" id="permissionName"
-                        placeholder="Permission Name">
+                    <input class="form-control" type="text" name="name" id="moduleName"
+                        placeholder="Module Name">
                     <div class="mt-2 float-end">
-                        <button class="btn btn-secondary" id="savePermission">Save</button>
+                        <button class="btn btn-secondary" id="saveModule">Save</button>
                         <button class="btn btn-danger" id="clearBtn">Clear</button>
                     </div>
                 </div>
@@ -52,24 +52,24 @@
             });
 
             $('#clearBtn').on('click', function(){
-                $('#permissionName').val('');
+                $('#moduleName').val('');
             });
 
-            $('#savePermission').on('click', function() {
+            $('#saveModule').on('click', function() {
                 // Get the permission name from the input field
-                var permissionName = $('#permissionName').val();
+                var moduleName = $('#moduleName').val();
 
                 // Ajax request to save the permission
                 $.ajax({
                     type: 'POST',
-                    url: '/save-permission', // Replace with the actual URL to handle the permission save
+                    url: '/save-module', // Replace with the actual URL to handle the permission save
                     data: {
-                        name: permissionName
+                        name: moduleName
                     },
                     success: function(data) {
                         // Update the permission list without refreshing the page
-                        $('#permissionList').append('<li>' + permissionName + '</li>');
-                        $('#permissionName').val('');
+                        $('#moduleList').append('<li>' + moduleName + '</li>');
+                        $('#moduleName').val('');
                     },
                     error: function(xhr, status, error) {
                         var errors = xhr.responseJSON.errors;
