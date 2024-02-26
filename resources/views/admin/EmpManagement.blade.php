@@ -183,7 +183,7 @@ app.controller('UserController', function($scope, $http, ModalService) {
                 <th>Address</th>
                 <th>Phone</th>
                 <th>Role ID</th>
-                <th>User Type</th>
+                <th>Employee Type</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -228,7 +228,7 @@ app.controller('UserController', function($scope, $http, ModalService) {
                 <div class="modal-content">
                     <div class="card text-dark bg-light">
                         <div class="modal-header">
-                            <h5 class="modal-title text-dark" id="exampleModalLabel">Add Users</h5>
+                            <h5 class="modal-title text-dark" id="exampleModalLabel">Add Employees</h5>
                             <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -308,7 +308,7 @@ app.controller('UserController', function($scope, $http, ModalService) {
                         </button>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to delete this user?
+                        Are you sure you want to delete this Employee?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" ng-click="closeModal()">Close</button>
@@ -323,7 +323,7 @@ app.controller('UserController', function($scope, $http, ModalService) {
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editUserTypeModalLabel">Edit User Type</h5>
+                    <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type</h5>
                     <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -331,7 +331,7 @@ app.controller('UserController', function($scope, $http, ModalService) {
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="userType">User Type:</label>
+                            <label for="userType">Employee Type:</label>
                             <select class="form-control" id="userType" ng-model="editedUser.user_type">
                                 <option value="developer">Developer</option>
                                 <option value="engineer">Engineer</option>
