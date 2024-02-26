@@ -11,17 +11,19 @@ use Illuminate\Support\Carbon;
 
 class UserManagementController extends Controller
 {
+
     public function UserManagementView(UserManagement $usermanagement)
     {
         $this->authorize('view', $usermanagement);
-        $users = User::all();
+        $users = User::where('role_id', 3)->get();
 
         return view('admin.usermanagement', compact('users'));
     }
 
+
     public function fetchEmployees(Request $request)
     {
-        $users=User::all();
+        $users = User::where('role_id', 3)->get();
         return response()->json($users);
     }
 
@@ -58,4 +60,13 @@ class UserManagementController extends Controller
         return response()->json(['message' => 'User created successfully'], 200);
     }
 
+    public function delete($id) {
+        $user = User::find($id);
+        if ($user) {
+            $user->delete();
+            return response()->json(['message' => 'User deleted successfully'], 200);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+    }
 }

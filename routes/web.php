@@ -35,6 +35,7 @@ Auth::routes();
 // root
 Route::get('/permissions/module-permission', [RootPermissionController::class, 'index4'])->name('root.modulepermission');
 Route::post('/save-module-permission', [RootPermissionController::class, 'save']);
+Route::get('/permissions/manage-permissions', [RootPermissionController::class, 'index2'])->name('root.permissions');
 
 
 Route::post('/delete-module-permission', [RootPermissionController::class,'delete']);
@@ -45,7 +46,7 @@ Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard.
 Route::get('/user-managements/employee',[UserManagementController::class,'UserManagementView'])->name('new.employee');
 Route::post('/add-user', [UserManagementController::class, 'addUser'])->name('add.user');
 Route::get('/fetch/Employees', [UserManagementController::class, 'fetchEmployees'])->name('users.fetch');
-
+Route::delete('/delete-user/{id}', [UserManagementController::class,'delete']);
 
 
 

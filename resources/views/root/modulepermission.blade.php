@@ -1,7 +1,7 @@
 @extends('layouts.navitems')
 
 @section('content')
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
 
@@ -68,82 +68,86 @@
                 });
             }
 
-        // Function to retrieve existing module permissions for the selected role
-        function retrieveModulePermissions(roleId) {
-            $.ajax({
-                url: '/get-module-permissions',
-                method: 'GET',
-                data: {
-                    roleId: roleId
-                },
-                success: function(response) {
-                    // Uncheck all checkboxes
-                    $('.module-permission-checkbox').prop('checked', false);
+            // Function to retrieve existing module permissions for the selected role
+            function retrieveModulePermissions(roleId) {
+                $.ajax({
+                    url: '/get-module-permissions',
+                    method: 'GET',
+                    data: {
+                        roleId: roleId
+                    },
+                    success: function(response) {
+                        // Uncheck all checkboxes
+                        $('.module-permission-checkbox').prop('checked', false);
 
-                    // Check checkboxes based on existing module permissions for the selected role
-                    $.each(response, function(moduleId, permissionIds) {
-                        $.each(permissionIds, function(index, permissionId) {
-                            var checkbox = $('input[data-module-id="' + moduleId + '"][data-permission-id="' + permissionId + '"]');
-                            checkbox.prop('checked', true);
+                        // Check checkboxes based on existing module permissions for the selected role
+                        $.each(response, function(moduleId, permissionIds) {
+                            $.each(permissionIds, function(index, permissionId) {
+                                var checkbox = $('input[data-module-id="' + moduleId +
+                                    '"][data-permission-id="' + permissionId + '"]');
+                                checkbox.prop('checked', true);
+                            });
                         });
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
+            // Change event handler for role dropdown
+            $('#roleDropdown').on('change', function() {
+                var roleId = $(this).val();
+                retrieveModulePermissions(roleId);
             });
-        }
 
-        // Change event handler for role dropdown
-        $('#roleDropdown').on('change', function() {
-            var roleId = $(this).val();
-            retrieveModulePermissions(roleId);
+            // Initial retrieval of module permissions for the selected role
+            var initialRoleId = $('#roleDropdown').val();
+            retrieveModulePermissions(initialRoleId);
         });
+    </script>
 
-        // Initial retrieval of module permissions for the selected role
-        var initialRoleId = $('#roleDropdown').val();
-        retrieveModulePermissions(initialRoleId);
-});
-</script>
+    <div class="container mt-4 col-12">
+        <div class="rolebtn bg-light rounded h-100 p-4">
+            <select class="btn btn-secondary dropdown-toggle" id="roleDropdown" type="button">
+                <option value="1" {{ $roleId == 1 ? 'selected' : '' }}>ROOT</option>
+                <option value="2" {{ $roleId == 2 ? 'selected' : '' }}>Admin</option>
+                <option value="3" {{ $roleId == 3 ? 'selected' : '' }}>Employee</option>
+                <option value="4" {{ $roleId == 4 ? 'selected' : '' }}>Client</option>
+            </select>
 
-<div class="container mt-4 col-12">
-    <div class="rolebtn bg-light rounded h-100 p-4">
-        <select class="btn btn-secondary dropdown-toggle" id="roleDropdown" type="button">
-            <option value="1" {{ $roleId == 1 ? 'selected' : '' }}>ROOT</option>
-            <option value="2" {{ $roleId == 2 ? 'selected' : '' }}>Admin</option>
-            <option value="3" {{ $roleId == 3 ? 'selected' : '' }}>Employee</option>
-            <option value="4" {{ $roleId == 4 ? 'selected' : '' }}>Client</option>
-        </select>
+            <div class="float-end">
+                <a href="#"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Module</button></a>
+                <a href="{{ route('root.permissions') }}"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Permission</button></a>
 
-        <h3>Module Permissions</h3>
-        <hr>
-        <table id="example" class="table table-hover" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Modules/Permissions</th>
-                    @foreach ($permissions as $permission)
-                        <th>{{ $permission->name }}</th>
-                    @endforeach
-                </tr>
-            </thead>
-            <tbody id="example-tbody">
-                @foreach ($modules as $module)
+            </div>
+            <h3>Module Permissions</h3>
+            <hr>
+            <table id="example" class="table table-hover" style="width:100%">
+                <thead>
                     <tr>
-                        <td>{{ $module->name }}</td>
+                        <th>Modules/Permissions</th>
                         @foreach ($permissions as $permission)
-                            <td>
-                                <input class="ms-2 module-permission-checkbox"
-                                       type="checkbox"
-                                       data-module-id="{{ $module->id }}"
-                                       data-permission-id="{{ $permission->id }}"
-                                       data-role-id="{{ $roleId }}"
-                                       {{ isset($existingModulePermissions[$module->id]) && in_array($permission->id, $existingModulePermissions[$module->id]) ? 'checked="checked"' : '' }}>
-                            </td>
+                            <th>{{ $permission->name }}</th>
                         @endforeach
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="example-tbody">
+                    @foreach ($modules as $module)
+                        <tr>
+                            <td>{{ $module->name }}</td>
+                            @foreach ($permissions as $permission)
+                                <td>
+                                    <input class="ms-2 module-permission-checkbox" type="checkbox"
+                                        data-module-id="{{ $module->id }}" data-permission-id="{{ $permission->id }}"
+                                        data-role-id="{{ $roleId }}"
+                                        {{ isset($existingModulePermissions[$module->id]) && in_array($permission->id, $existingModulePermissions[$module->id]) ? 'checked="checked"' : '' }}>
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 @endsection
