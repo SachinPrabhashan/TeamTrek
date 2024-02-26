@@ -16,9 +16,8 @@
 
 
     <script>
-        var app = angular.module('userApp', []);
-
-        // Define your service for managing modals
+var app = angular.module('userApp', []);
+//Handling modals-------------------------------------------------
         app.service('ModalService', function($q) {
             this.modalInstance = null;
 
@@ -43,11 +42,12 @@
             };
         });
 
-        // Define your controller
-        app.controller('UserController', function($scope, $http, ModalService) {
-            $scope.user = {};
-            $scope.users = [];
+// Define your controller
+app.controller('UserController', function($scope, $http, ModalService) {
+    $scope.user = {};
+    $scope.users = [];
 
+//Updating the table--------------------------------------------------------
             function fetchUsers() {
             $.ajax({
                 url: '/fetch/Employees',
@@ -84,7 +84,7 @@
             });
         }
 
-
+//Adding user-------------------------------------------------------------------------------
             $scope.submitUser = function() {
                 var dob = moment($scope.user.dob, 'YYYY-MM-DD').format('YYYY-MM-DD');
                 $scope.user.dob = dob;
@@ -114,14 +114,45 @@
         $scope.closeModal = function() {
             ModalService.closeModal();
         };
-        //fetchUsers();
-    });
+
+//Delete user functions------------------------------------------------------------------
+        $scope.openDeleteModal = function(userId) {
+        $scope.userToDeleteId = userId; // Store the user id to delete in a scope variable
+        $scope.openModal('#deleteUserModal');
+    };
+    //delete user
+    $scope.deleteUser = function() {
+    $http.delete('/delete-user/' + $scope.userToDeleteId)
+        .then(function(response) {
+            console.log("User deleted successfully");
+            fetchUsers();
+            $scope.closeModal();
+        })
+        .catch(function(error) {
+            console.error("Error deleting user:", error);
+        });
+};
+});
 </script>
 
 <div class="container-fluid pt-4 px-4" ng-app="userApp" ng-controller="UserController">
     <h1>Employee Management</h1>
     <hr>
-    <button type="button" class="btn btn-primary" ng-click="openModal('#addUserModal')">Add Users</button>
+    <div class="d-inline-block mx-1">
+        <a href="#" ng-click="openModal('#addUserModal')" class="btn btn-outline-primary" style="border-color: blue;">
+            <i class="fa-solid fa-plus" style="color: blue; font-size: 24px;"></i>
+        </a>
+    </div>
+
+
+
+    <!--div class="d-inline-block mx-1">
+        <a href="#" ng-click="openModal('#addUserModal')">
+            <i class="fa-solid fa-plus"style="color: blue;"></i>
+
+        </a>
+    </div-->
+    <!--button type="button" class="btn btn-primary btn-sm" ng-click="openModal('#addUserModal')">Add Users</button-->
     <br>
 <br>
 <div>
@@ -155,7 +186,7 @@
                         </a>
                     </div>
                     <div class="d-inline-block mx-1">
-                        <a href="#">
+                        <a href="#" ng-click="openDeleteModal('{{ $user->id }}')">
                             <i class="fa-solid fa-trash" style="color: red;"></i>
                         </a>
                     </div>
@@ -228,7 +259,7 @@
                                     <select class="form-control" id="user_type" ng-model="user.user_type">
                                         <option value="developer">Developer</option>
                                         <option value="engineer">Engineer</option>
-                                        <option value="client">Client</option>
+                                        <!--option value="client">Client</option-->
                                     </select>
                                 </div><br>
                                 <div class="form-group">
@@ -246,5 +277,27 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this user?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" ng-click="closeModal()">Close</button>
+                        <button type="button" class="btn btn-danger" ng-click="deleteUser()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
 @endsection
