@@ -11,17 +11,19 @@ use Illuminate\Support\Carbon;
 
 class UserManagementController extends Controller
 {
+
     public function UserManagementView(UserManagement $usermanagement)
     {
         $this->authorize('view', $usermanagement);
-        $users = User::all();
+        $users = User::where('role_id', 3)->get();
 
         return view('admin.usermanagement', compact('users'));
     }
 
+
     public function fetchEmployees(Request $request)
     {
-        $users=User::all();
+        $users = User::where('role_id', 3)->get();
         return response()->json($users);
     }
 
@@ -58,32 +60,13 @@ class UserManagementController extends Controller
         return response()->json(['message' => 'User created successfully'], 200);
     }
 
-    public function deleteAdmin($id)
-    {
-        try {
-            // Find the user by ID
-            $user = User::find($id);
-
-            if (!$user) { 
-                return response()->json(['message' => 'User not found.'], 404);
-            }
-
-            // Attempt to delete the user
-            $deleted = $user->delete();
-
-            if ($deleted) {
-                return response()->json(['message' => 'User deleted successfully.']);
-            } else {
-                return response()->json(['message' => 'Failed to delete user.'], 500);
-            }
-        } catch (\Exception $e) {
-            // Log the exception for debugging
-            \Log::error('Error deleting user: ' . $e->getMessage());
-
-            // Return a generic error message
-            return response()->json(['message' => 'An error occurred while deleting the user.'], 500);
+    public function delete($id) {
+        $user = User::find($id);
+        if ($user) {
+            $user->delete();
+            return response()->json(['message' => 'User deleted successfully'], 200);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
         }
     }
-
-
 }
