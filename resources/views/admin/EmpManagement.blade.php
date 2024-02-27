@@ -54,8 +54,7 @@ app.controller('UserController', function($scope, $http, ModalService) {
                 url: '/fetch/Employees',
                 method: 'GET',
                 success: function(data) {
-                    // Replace the existing table contents with the new data
-                    $('#example tbody').empty(); // Clear existing rows
+                    $('#example tbody').empty();
                     data.forEach(function(user) {
                         // Create a row for each user
                         var row = $('<tr>');
@@ -67,11 +66,6 @@ app.controller('UserController', function($scope, $http, ModalService) {
                         row.append('<td>' + user.role_id + '</td>');
                         row.append('<td>' + user.user_type + '</td>');
 
-                        // Add action buttons
-                        //var actions = $('<td class="text-center">');
-                        //actions.append('<div class="d-inline-block mx-1"><a href="#"><i class="fa-solid fa-pen-to-square" style="color: green;"></i></a></div>');
-                        //actions.append('<div class="d-inline-block mx-1"><a href="#"><i class="fa-solid fa-trash" style="color: red;"></i></a></div>');
-                        //actions.append('<div class="d-inline-block mx-1"><a href="#"><i class="fa-solid fa-circle-info" style="color: black;"></i></a></div>');
                         var actions = $('<td class="text-center">');
                         actions.append('<div class="d-inline-block mx-1"><a href="#" ng-click="openEditUserTypeModal(' + user.id + ')"><i class="fa-solid fa-pen-to-square" style="color: green;"></i></a></div>');
                         actions.append('<div class="d-inline-block mx-1"><a href="#" ng-click="openDeleteModal(' + user.id + ')"><i class="fa-solid fa-trash" style="color: red;"></i></a></div>');
@@ -106,23 +100,19 @@ app.controller('UserController', function($scope, $http, ModalService) {
                     });
             };
 
-            $scope.openModal = function(modalId) {
-                ModalService.openModal(modalId);
-            };
-
             // Function to open the modal
             $scope.openModal = function(modalId) {
                 ModalService.openModal(modalId);
             };
 
-        // Function to close the modal
-        $scope.closeModal = function() {
-            ModalService.closeModal();
-        };
+            // Function to close the modal
+            $scope.closeModal = function() {
+                ModalService.closeModal();
+            };
 
 //Delete Employee functions------------------------------------------------------------------
         $scope.openDeleteModal = function(userId) {
-        $scope.userToDeleteId = userId; // Store the user id to delete in a scope variable
+        $scope.userToDeleteId = userId;
         $scope.openModal('#deleteUserModal');
     };
     //delete user
@@ -170,7 +160,7 @@ app.controller('UserController', function($scope, $http, ModalService) {
             <i class="fa-solid fa-plus" style="color: blue; font-size: 24px;"></i>
         </a>
     </div>
-    <!--button type="button" class="btn btn-primary btn-sm" ng-click="openModal('#addUserModal')">Add Users</button-->
+
     <br>
 <br>
 <div>

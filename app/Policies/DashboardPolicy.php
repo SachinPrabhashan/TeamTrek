@@ -20,7 +20,7 @@ class DashboardPolicy
      * Determine whether the user can view the model.
      */
 
-    public function view(User $user, Dashboard $dashboard)
+    /*public function view(User $user, Dashboard $dashboard)
     {
         $permissionName = 'Dashboard-View';
 
@@ -28,7 +28,7 @@ class DashboardPolicy
             ->where('role_id', $user->role_id)
             ->where('name', $permissionName)
             ->exists();
-    }
+    }*/
 
 
     /**
