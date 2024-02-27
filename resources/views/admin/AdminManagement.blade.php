@@ -16,7 +16,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
 <script>
-    var app = angular.module('adminApp', []);
+
+var app = angular.module('adminApp', []);
 //Handling modals-------------------------------------------------
         app.service('ModalService', function($q) {
             this.modalInstance = null;
@@ -41,49 +42,79 @@
                 return deferred.promise;
             };
         });
+
 app.controller('AdminController', function($scope, $http, ModalService) {
     $scope.admin = {};
-    $scope.users = [];
-
-        $scope.openModal = function(modalId) {
-                ModalService.openModal(modalId);
-            };
+    $scope.admins = [];
 
             // Function to open the modal
             $scope.openModal = function(modalId) {
                 ModalService.openModal(modalId);
             };
 
-        // Function to close the modal
-        $scope.closeModal = function() {
-            ModalService.closeModal();
-        };
-
-        //Adding user-------------------------------------------------------------------------------
-        $scope.submitAdmin = function() {
-                $http.post('/add-Admin', $scope.user)
-                    .then(function(response) {
-                        console.log(response.data);
-                        $scope.user = {};
-                        ModalService.closeModal();
-                        fetchUsers();
-                    })
-                    .catch(function(error) {
-                        console.error(error);
-                    });
+            // Function to close the modal
+            $scope.closeModal = function() {
+                ModalService.closeModal();
             };
+
+//Updating the table--------------------------------------------------------
+        function fetchUsers() {
+            $.ajax({
+                url: '/fetch/Admins',
+                method: 'GET',
+                success: function(data) {
+                    $('#example tbody').empty();
+                    data.forEach(function(admin) {
+                        var row = $('<tr>');
+                        row.append('<td>' + admin.role_id + '</td>');
+                        row.append('<td>' + admin.name + '</td>');
+                        row.append('<td>' + admin.email + '</td>');
+
+                        var actions = $('<td class="text-center">');
+                            actions.append('<div class="d-inline-block mx-1"><a href="#" ng-click="openEditUserTypeModal(' + admin.id + ')"><i class="fa-solid fa-pen-to-square" style="color: green;"></i></a></div>');
+                            actions.append('<div class="d-inline-block mx-1"><a href="#" ng-click="openDeleteModal(' + admin.id + ')"><i class="fa-solid fa-trash" style="color: red;"></i></a></div>');
+                            actions.append('<div class="d-inline-block mx-1"><a href="#"><i class="fa-solid fa-circle-info" style="color: black;"></i></a></div>');
+
+                        row.append(actions);
+
+                        $('#example tbody').append(row);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+            //Adding Admin-------------------------------------------------------------------------------
+        $scope.submitAdmin = function() {
+            $http.post('/add-Admin', $scope.admin)
+                .then(function(response) {
+                    $scope.admin = {};
+                    ModalService.closeModal();
+                    fetchUsers();
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                });
+            };
+
+
+
+
+
 });
+
 </script>
 
 <div class="container-fluid pt-4 px-4" ng-app="adminApp" ng-controller="AdminController">
-    <h1>Employee Management</h1>
+    <h1>Admin Management</h1>
     <hr>
     <div class="d-inline-block mx-1">
         <a href="#" ng-click="openModal('#addAdminModal')" class="btn btn-outline-primary" style="border-color: blue;">
             <i class="fa-solid fa-plus" style="color: blue; font-size: 24px;"></i>
         </a>
     </div>
-    <!--button type="button" class="btn btn-primary btn-sm" ng-click="openModal('#addUserModal')">Add Users</button-->
     <br>
 <br>
 <div>
@@ -97,20 +128,20 @@ app.controller('AdminController', function($scope, $http, ModalService) {
             </tr>
         </thead>
         <tbody>
-            @foreach($users as $user)
+            @foreach($admins as $admin)
             <tr>
-                <td>{{ $user->role_id }}</td>
-                <td>{{ $user->name }}</td>
-                <td>{{ $user->email }}</td>
+                <td>{{ $admin->role_id }}</td>
+                <td>{{ $admin->name }}</td>
+                <td>{{ $admin->email }}</td>
                 <td class="text-center">
                     <div class="d-inline-block mx-1">
-                        <a href="#" ng-click="openEditUserTypeModal('{{ $user->id }}')">
+                        <a href="#" ng-click="openEditUserTypeModal('{{ $admin->id }}')">
                             <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
                         </a>
                     </div>
 
                     <div class="d-inline-block mx-1">
-                        <a href="#" ng-click="openDeleteModal('{{ $user->id }}')">
+                        <a href="#" ng-click="openDeleteModal('{{ $admin->id }}')">
                             <i class="fa-solid fa-trash" style="color: red;"></i>
                         </a>
                     </div>
@@ -172,6 +203,27 @@ app.controller('AdminController', function($scope, $http, ModalService) {
                                     ng-click="closeModal()">Close</button>
                             </form>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteAdminModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this Employee?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" ng-click="closeModal()">Close</button>
+                        <button type="button" class="btn btn-danger btn-sm" ng-click="deleteAdmin()">Delete</button>
                     </div>
                 </div>
             </div>
