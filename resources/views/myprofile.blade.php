@@ -1,6 +1,21 @@
 @extends('layouts.navitems')
 
 @section('content')
+    <!-- Add this in your HTML head section -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    @php
+        use Carbon\Carbon;
+
+        // Convert date of birth to Carbon instance
+        $dob = Carbon::parse(Auth::user()->dob);
+
+        // Calculate the age
+        $age = $dob->age;
+    @endphp
+
+
     <section class="section about-section" id="about">
         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
             <div class="container">
@@ -15,14 +30,17 @@
                                         <label>Name</label>
                                         <p>{{ Auth::user()->name }}</p>
                                     </div>
-                                    <div class="media">
-                                        <label>Birthday</label>
-                                        <p>4th april 1998</p>
-                                    </div>
-                                    <div class="media">
-                                        <label>Age</label>
-                                        <p>22 Yr</p>
-                                    </div>
+                                    @AdminOrEmployee
+                                        <div class="media">
+                                            <label>Birthday</label>
+                                            <p>{{ Auth::user()->dob }}</p>
+                                        </div>
+
+                                        <div class="media">
+                                            <label>Age</label>
+                                            <p>{{ $age }}</p>
+                                        </div>
+                                    @endAdminOrEmployee
                                 </div>
                                 <div class="col-md-6">
                                     <div class="media">
@@ -31,11 +49,11 @@
                                     </div>
                                     <div class="media">
                                         <label>Phone</label>
-                                        <p>820-885-3321</p>
+                                        <p>{{ Auth::user()->phone }}</p>
                                     </div>
                                     <div class="media">
                                         <label>Address</label>
-                                        <p>California, USA</p>
+                                        <p>{{ Auth::user()->address }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -47,30 +65,32 @@
                         </div>
                     </div>
                     @Employee
-                    <div class="col-lg-6 row me-3 mb-4">
-                        <div class="col-sm-12">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <h5 class="d-flex align-items-center mb-3">Project Status</h5>
-                                    <p>Web Design</p>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <p>Website Markup</p>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 72%"
-                                            aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+                        <div class="col-lg-6 row me-3 mb-4">
+                            <div class="col-sm-12">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h5 class="d-flex align-items-center mb-3">Project Status</h5>
+                                        <p>Web Design</p>
+                                        <div class="progress mb-3" style="height: 5px">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
+                                                aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <p>Website Markup</p>
+                                        <div class="progress mb-3" style="height: 5px">
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 72%"
+                                                aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     @endEmployee
                     <div class="col-lg-6">
-                        <button class="btn btn-primary" data-bs-target="#profileeditmodal" data-bs-toggle="modal"
-                            data-bs-dismiss="modal">Edit</button>
+                        @AdminOrEmployee
+                            <button class="btn btn-primary" data-bs-target="#profileeditmodal" data-bs-toggle="modal"
+                                data-bs-dismiss="modal">Edit</button>
+                        @endAdminOrEmployee
                         <button class="btn btn-primary" data-bs-target="#passwordresetmodal" data-bs-toggle="modal"
                             data-bs-dismiss="modal">Change Password</button>
                     </div>
@@ -83,7 +103,7 @@
 
 
 
-{{-- Profile Details Change Modal --}}
+    {{-- Profile Details Change Modal --}}
     <div class="modal fade" id="profileeditmodal" aria-hidden="true" aria-labelledby="profileeditmodal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -100,7 +120,8 @@
                                         <h6 class="mb-0">Full Name</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" value="John Doe">
+                                        <input type="text" class="form-control" name="name"
+                                            value="{{ Auth::user()->name }}">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -108,7 +129,8 @@
                                         <h6 class="mb-0">Email</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" value="john@example.com">
+                                        <input type="text" class="form-control" name="email"
+                                            value="{{ Auth::user()->email }}">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -116,15 +138,17 @@
                                         <h6 class="mb-0">Phone</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" value="(239) 816-9029">
+                                        <input type="text" class="form-control" name="phone"
+                                            value="{{ Auth::user()->phone }}">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Mobile</h6>
+                                        <h6 class="mb-0">Date of Birth</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" value="(320) 380-4539">
+                                        <input type="text" class="form-control" name="dob"
+                                            value="{{ Auth::user()->dob }}">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -132,22 +156,17 @@
                                         <h6 class="mb-0">Address</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" value="Bay Area, San Francisco, CA">
+                                        <input type="text" class="form-control" name="address"
+                                            value="{{ Auth::user()->address }}">
                                     </div>
                                 </div>
-                                {{-- <div class="row">
-                                    <div class="col-sm-3"></div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="button" class="btn btn-primary px-4" value="Save Changes">
-                                    </div>
-                                </div> --}}
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
 
-                        <button type="" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                        <button class="btn btn-danger">Save</button>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button class="btn btn-danger" id="saveProfileEdit">Save</button>
                     </div>
                 </div>
             </div>
@@ -155,7 +174,8 @@
     </div>
 
     {{-- Password Reset Modal --}}
-    <div class="modal fade" id="passwordresetmodal" aria-hidden="true" aria-labelledby="passwordresetmodal" tabindex="-1">
+    <div class="modal fade" id="passwordresetmodal" aria-hidden="true" aria-labelledby="passwordresetmodal"
+        tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -187,11 +207,48 @@
                     </div>
                     <div class="modal-footer">
 
-                        <button type="" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button type="" class="btn btn-secondary" data-bs-dismiss="modal"
+                            aria-label="Close">Cancel</button>
                         <button class="btn btn-danger">Update Password</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @endsection
+
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#saveProfileEdit').on('click', function(){
+                //get input field data
+                var newName = $('#name').val();
+                var newEmail = $('#email').val();
+                var newPhone = $('#phone').val();
+                var newDob = $('#dob').val();
+                var newAddress = $('#address').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/myprofile/save-profile-details',
+                    data: {
+                        name: newName,
+                        email: newEmail,
+                        phone: newPhone,
+                        dob: newDob,
+                        address: newAddress
+                    },
+                    error: function(xhr, status, error) {
+                        var errors = xhr.responseJSON.errors;
+                        // Handle validation errors, e.g., display them to the user
+                        console.log(errors);
+                    }
+                });
+            });
+        });
+    </script>
+@endsection

@@ -1,4 +1,3 @@
-
 @extends('layouts.navitems')
 
 @section('content')
@@ -17,8 +16,8 @@
 
 
     <script>
-var app = angular.module('userApp', []);
-//Handling modals-------------------------------------------------
+        var app = angular.module('userApp', []);
+        //Handling modals-------------------------------------------------
         app.service('ModalService', function($q) {
             this.modalInstance = null;
 
@@ -43,47 +42,57 @@ var app = angular.module('userApp', []);
             };
         });
 
-// Define your controller
-app.controller('UserController', function($scope, $http, ModalService) {
-    $scope.user = {};
-    $scope.users = [];
+        // Define your controller
+        app.controller('UserController', function($scope, $http, ModalService) {
+            $scope.user = {};
+            $scope.users = [];
 
-//Updating the table--------------------------------------------------------
+            //Updating the table--------------------------------------------------------
             function fetchUsers() {
-            $.ajax({
-                url: '/fetch/Employees',
-                method: 'GET',
-                success: function(data) {
-                    $('#example tbody').empty();
-                    data.forEach(function(user) {
-                        // Create a row for each user
-                        var row = $('<tr>');
-                        row.append('<td>' + user.name + '</td>');
-                        row.append('<td>' + user.email + '</td>');
-                        row.append('<td>' + user.dob + '</td>');
-                        row.append('<td>' + user.address + '</td>');
-                        row.append('<td>' + user.phone + '</td>');
-                        row.append('<td>' + user.role_id + '</td>');
-                        row.append('<td>' + user.user_type + '</td>');
+                $.ajax({
+                    url: '/fetch/Employees',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#example tbody').empty();
+                        data.forEach(function(user) {
+                            // Create a row for each user
+                            var row = $('<tr>');
+                            row.append('<td>' + user.name + '</td>');
+                            row.append('<td>' + user.email + '</td>');
+                            row.append('<td>' + user.dob + '</td>');
+                            row.append('<td>' + user.address + '</td>');
+                            row.append('<td>' + user.phone + '</td>');
+                            row.append('<td>' + user.role_id + '</td>');
+                            row.append('<td>' + user.user_type + '</td>');
 
-                        var actions = $('<td class="text-center">');
-                        actions.append('<div class="d-inline-block mx-1"><a href="#" ng-click="openEditUserTypeModal(' + user.id + ')"><i class="fa-solid fa-pen-to-square" style="color: green;"></i></a></div>');
-                        actions.append('<div class="d-inline-block mx-1"><a href="#" ng-click="openDeleteModal(' + user.id + ')"><i class="fa-solid fa-trash" style="color: red;"></i></a></div>');
-                        actions.append('<div class="d-inline-block mx-1"><a href="#"><i class="fa-solid fa-circle-info" style="color: black;"></i></a></div>');
+                            var actions = $('<td class="text-center">');
+                            actions.append(
+                                '<div class="d-inline-block mx-1"><a href="#" ng-click="openEditUserTypeModal(' +
+                                user.id +
+                                ')"><i class="fa-solid fa-pen-to-square" style="color: green;"></i></a></div>'
+                            );
+                            actions.append(
+                                '<div class="d-inline-block mx-1"><a href="#" ng-click="openDeleteModal(' +
+                                user.id +
+                                ')"><i class="fa-solid fa-trash" style="color: red;"></i></a></div>'
+                            );
+                            actions.append(
+                                '<div class="d-inline-block mx-1"><a href="#"><i class="fa-solid fa-circle-info" style="color: black;"></i></a></div>'
+                            );
 
-                        row.append(actions);
+                            row.append(actions);
 
-                        // Append the row to the table body
-                        $('#example tbody').append(row);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        }
+                            // Append the row to the table body
+                            $('#example tbody').append(row);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
 
-//Adding user-------------------------------------------------------------------------------
+            //Adding user-------------------------------------------------------------------------------
             $scope.submitUser = function() {
                 var dob = moment($scope.user.dob, 'YYYY-MM-DD').format('YYYY-MM-DD');
                 $scope.user.dob = dob;
@@ -110,106 +119,109 @@ app.controller('UserController', function($scope, $http, ModalService) {
                 ModalService.closeModal();
             };
 
-//Delete Employee functions------------------------------------------------------------------
-        $scope.openDeleteModal = function(userId) {
-        $scope.userToDeleteId = userId;
-        $scope.openModal('#deleteUserModal');
-    };
-    //delete user
-    $scope.deleteUser = function() {
-    $http.delete('/delete-Emp/' + $scope.userToDeleteId)
-        .then(function(response) {
-            console.log("User deleted successfully");
-            ModalService.closeModal();
-            fetchUsers();
-        })
-        .catch(function(error) {
-            console.error("Error deleting user:", error);
+            //Delete Employee functions------------------------------------------------------------------
+            $scope.openDeleteModal = function(userId) {
+                $scope.userToDeleteId = userId;
+                $scope.openModal('#deleteUserModal');
+            };
+            //delete user
+            $scope.deleteUser = function() {
+                $http.delete('/delete-Emp/' + $scope.userToDeleteId)
+                    .then(function(response) {
+                        console.log("User deleted successfully");
+                        ModalService.closeModal();
+                        fetchUsers();
+                    })
+                    .catch(function(error) {
+                        console.error("Error deleting user:", error);
+                    });
+            };
+
+            //Edit Employee functions---------------------------------------------------------------
+            $scope.openEditUserTypeModal = function(userId) {
+                $scope.userToEditId = userId;
+                $scope.openModal('#editUserTypeModal');
+            };
+
+            $scope.updateUserType = function() {
+                var userType = $scope.editedUser.user_type;
+                var userId = $scope.userToEditId;
+
+                $http.put('/update-Emp-type/' + userId, {
+                        user_type: userType
+                    })
+                    .then(function(response) {
+                        console.log("User type updated successfully");
+                        ModalService.closeModal();
+                        fetchUsers();
+                    })
+                    .catch(function(error) {
+                        console.error("Error updating user type:", error);
+                    });
+            };
+
+
         });
-};
+    </script>
+    <div class="container-fluid pt-4 px-4" ng-app="userApp" ng-controller="UserController">
+        <h1>Employee Management</h1>
+        <hr>
+        <div class="d-inline-block mx-1">
+            <a href="#" ng-click="openModal('#addUserModal')" class="btn btn-outline-primary"
+                style="border-color: blue;">
+                <i class="fa-solid fa-plus" style="color: blue; font-size: 24px;"></i>
+            </a>
+        </div>
 
-//Edit Employee functions---------------------------------------------------------------
-    $scope.openEditUserTypeModal = function(userId) {
-        $scope.userToEditId = userId;
-        $scope.openModal('#editUserTypeModal');
-    };
+        <br>
+        <br>
+        <div>
+            <table id="example" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Date of Birth</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th>Role ID</th>
+                        <th>Employee Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($users as $user)
+                        <tr>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->dob }}</td>
+                            <td>{{ $user->address }}</td>
+                            <td>{{ $user->phone }}</td>
+                            <td>{{ $user->role_id }}</td>
+                            <td>{{ $user->user_type }}</td>
+                            <td class="text-center">
+                                <div class="d-inline-block mx-1">
+                                    <a href="#" ng-click="openEditUserTypeModal('{{ $user->id }}')">
+                                        <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
+                                    </a>
+                                </div>
 
-    $scope.updateUserType = function() {
-        var userType = $scope.editedUser.user_type;
-        var userId = $scope.userToEditId;
-
-        $http.put('/update-Emp-type/' + userId, { user_type: userType })
-            .then(function(response) {
-                console.log("User type updated successfully");
-                ModalService.closeModal();
-                fetchUsers();
-            })
-            .catch(function(error) {
-                console.error("Error updating user type:", error);
-            });
-    };
-
-
-});
-</script>
-<div class="container-fluid pt-4 px-4" ng-app="userApp" ng-controller="UserController">
-    <h1>Employee Management</h1>
-    <hr>
-    <div class="d-inline-block mx-1">
-        <a href="#" ng-click="openModal('#addUserModal')" class="btn btn-outline-primary" style="border-color: blue;">
-            <i class="fa-solid fa-plus" style="color: blue; font-size: 24px;"></i>
-        </a>
-    </div>
-
-    <br>
-<br>
-<div>
-    <table id="example" class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Date of Birth</th>
-                <th>Address</th>
-                <th>Phone</th>
-                <th>Role ID</th>
-                <th>Employee Type</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($users as $user)
-            <tr>
-                <td>{{ $user->name }}</td>
-                <td>{{ $user->email }}</td>
-                <td>{{ $user->dob }}</td>
-                <td>{{ $user->address }}</td>
-                <td>{{ $user->phone }}</td>
-                <td>{{ $user->role_id }}</td>
-                <td>{{ $user->user_type }}</td>
-                <td class="text-center">
-                    <div class="d-inline-block mx-1">
-                        <a href="#" ng-click="openEditUserTypeModal('{{ $user->id }}')">
-                            <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
-                        </a>
-                    </div>
-
-                    <div class="d-inline-block mx-1">
-                        <a href="#" ng-click="openDeleteModal('{{ $user->id }}')">
-                            <i class="fa-solid fa-trash" style="color: red;"></i>
-                        </a>
-                    </div>
-                    <div class="d-inline-block mx-1">
-                        <a href="#">
-                            <i class="fa-solid fa-circle-info" style="color: black;"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+                                <div class="d-inline-block mx-1">
+                                    <a href="#" ng-click="openDeleteModal('{{ $user->id }}')">
+                                        <i class="fa-solid fa-trash" style="color: red;"></i>
+                                    </a>
+                                </div>
+                                <div class="d-inline-block mx-1">
+                                    <a href="#">
+                                        <i class="fa-solid fa-circle-info" style="color: black;"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
         <!--Add Modal -->
         <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -277,9 +289,12 @@ app.controller('UserController', function($scope, $http, ModalService) {
                                         placeholder="Enter password">
                                 </div>
                                 <br>
-                                <button type="submit" class="btn btn-success btn-sm">Submit</button>
-                                <button type="button" class="btn btn-danger btn-sm"
-                                    ng-click="closeModal()">Close</button>
+                                <div class="float-end">
+                                    <button type="button" class="btn btn-secondary btn-sm"
+                                        ng-click="closeModal()">Close</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Submit</button>
+                                </div>
+
                             </form>
                         </div>
                     </div>
@@ -288,7 +303,8 @@ app.controller('UserController', function($scope, $http, ModalService) {
         </div>
 
         <!-- Delete Confirmation Modal -->
-        <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -308,34 +324,34 @@ app.controller('UserController', function($scope, $http, ModalService) {
             </div>
         </div>
 
-    <!-- Edit user type modal -->
-    <div class="modal fade" id="editUserTypeModal" tabindex="-1" role="dialog" aria-labelledby="editUserTypeModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type</h5>
-                    <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="userType">Employee Type:</label>
-                            <select class="form-control" id="userType" ng-model="editedUser.user_type">
-                                <option value="developer">Developer</option>
-                                <option value="engineer">Engineer</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-sm" ng-click="updateUserType()">Update</button>
-                    <button type="button" class="btn btn-secondary btn-sm" ng-click="closeModal()">Close</button>
+        <!-- Edit user type modal -->
+        <div class="modal fade" id="editUserTypeModal" tabindex="-1" role="dialog"
+            aria-labelledby="editUserTypeModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type</h5>
+                        <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="userType">Employee Type:</label>
+                                <select class="form-control" id="userType" ng-model="editedUser.user_type">
+                                    <option value="developer">Developer</option>
+                                    <option value="engineer">Engineer</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="updateUserType()">Update</button>
+                        <button type="button" class="btn btn-secondary btn-sm" ng-click="closeModal()">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 @endsection
