@@ -202,7 +202,7 @@
                     <div class="card text-dark bg-light">
                         <div class="modal-header">
                             <h5 class="modal-title text-dark" id="exampleModalLabel">Add Admins</h5>
-                            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+                            <button type="button" class="btn-close" aria-label="Close" ng-click="closeModal()">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>

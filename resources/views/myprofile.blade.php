@@ -3,7 +3,10 @@
 @section('content')
     <!-- Add this in your HTML head section -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <head>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+    </head>
 
     @php
         use Carbon\Carbon;
@@ -102,76 +105,84 @@
     </section>
 
 
-
-    {{-- Profile Details Change Modal --}}
-    <div class="modal fade" id="profileeditmodal" aria-hidden="true" aria-labelledby="profileeditmodal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="profileeditmodal"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="col-lg-12">
-                        <div class="">
-                            <div class="card-body">
-                                <div class="row mb-3">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Full Name</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" name="name"
-                                            value="{{ Auth::user()->name }}">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Email</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" name="email"
-                                            value="{{ Auth::user()->email }}">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Phone</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" name="phone"
-                                            value="{{ Auth::user()->phone }}">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Date of Birth</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" name="dob"
-                                            value="{{ Auth::user()->dob }}">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Address</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" name="address"
-                                            value="{{ Auth::user()->address }}">
+    @if (auth()->check())
+        {{-- Profile Details Change Modal --}}
+        <div class="modal fade" id="profileeditmodal" aria-hidden="true" aria-labelledby="profileeditmodal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="profileeditmodal"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('saveeditprofile') }}" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="">
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Full Name</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="name"
+                                                    value="{{ Auth::user()->name }}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Email</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="email"
+                                                    value="{{ Auth::user()->email }}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Phone</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="phone"
+                                                    value="{{ Auth::user()->phone }}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Date of Birth</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="dob"
+                                                    value="{{ Auth::user()->dob }}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Address</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="address"
+                                                    value="{{ Auth::user()->address }}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
+                            <div class="modal-footer">
 
-                        <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                        <button class="btn btn-danger" id="saveProfileEdit">Save</button>
-                    </div>
+                                <button class="btn btn-secondary" data-bs-dismiss="modal"
+                                    aria-label="Close">Cancel</button>
+                                <button type="submit" class="btn btn-danger" id="saveProfileEdit">Save</button>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
-    </div>
+    @else
+        <p>User not authenticated.</p>
+    @endif
 
     {{-- Password Reset Modal --}}
     <div class="modal fade" id="passwordresetmodal" aria-hidden="true" aria-labelledby="passwordresetmodal"
@@ -216,7 +227,7 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
@@ -224,7 +235,11 @@
                 }
             });
 
-            $('#saveProfileEdit').on('click', function(){
+            $('#openProfileEditModal').on('click', function() {
+                $('#profileeditmodal').modal('show');
+            });
+
+            $('#saveProfileEdit').on('click', function() {
                 //get input field data
                 var newName = $('#name').val();
                 var newEmail = $('#email').val();
@@ -242,6 +257,12 @@
                         dob: newDob,
                         address: newAddress
                     },
+                    success: function(response) {
+                        // Display a success message or handle as needed
+                        console.log(response.message);
+                        // Close the modal
+                        $('#profileeditmodal').modal('hide');
+                    },
                     error: function(xhr, status, error) {
                         var errors = xhr.responseJSON.errors;
                         // Handle validation errors, e.g., display them to the user
@@ -250,5 +271,5 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 @endsection
