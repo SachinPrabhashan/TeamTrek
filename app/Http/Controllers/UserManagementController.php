@@ -222,8 +222,6 @@ class UserManagementController extends Controller
         $client = User::find($id);
         return response()->json($client);
     }
-
-
     public function updateClient(Request $request, $id)
     {
         $client = User::find($id);

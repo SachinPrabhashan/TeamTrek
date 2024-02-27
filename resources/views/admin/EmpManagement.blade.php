@@ -236,7 +236,7 @@ app.controller('UserController', function($scope, $http, ModalService) {
                                 placeholder="Enter email">
                             <small id="emailHelp text-white" class="form-text text-muted">We'll never share your
                                 email with anyone else.</small>
-                        </div><br>
+                        </div><br> 
                         <div class="form-group">
                             <label for="dob">Date of Birth</label>
                             <!--input type="date" class="form-control" id="dob" ng-model="user.dob"-->
