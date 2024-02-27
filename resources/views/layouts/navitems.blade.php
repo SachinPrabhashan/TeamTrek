@@ -106,7 +106,7 @@
                                 <a href="{{ route('new.admins')}}" class="dropdown-item">Create Admin</a>
                                 @endRoot
                                 <a href="{{ route('new.employee')}}" class="dropdown-item">Create Employee</a>
-                                <a href="#" class="dropdown-item">Create Client</a>
+                                <a href="{{ route('new.clients')}}" class="dropdown-item">Create Client</a>
                             </div>
                         </div>
                     @endRootOrAdmin
