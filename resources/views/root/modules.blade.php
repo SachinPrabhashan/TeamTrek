@@ -31,11 +31,10 @@
             <div class="w-50 justify-content-center">
                 <h3>Deploy New Module</h3>
                 <div id="permissionForm">
-                    <input class="form-control" type="text" name="name" id="moduleName"
-                        placeholder="Module Name">
+                    <input class="form-control" type="text" name="name" id="moduleName" placeholder="Module Name">
                     <div class="mt-2 float-end">
-                        <button class="btn btn-secondary" id="saveModule">Save</button>
-                        <button class="btn btn-danger" id="clearBtn">Clear</button>
+                        <button class="btn btn-secondary" id="clearBtn">Clear</button>
+                        <button class="btn btn-danger" id="saveModule">Save</button>
                     </div>
                 </div>
             </div>
@@ -51,7 +50,7 @@
                 }
             });
 
-            $('#clearBtn').on('click', function(){
+            $('#clearBtn').on('click', function() {
                 $('#moduleName').val('');
             });
 

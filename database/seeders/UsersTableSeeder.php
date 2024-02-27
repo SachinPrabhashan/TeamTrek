@@ -15,6 +15,8 @@ class UsersTableSeeder extends Seeder
             'name' => 'TeamTrek-ROOT',
             'email' => 'teamtrek@root.com',
             'password' => Hash::make('12345678'),
+            'created_at' => now(),
+            'updated_at' => now(),
             // Add any other necessary fields
         ]);
     }

@@ -34,8 +34,8 @@
                     <input class="form-control" type="text" name="name" id="permissionName"
                         placeholder="Permission Name">
                     <div class="mt-2 float-end">
-                        <button class="btn btn-secondary" id="savePermission">Save</button>
-                        <button class="btn btn-danger" id="clearBtn">Clear</button>
+                        <button class="btn btn-secondary" id="clearBtn">Clear</button>
+                        <button class="btn btn-danger" id="savePermission">Save</button>
                     </div>
                 </div>
             </div>
