@@ -111,7 +111,7 @@ app.controller('ClientController', function($scope, $http, ModalService) {
         $scope.deleteAdmin = function() {
             $http.delete('/delete-Client/' + $scope.clientToDeleteId)
                 .then(function(response) {
-                    console.log("User deleted successfully");
+                    console.log("Client deleted successfully");
                     ModalService.closeModal();
                     fetchUsers();
                 })
