@@ -59,6 +59,7 @@ Route::put('/update-Emp-type/{id}', [UserManagementController::class,'updateEmpT
      //Usermanagement-Admin management
 Route::get('/user-managements/admin',[UserManagementController::class,'AdminManagementView'])->name('new.admins');
 Route::post('/add-Admin', [UserManagementController::class, 'addAdmin'])->name('add.admins');
+Route::get('/fetch/Admins', [UserManagementController::class, 'fetchAdmins'])->name('admins.fetch');
 
 
 

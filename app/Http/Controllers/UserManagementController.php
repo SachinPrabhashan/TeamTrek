@@ -72,10 +72,10 @@ class UserManagementController extends Controller
         try {
             $user = User::findOrFail($userId);
             $user->update($request->all());
-            //Log::info('User after update: ' . $user->toJson()); // Log the updated user information
-            return response()->json($user, 200); // Return the updated user as JSON
+
+            return response()->json($user, 200);
         } catch (\Exception $e) {
-            //Log::error('Error updating user type: ' . $e->getMessage()); // Log any errors
+
             return response()->json(['error' => 'Failed to update user type.'], 500);
         }
     }
@@ -84,9 +84,9 @@ class UserManagementController extends Controller
     public function AdminManagementView(UserManagement $usermanagement)
     {
         $this->authorize('view', $usermanagement);
-        $users = User::where('role_id', 2)->get();
+        $admins = User::where('role_id', 2)->get();
 
-        return view('admin.AdminManagement', compact('users'));
+        return view('admin.AdminManagement', compact('admins'));
     }
 
     public function addAdmin(Request $request)
@@ -99,7 +99,7 @@ class UserManagementController extends Controller
         ]);
 
         try {
-            // Create a new user record
+
             $user = new User();
             $user->name = $validatedData['name'];
             $user->email = $validatedData['email'];
@@ -109,10 +109,15 @@ class UserManagementController extends Controller
 
             return response()->json(['message' => 'User created successfully'], 200);
         } catch (\Exception $e) {
-            // Handle any exceptions (e.g., database errors)
+
             return response()->json(['message' => 'Failed to create user', 'error' => $e->getMessage()], 500);
         }
     }
 
+    public function fetchAdmins(Request $request)
+    {
+        $admins = User::where('role_id', 2)->get();
+        return response()->json($admins);
+    }
 
 }
