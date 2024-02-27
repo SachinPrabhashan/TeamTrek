@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class ProfileController extends Controller
 {
@@ -29,7 +31,23 @@ class ProfileController extends Controller
 
         $user->save();
 
+        Session::flash('alert1');
 
+        return redirect('myprofile');
+    }
+
+    public function resetPassword(Request $request){
+        $userID = Auth::user()->id;
+
+        $user = User::find($userID);
+
+        $hashedPassword = Hash::make($request->input('confirmedPassword'));
+
+        $user->fill(['password' => $hashedPassword]);
+
+        $user->save();
+
+        Session::flash('alert');
 
         return redirect('myprofile');
     }

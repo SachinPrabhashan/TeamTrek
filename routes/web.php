@@ -76,3 +76,4 @@ Route::put('/update-Client/{id}', [UserManagementController::class,'updateClient
 //All Users
 Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');
 Route::post('/myprofile/save-profile-details', [ProfileController::class, 'editProfile'])->name('saveeditprofile');
+Route::post('/myprofile/password-change', [ProfileController::class, 'resetPassword'])->name('updatepassword');
