@@ -17,7 +17,7 @@
 
 <script>
 
-var app = angular.module('adminApp', []);
+var app = angular.module('clientApp', []);
 //Handling modals-------------------------------------------------
         app.service('ModalService', function($q) {
             this.modalInstance = null;
@@ -43,9 +43,9 @@ var app = angular.module('adminApp', []);
             };
         });
 
-app.controller('AdminController', function($scope, $http, ModalService) {
-    $scope.admin = {};
-    $scope.admins = [];
+app.controller('ClientController', function($scope, $http, ModalService) {
+    $scope.client = {};
+    $scope.clients = [];
 
             // Function to open the modal
             $scope.openModal = function(modalId) {
@@ -60,19 +60,22 @@ app.controller('AdminController', function($scope, $http, ModalService) {
 //Updating the table--------------------------------------------------------
         function fetchUsers() {
             $.ajax({
-                url: '/fetch/Admins',
+                url: '/fetch/Clients',
                 method: 'GET',
                 success: function(data) {
                     $('#example tbody').empty();
-                    data.forEach(function(admin) {
+                    data.forEach(function(client) {
                         var row = $('<tr>');
-                        row.append('<td>' + admin.role_id + '</td>');
-                        row.append('<td>' + admin.name + '</td>');
-                        row.append('<td>' + admin.email + '</td>');
+                        row.append('<td>' + client.role_id + '</td>');
+                        row.append('<td>' + client.name + '</td>');
+                        row.append('<td>' + client.email + '</td>');
+                        row.append('<td>' + client.phone + '</td>');
+                        row.append('<td>' + client.address + '</td>');
+
 
                         var actions = $('<td class="text-center">');
-                            actions.append('<div class="d-inline-block mx-1"><a href="#" ng-click="openEditUserTypeModal(' + admin.id + ')"><i class="fa-solid fa-pen-to-square" style="color: green;"></i></a></div>');
-                            actions.append('<div class="d-inline-block mx-1"><a href="#" ng-click="openDeleteModal(' + admin.id + ')"><i class="fa-solid fa-trash" style="color: red;"></i></a></div>');
+                            actions.append('<div class="d-inline-block mx-1"><a href="#" ng-click="openEditUserTypeModal(' + client.id + ')"><i class="fa-solid fa-pen-to-square" style="color: green;"></i></a></div>');
+                            actions.append('<div class="d-inline-block mx-1"><a href="#" ng-click="openDeleteModal(' + client.id + ')"><i class="fa-solid fa-trash" style="color: red;"></i></a></div>');
                             actions.append('<div class="d-inline-block mx-1"><a href="#"><i class="fa-solid fa-circle-info" style="color: black;"></i></a></div>');
 
                         row.append(actions);
@@ -86,11 +89,11 @@ app.controller('AdminController', function($scope, $http, ModalService) {
             });
         }
 
-//Adding Admin-------------------------------------------------------------------------------
-        $scope.submitAdmin = function() {
-            $http.post('/add-Admin', $scope.admin)
+//Adding Client-------------------------------------------------------------------------------
+        $scope.submitClient = function() {
+            $http.post('/add-Client', $scope.client)
                 .then(function(response) {
-                    $scope.admin = {};
+                    $scope.client= {};
                     ModalService.closeModal();
                     fetchUsers();
                 })
@@ -99,14 +102,14 @@ app.controller('AdminController', function($scope, $http, ModalService) {
                 });
             };
 
-//Delete Employee functions------------------------------------------------------------------
-        $scope.openDeleteModal = function(adminId) {
-            $scope.adminToDeleteId = adminId;
-            $scope.openModal('#deleteAdminModal');
+//Delete Client functions------------------------------------------------------------------
+        $scope.openDeleteModal = function(clientId) {
+            $scope.clientToDeleteId = clientId;
+            $scope.openModal('#deleteClientModal');
         };
-        //delete user
+        //delete client
         $scope.deleteAdmin = function() {
-            $http.delete('/delete-Admin/' + $scope.adminToDeleteId)
+            $http.delete('/delete-Client/' + $scope.clientToDeleteId)
                 .then(function(response) {
                     console.log("User deleted successfully");
                     ModalService.closeModal();
@@ -117,13 +120,13 @@ app.controller('AdminController', function($scope, $http, ModalService) {
             });
         };
 
-//Edit Admin functions---------------------------------------------------------------------
+//Edit Client functions---------------------------------------------------------------------
         // Function to open the edit modal
-        $scope.openEditAdminModal = function(adminId) {
-                $http.get('/get-Admin/' + adminId)
+        $scope.openEditClientModal = function(clientId) {
+                $http.get('/get-Client/' + clientId)
                     .then(function(response) {
-                        $scope.editedAdmin = response.data;
-                        ModalService.openModal('#editAdminModal');
+                        $scope.editedClient = response.data;
+                        ModalService.openModal('#editClientModal');
                     })
                     .catch(function(error) {
                         console.error('Error fetching user details:', error);
@@ -131,8 +134,8 @@ app.controller('AdminController', function($scope, $http, ModalService) {
             };
 
         // Function to submit edited user details
-        $scope.submitEditAdmin = function() {
-            $http.put('/update-Admin/' + $scope.editedAdmin.id, $scope.editedAdmin)
+        $scope.submitEditClient = function() {
+            $http.put('/update-Client/' + $scope.editedClient.id, $scope.editedClient)
                 .then(function(response) {
                     console.log('User details updated successfully');
                     ModalService.closeModal();
@@ -145,11 +148,11 @@ app.controller('AdminController', function($scope, $http, ModalService) {
 });
 
 </script>
-<div class="container-fluid pt-4 px-4" ng-app="adminApp" ng-controller="AdminController">
-    <h1>Admin Management</h1>
+<div class="container-fluid pt-4 px-4" ng-app="clientApp" ng-controller="ClientController">
+    <h1>Client Management</h1>
     <hr>
     <div class="d-inline-block mx-1">
-        <a href="#" ng-click="openModal('#addAdminModal')" class="btn btn-outline-primary" style="border-color:  #008CBA;">
+        <a href="#" ng-click="openModal('#addClientModal')" class="btn btn-outline-primary" style="border-color:  #008CBA;">
             <i class="fa-solid fa-plus" style="color: #008CBA; font-size: 24px;"></i>
         </a>
     </div>
@@ -162,23 +165,29 @@ app.controller('AdminController', function($scope, $http, ModalService) {
                 <th>Role ID</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>phone</th>
+                <th>Address</th>
+
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($admins as $admin)
+            @foreach($clients as $client)
             <tr>
-                <td>{{ $admin->role_id }}</td>
-                <td>{{ $admin->name }}</td>
-                <td>{{ $admin->email }}</td>
+                <td>{{ $client->role_id }}</td>
+                <td>{{ $client->name }}</td>
+                <td>{{ $client->email }}</td>
+                <td>{{ $client->phone }}</td>
+                <td>{{ $client->address }}</td>
+
                 <td class="text-center">
                     <div class="d-inline-block mx-1">
-                        <a href="#" ng-click="openEditAdminModal('{{ $admin->id }}')">
+                        <a href="#" ng-click="openEditClientModal('{{ $client->id }}')">
                             <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
                         </a>
                     </div>
                     <div class="d-inline-block mx-1">
-                        <a href="#" ng-click="openDeleteModal('{{ $admin->id }}')">
+                        <a href="#" ng-click="openDeleteModal('{{ $client->id }}')">
                             <i class="fa-solid fa-trash" style="color: red;"></i>
                         </a>
                     </div>
@@ -195,34 +204,44 @@ app.controller('AdminController', function($scope, $http, ModalService) {
 </div>
 
         <!--Add Modal -->
-        <div class="modal fade" id="addAdminModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"aria-hidden="true">
+        <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="card text-dark bg-light">
                         <div class="modal-header">
-                            <h5 class="modal-title text-dark" id="exampleModalLabel">Add Admins</h5>
+                            <h5 class="modal-title text-dark" id="exampleModalLabel">Add Clients</h5>
                             <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
 
                         <div class="modal-body">
-                            <form ng-submit="submitAdmin()">
+                            <form ng-submit="submitClient()">
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" ng-model="admin.name"
+                                    <input type="text" class="form-control" id="name" ng-model="client.name"
                                         placeholder="Enter name">
                                 </div><br>
                                 <div class="form-group">
                                     <label for="email">Email address</label>
-                                    <input type="email" class="form-control" id="email" ng-model="admin.email"
+                                    <input type="email" class="form-control" id="email" ng-model="client.email"
                                         placeholder="Enter email">
                                     <small id="emailHelp text-white" class="form-text text-muted">We'll never share your
                                         email with anyone else.</small>
                                 </div><br>
                                 <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" class="form-control" id="address" ng-model="client.address"
+                                        placeholder="Enter address">
+                                </div><br>
+                                <div class="form-group">
+                                    <label for="phone">Phone</label>
+                                    <input type="text" class="form-control" id="phone" ng-model="client.phone"
+                                        placeholder="Enter phone number">
+                                </div><br>
+                                <div class="form-group">
                                     <label for="role">Role ID</label>
-                                    <select class="form-control" id="role" ng-model="admin.role_id">
+                                    <select class="form-control" id="role" ng-model="client.role_id">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -231,7 +250,7 @@ app.controller('AdminController', function($scope, $http, ModalService) {
                                 </div><br>
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" ng-model="admin.password"
+                                    <input type="password" class="form-control" id="password" ng-model="client.password"
                                         placeholder="Enter password">
                                 </div>
                                 <br>
@@ -245,8 +264,8 @@ app.controller('AdminController', function($scope, $http, ModalService) {
             </div>
         </div>
 
-        <!-- Delete Confirmation Modal -->
-        <div class="modal fade" id="deleteAdminModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!--Delete Confirmation Modal-->
+        <div class="modal fade" id="deleteClientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -256,7 +275,7 @@ app.controller('AdminController', function($scope, $http, ModalService) {
                         </button>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to delete this Admin?
+                        Are you sure you want to delete this Client?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" ng-click="closeModal()">Close</button>
@@ -267,32 +286,36 @@ app.controller('AdminController', function($scope, $http, ModalService) {
         </div>
 
         <!-- Edit Modal -->
-        <div class="modal fade" id="editAdminModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editClientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Admin</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Client</h5>
                         <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form ng-submit="submitEditAdmin()">
+                        <form ng-submit="submitEditClient()">
                             <div class="form-group">
                                 <label for="editName">Name</label>
-                                <input type="text" class="form-control" id="editName" ng-model="editedAdmin.name" placeholder="Enter name">
+                                <input type="text" class="form-control" id="editName" ng-model="editedClient.name" placeholder="Enter name">
                             </div><br>
                             <div class="form-group">
                                 <label for="editEmail">Email</label>
-                                <input type="email" class="form-control" id="editEmail" ng-model="editedAdmin.email" placeholder="Enter email">
+                                <input type="email" class="form-control" id="editEmail" ng-model="editedClient.email" placeholder="Enter email">
                             </div><br>
                             <div class="form-group">
-                                <label for="editPassword">Password</label>
-                                <input type="password" class="form-control" id="editPassword" ng-model="editedAdmin.password" placeholder="Enter password">
+                                <label for="editEmail">Phone</label>
+                                <input type="phone" class="form-control" id="editPhone" ng-model="editedClient.phone" placeholder="Enter Phone">
+                            </div><br>
+                            <div class="form-group">
+                                <label for="editEmail">Address</label>
+                                <input type="address" class="form-control" id="editAddress" ng-model="editedClient.address" placeholder="Enter Address">
                             </div><br>
                             <div class="form-group">
                                 <label for="editRoleId">Role ID</label>
-                                <input type="text" class="form-control" id="editRoleId" ng-model="editedAdmin.role_id" placeholder="Role ID" readonly>
+                                <input type="text" class="form-control" id="editRoleId" ng-model="editedClient.role_id" placeholder="Role ID" readonly>
                             </div>
                             <br>
                             <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
