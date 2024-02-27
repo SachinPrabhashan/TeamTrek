@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 
 class UserManagementController extends Controller
 {
-//User Management-Employee Management
+//User Management-Employee Management---------------------------------
     public function UserManagementView(UserManagement $usermanagement)
     {
         $this->authorize('view', $usermanagement);
@@ -80,7 +80,7 @@ class UserManagementController extends Controller
         }
     }
 
-//User Management-Admin Management
+//User Management-Admin Management--------------------------------------
     public function AdminManagementView(UserManagement $usermanagement)
     {
         $this->authorize('view', $usermanagement);
@@ -120,4 +120,100 @@ class UserManagementController extends Controller
         return response()->json($admins);
     }
 
+    public function deleteAdmin($id)
+    {
+        $admin = User::find($id);
+        if ($admin) {
+            $admin->delete();
+            return response()->json(['message' => 'User deleted successfully'], 200);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+    }
+
+    public function getAdmins($id)
+    {
+        $admin = User::find($id);
+        return response()->json($admin);
+    }
+
+
+    public function updateAdmin(Request $request, $id)
+    {
+        $admin = User::find($id);
+        $admin->name = $request->input('name');
+        $admin->email = $request->input('email');
+        $admin->password = bcrypt($request->input('password'));
+        $admin->save();
+        return response()->json(['message' => 'User details updated successfully']);
+    }
+
+//User Management-Client Management----------------------------------------
+    public function ClientManagementView(UserManagement $usermanagement)
+    {
+        $this->authorize('view', $usermanagement);
+        $clients = User::where('role_id', 4)->get();
+
+        return view('admin.ClientManagement', compact('clients'));
+    }
+
+    public function addClient(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'address' => 'required|string',
+            'phone' => 'required|string',
+            'role_id' => 'required|numeric',
+            'password' => 'required|string',
+        ]);
+
+        $phone = (int) $validatedData['phone'];
+
+        $user = new User();
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        $user->address = $validatedData['address'];
+        $user->phone = $phone;
+        $user->role_id = $validatedData['role_id'];
+        $user->password = bcrypt($validatedData['password']);
+        $user->save();
+
+        return response()->json(['message' => 'User created successfully'], 200);
+    }
+
+    public function fetchClients(Request $request)
+    {
+        $clients = User::where('role_id', 4)->get();
+        return response()->json($clients);
+    }
+
+    public function deleteClient($id)
+    {
+        $client = User::find($id);
+        if ($client) {
+            $client->delete();
+            return response()->json(['message' => 'User deleted successfully'], 200);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+    }
+    public function getClients($id)
+    {
+        $client = User::find($id);
+        return response()->json($client);
+    }
+
+
+    public function updateClient(Request $request, $id)
+    {
+        $client = User::find($id);
+        $client->name = $request->input('name');
+        $client->email = $request->input('email');
+        $client->address = $request->input('address');
+        $client->phone = $request->input('phone');
+        $client->save();
+        return response()->json(['message' => 'User details updated successfully']);
+    }
 }

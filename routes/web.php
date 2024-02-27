@@ -32,7 +32,7 @@ Auth::routes();
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-// root
+// root----------------------------------------------------------------------------------------------------------------------
 Route::get('/permissions/module-permission', [RootPermissionController::class, 'index4'])->name('root.modulepermission');
 Route::post('/save-module-permission', [RootPermissionController::class, 'save']);
 Route::get('/permissions/manage-permissions', [RootPermissionController::class, 'index2'])->name('root.permissions');
@@ -47,7 +47,7 @@ Route::post('/save-module', [RootPermissionController::class, 'addmodule']);
 Route::post('/delete-module-permission', [RootPermissionController::class,'delete']);
 Route::get('/get-module-permissions', [RootPermissionController::class,'getExistingPermissions'])->name('get.module.permissions');
 
-//Admin
+//Admin--------------------------------------------------------------------------------------------------------------------------
     //Usermanagement-Employee management
 Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard.show');
 Route::get('/user-managements/employee',[UserManagementController::class,'UserManagementView'])->name('new.employee');
@@ -60,7 +60,17 @@ Route::put('/update-Emp-type/{id}', [UserManagementController::class,'updateEmpT
 Route::get('/user-managements/admin',[UserManagementController::class,'AdminManagementView'])->name('new.admins');
 Route::post('/add-Admin', [UserManagementController::class, 'addAdmin'])->name('add.admins');
 Route::get('/fetch/Admins', [UserManagementController::class, 'fetchAdmins'])->name('admins.fetch');
+Route::delete('/delete-Admin/{id}', [UserManagementController::class,'deleteAdmin'])->name('delete.Admin');
+Route::get('/get-Admin/{id}', [UserManagementController::class,'getAdmins']);
+Route::put('/update-Admin/{id}', [UserManagementController::class,'updateAdmin']);
 
+    //Usermanagement-Client management
+Route::get('/user-managements/client',[UserManagementController::class,'ClientManagementView'])->name('new.clients');
+Route::post('/add-Client', [UserManagementController::class, 'addClient'])->name('add.clients');
+Route::get('/fetch/Clients', [UserManagementController::class, 'fetchClients'])->name('clients.fetch');
+Route::delete('/delete-Client/{id}', [UserManagementController::class,'deleteClient'])->name('delete.Client');
+Route::get('/get-Client/{id}', [UserManagementController::class,'getClients']);
+Route::put('/update-Client/{id}', [UserManagementController::class,'updateClient']);
 
 
 //All Users
