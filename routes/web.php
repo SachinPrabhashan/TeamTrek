@@ -76,5 +76,7 @@ Route::get('/emp-rates/{userId}', [UserManagementController::class,'getEmpRates'
 
 //All Users
 Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');
+Route::post('/myprofile/password-change', [ProfileController::class, 'resetPassword'])->name('updatepassword');
 Route::post('/myprofile/save-profile-details', [ProfileController::class, 'editProfile'])->name('saveeditprofile');
 Route::post('/myprofile/password-change', [ProfileController::class, 'resetPassword'])->name('updatepassword');
+Route::post('/myprofile/save-profile-details', [ProfileController::class, 'editProfile']);
