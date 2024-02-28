@@ -45,17 +45,6 @@
                                             <p>{{ $age }}</p>
                                         </div>
                                     @endAdminOrEmployee
-                                    @AdminOrEmployee
-                                        <div class="media">
-                                            <label>Birthday</label>
-                                            <p>{{ Auth::user()->dob }}</p>
-                                        </div>
-
-                                        <div class="media">
-                                            <label>Age</label>
-                                            <p>{{ $age }}</p>
-                                        </div>
-                                    @endAdminOrEmployee
                                 </div>
                                 <div class="col-md-6">
                                     <div class="media">
@@ -65,11 +54,9 @@
                                     <div class="media">
                                         <label>Phone</label>
                                         <p>{{ Auth::user()->phone }}</p>
-                                        <p>{{ Auth::user()->phone }}</p>
                                     </div>
                                     <div class="media">
                                         <label>Address</label>
-                                        <p>{{ Auth::user()->address }}</p>
                                         <p>{{ Auth::user()->address }}</p>
                                     </div>
                                 </div>
@@ -97,36 +84,12 @@
                                             <div class="progress-bar bg-danger" role="progressbar" style="width: 72%"
                                                 aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                        <div class="col-lg-6 row me-3 mb-4">
-                            <div class="col-sm-12">
-                                <div class="card bg-light">
-                                    <div class="card-body">
-                                        <h5 class="d-flex align-items-center mb-3">Project Status</h5>
-                                        <p>Web Design</p>
-                                        <div class="progress mb-3" style="height: 5px">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
-                                                aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <p>Website Markup</p>
-                                        <div class="progress mb-3" style="height: 5px">
-                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 72%"
-                                                aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endEmployee
                     <div class="col-lg-6">
-                        @AdminOrEmployee
-                            <button class="btn btn-primary" data-bs-target="#profileeditmodal" data-bs-toggle="modal"
-                                data-bs-dismiss="modal">Edit</button>
-                        @endAdminOrEmployee
                         @AdminOrEmployee
                             <button class="btn btn-primary" data-bs-target="#profileeditmodal" data-bs-toggle="modal"
                                 data-bs-dismiss="modal">Edit</button>
@@ -142,84 +105,79 @@
     </section>
 
 
-    @if (auth()->check())
-        {{-- Profile Details Change Modal --}}
-        <div class="modal fade" id="profileeditmodal" aria-hidden="true" aria-labelledby="profileeditmodal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="profileeditmodal"></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="{{ route('saveeditprofile') }}" method="POST">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="col-lg-12">
-                                <div class="">
-                                    <div class="card-body">
-                                        <div class="row mb-3">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Full Name</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input type="text" class="form-control" name="name"
-                                                    value="{{ Auth::user()->name }}">
-                                            </div>
+    {{-- Profile Details Change Modal --}}
+    <div class="modal fade" id="profileeditmodal" aria-hidden="true" aria-labelledby="profileeditmodal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileeditmodal"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('saveeditprofile') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="">
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Full Name</h6>
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Email</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input type="text" class="form-control" name="email"
-                                                    value="{{ Auth::user()->email }}">
-                                            </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="name"
+                                                value="{{ Auth::user()->name }}">
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Phone</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input type="text" class="form-control" name="phone"
-                                                    value="{{ Auth::user()->phone }}">
-                                            </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Email</h6>
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Date of Birth</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input type="text" class="form-control" name="dob"
-                                                    value="{{ Auth::user()->dob }}">
-                                            </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="email"
+                                                value="{{ Auth::user()->email }}">
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Address</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input type="text" class="form-control" name="address"
-                                                    value="{{ Auth::user()->address }}">
-                                            </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Phone</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="phone"
+                                                value="{{ Auth::user()->phone }}">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Date of Birth</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="dob"
+                                                value="{{ Auth::user()->dob }}">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Address</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="address"
+                                                value="{{ Auth::user()->address }}">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-
-                                <button class="btn btn-secondary" data-bs-dismiss="modal"
-                                    aria-label="Close">Cancel</button>
-                                <button type="submit" class="btn btn-danger" id="saveProfileEdit">Save</button>
-                            </div>
                         </div>
-                    </form>
+                        <div class="modal-footer">
 
-                </div>
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                            <button type="submit" class="btn btn-danger" id="saveProfileEdit">Save</button>
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </div>
-    @else
-        <p>User not authenticated.</p>
-    @endif
+    </div>
 
     {{-- Password Reset Modal --}}
     <div class="modal fade" id="passwordresetmodal" aria-hidden="true" aria-labelledby="passwordresetmodal"
