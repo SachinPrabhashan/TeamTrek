@@ -328,11 +328,6 @@
                                 <input type="address" class="form-control" id="editAddress"
                                     ng-model="editedClient.address" placeholder="Enter Address">
                             </div><br>
-                            <!--div class="form-group">
-                                <label for="editRoleId">Role ID</label>
-                                <input type="text" class="form-control" id="editRoleId"
-                                    ng-model="editedClient.role_id" placeholder="Role ID" readonly>
-                            </div-->
                             <br>
                             <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
                             <button type="button" class="btn btn-secondary btn-sm"
