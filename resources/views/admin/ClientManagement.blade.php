@@ -42,7 +42,9 @@
         });
 
         app.controller('ClientController', function($scope, $http, ModalService) {
-            $scope.client = {};
+            $scope.client = {
+                role_id: "4"
+            };
             $scope.clients = [];
 
             // Function to open the modal
@@ -160,8 +162,8 @@
         <hr>
         <div class="d-inline-block mx-1">
             <a href="#" ng-click="openModal('#addClientModal')" class="btn btn-outline-primary"
-                style="border-color:  #008CBA;">
-                <i class="fa-solid fa-plus" style="color: #008CBA; font-size: 24px;"></i>
+                style="border-color:  blue;;">
+                <i class="fa-solid fa-plus" style="color: blue; font-size: 24px;"></i>
             </a>
         </div>
         <br>
@@ -250,13 +252,9 @@
                                 </div><br>
                                 <div class="form-group">
                                     <label for="role">Role ID</label>
-                                    <select class="form-control" id="role" ng-model="client.role_id">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                    </select>
+                                    <input type="text" class="form-control" id="role" ng-model="client.role_id" value="4" readonly>
                                 </div><br>
+
                                 <div class="form-group">
                                     <label for="password">Password</label>
                                     <input type="password" class="form-control" id="password" ng-model="client.password"
@@ -264,8 +262,8 @@
                                 </div>
                                 <br>
                                 <div class="float-end">
-                                    <button type="button" class="btn btn-secondary btn-sm" ng-click="closeModal()">Close</button>
-                                    <button type="submit" class="btn btn-danger btn-sm">Submit</button>
+                                    <button type="button" class="btn btn-danger btn-sm" ng-click="closeModal()">Close</button>
+                                    <button type="submit" class="btn btn-success btn-sm">Submit</button>
                                 </div>
 
                             </form>
@@ -330,11 +328,6 @@
                                 <input type="address" class="form-control" id="editAddress"
                                     ng-model="editedClient.address" placeholder="Enter Address">
                             </div><br>
-                            <div class="form-group">
-                                <label for="editRoleId">Role ID</label>
-                                <input type="text" class="form-control" id="editRoleId"
-                                    ng-model="editedClient.role_id" placeholder="Role ID" readonly>
-                            </div>
                             <br>
                             <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
                             <button type="button" class="btn btn-secondary btn-sm"
