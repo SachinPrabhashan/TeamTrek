@@ -45,6 +45,17 @@
                                             <p>{{ $age }}</p>
                                         </div>
                                     @endAdminOrEmployee
+                                    @AdminOrEmployee
+                                        <div class="media">
+                                            <label>Birthday</label>
+                                            <p>{{ Auth::user()->dob }}</p>
+                                        </div>
+
+                                        <div class="media">
+                                            <label>Age</label>
+                                            <p>{{ $age }}</p>
+                                        </div>
+                                    @endAdminOrEmployee
                                 </div>
                                 <div class="col-md-6">
                                     <div class="media">
@@ -54,9 +65,11 @@
                                     <div class="media">
                                         <label>Phone</label>
                                         <p>{{ Auth::user()->phone }}</p>
+                                        <p>{{ Auth::user()->phone }}</p>
                                     </div>
                                     <div class="media">
                                         <label>Address</label>
+                                        <p>{{ Auth::user()->address }}</p>
                                         <p>{{ Auth::user()->address }}</p>
                                     </div>
                                 </div>
@@ -84,13 +97,36 @@
                                             <div class="progress-bar bg-danger" role="progressbar" style="width: 72%"
                                                 aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
+                        <div class="col-lg-6 row me-3 mb-4">
+                            <div class="col-sm-12">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h5 class="d-flex align-items-center mb-3">Project Status</h5>
+                                        <p>Web Design</p>
+                                        <div class="progress mb-3" style="height: 5px">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
+                                                aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <p>Website Markup</p>
+                                        <div class="progress mb-3" style="height: 5px">
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 72%"
+                                                aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endEmployee
                     <div class="col-lg-6">
+                        @AdminOrEmployee
+                            <button class="btn btn-primary" data-bs-target="#profileeditmodal" data-bs-toggle="modal"
+                                data-bs-dismiss="modal">Edit</button>
+                        @endAdminOrEmployee
                         @AdminOrEmployee
                             <button class="btn btn-primary" data-bs-target="#profileeditmodal" data-bs-toggle="modal"
                                 data-bs-dismiss="modal">Edit</button>
