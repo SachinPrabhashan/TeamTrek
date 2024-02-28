@@ -223,84 +223,93 @@
             </table>
         </div>
 
-        <!--Add Modal -->
-        <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="card text-dark bg-light">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-dark" id="exampleModalLabel">Add Employees</h5>
-                            <button type="button" class="btn-close" aria-label="Close" ng-click="closeModal()">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+    <!--Add Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="card text-dark bg-light">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark" id="exampleModalLabel">Add Employees</h5>
+                    <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
-                        <div class="modal-body">
-                            <form ng-submit="submitUser()">
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" ng-model="user.name"
-                                        placeholder="Enter name">
-                                </div><br>
-                                <div class="form-group">
-                                    <label for="email">Email address</label>
-                                    <input type="email" class="form-control" id="email" ng-model="user.email"
-                                        placeholder="Enter email">
-                                    <small id="emailHelp text-white" class="form-text text-muted">We'll never share your
-                                        email with anyone else.</small>
-                                </div><br>
-                                <div class="form-group">
-                                    <label for="dob">Date of Birth</label>
-                                    <!--input type="date" class="form-control" id="dob" ng-model="user.dob"-->
-                                    <input type="date" class="form-control" id="dob" ng-model="user.dob"
-                                        ng-model-options="{timezone: null, updateOn: 'blur'}">
-                                </div><br>
-                                <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <input type="text" class="form-control" id="address" ng-model="user.address"
-                                        placeholder="Enter address">
-                                </div><br>
-                                <div class="form-group">
-                                    <label for="phone">Phone</label>
-                                    <input type="text" class="form-control" id="phone" ng-model="user.phone"
-                                        placeholder="Enter phone number">
-                                </div><br>
-                                <div class="form-group">
-                                    <label for="role">Role ID</label>
-                                    <select class="form-control" id="role" ng-model="user.role_id">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                    </select>
-                                </div><br>
-                                <div class="form-group">
-                                    <label for="user_type">User Type</label>
-                                    <select class="form-control" id="user_type" ng-model="user.user_type">
-                                        <option value="developer">Developer</option>
-                                        <option value="engineer">Engineer</option>
-                                        <!--option value="client">Client</option-->
-                                    </select>
-                                </div><br>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" ng-model="user.password"
-                                        placeholder="Enter password">
-                                </div>
-                                <br>
-                                <div class="float-end">
-                                    <button type="button" class="btn btn-secondary btn-sm"
-                                        ng-click="closeModal()">Close</button>
+                <div class="modal-body">
+                    <form ng-submit="submitUser()">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" ng-model="user.name"
+                                placeholder="Enter name">
+                        </div><br>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" ng-model="user.email"
+                                placeholder="Enter email">
+                            <small id="emailHelp text-white" class="form-text text-muted">We'll never share your
+                                email with anyone else.</small>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="dob">Date of Birth</label>
+                            <!--input type="date" class="form-control" id="dob" ng-model="user.dob"-->
+                            <input type="date" class="form-control" id="dob" ng-model="user.dob"
+                                ng-model-options="{timezone: null, updateOn: 'blur'}">
+                        </div><br>
+                        <div class="form-group">
+                            <label for="year">Year</label>
+                            <input type="number" class="form-control" id="year" ng-model="user.year"
+                                placeholder="Enter year">
+                        </div><br>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" class="form-control" id="address" ng-model="user.address"
+                                placeholder="Enter address">
+                        </div><br>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" class="form-control" id="phone" ng-model="user.phone"
+                                placeholder="Enter phone number">
+                        </div><br>
+                        <div class="form-group">
+                            <label for="role">Role ID</label>
+                            <select class="form-control" id="role" ng-model="user.role_id">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="user_type">User Type</label>
+                            <select class="form-control" id="user_type" ng-model="user.user_type">
+                                <option value="developer">Developer</option>
+                                <option value="engineer">Engineer</option>
+                                <!--option value="client">Client</option-->
+                            </select>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="hourly_charge">Hourly Charge</label>
+                            <input type="number" step="0.01" class="form-control" id="hourly_charge" ng-model="user.hourly_charge"
+                                placeholder="Enter hourly charge">
+                        </div><br>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" ng-model="user.password"
+                                placeholder="Enter password">
+                        </div>
+                        <br>
+                        <div class="float-end">
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                ng-click="closeModal()">Close</button>
                                     <button type="submit" class="btn btn-danger btn-sm">Submit</button>
                                 </div>
 
-                            </form>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
         <!-- Delete Confirmation Modal -->
         <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -327,7 +336,7 @@
         <!-- Edit user type modal -->
         <div class="modal fade" id="editUserTypeModal" tabindex="-1" role="dialog"
             aria-labelledby="editUserTypeModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type</h5>
