@@ -296,11 +296,6 @@
                                 <label for="editEmail">Email:</label>
                                 <input type="email" class="form-control" id="editEmail" ng-model="editedAdmin.email" placeholder="Enter email">
                             </div><br>
-                            <!--div class="form-group">
-                                <label for="editRoleId">Role ID</label>
-                                <input type="text" class="form-control" id="editRoleId"
-                                    ng-model="editedAdmin.role_id" placeholder="Role ID" readonly>
-                            </div><br-->
                             <div class="form-group">
                                 <label for="editPassword">Password:</label>
                                 <input type="password" class="form-control" id="editPassword" ng-model="editedAdmin.password" placeholder="Enter password">
