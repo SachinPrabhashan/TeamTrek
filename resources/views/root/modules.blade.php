@@ -54,6 +54,24 @@
                 $('#moduleName').val('');
             });
 
+            //input box empty check & if not success alert
+            $(document).ready(function() {
+                $('#saveModule').click(function() {
+                    var inputValue = $('#moduleName').val();
+
+                    if (inputValue.trim() === '') {
+                        alert('Input is required!');
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'New Module Deployed!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
+            });
+
             $('#saveModule').on('click', function() {
                 // Get the permission name from the input field
                 var moduleName = $('#moduleName').val();
@@ -79,4 +97,5 @@
             });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @endsection
