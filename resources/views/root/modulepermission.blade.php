@@ -123,7 +123,7 @@
             </div>
             <h3>Module Permissions</h3>
             <hr>
-            <table  class="table table-hover" style="width:100%">
+            <table id="example" class="table table-hover" style="width:100%">
                 <thead>
                     <tr>
                         <th>Modules/Permissions</th>

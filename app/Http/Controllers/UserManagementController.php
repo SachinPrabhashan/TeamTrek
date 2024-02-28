@@ -7,6 +7,7 @@ use App\Models\UserManagement;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
+use App\Models\EmpRate;
 use Illuminate\Support\Carbon;
 
 class UserManagementController extends Controller
@@ -28,34 +29,51 @@ class UserManagementController extends Controller
 
     public function addEmp(Request $request)
     {
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string',
+                'email' => 'required|email|unique:users',
+                'dob' => 'required|date_format:Y-m-d',
+                'address' => 'required|string',
+                'phone' => 'required|string',
+                'role_id' => 'required|numeric',
+                'user_type' => 'required|string',
+                'password' => 'required|string',
+                'hourly_charge' => 'required|numeric',
+                'year' => 'required|integer',
+            ]);
 
-        $validatedData = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'dob' => 'required|date_format:Y-m-d',
-            'address' => 'required|string',
-            'phone' => 'required|string',
-            'role_id' => 'required|numeric',
-            'user_type' => 'required|string',
-            'password' => 'required|string',
-        ]);
+            $phone = (int) $validatedData['phone'];
 
-        $phone = (int) $validatedData['phone'];
+            $user = new User();
+            $user->name = $validatedData['name'];
+            $user->email = $validatedData['email'];
+            $user->dob = $validatedData['dob'];
+            $user->address = $validatedData['address'];
+            $user->phone = $phone;
+            $user->role_id = $validatedData['role_id'];
+            $user->user_type = $validatedData['user_type'];
+            $user->password = bcrypt($validatedData['password']);
+            $user->save();
 
-        // Create a new user record
-        $user = new User();
-        $user->name = $validatedData['name'];
-        $user->email = $validatedData['email'];
-        $user->dob = $validatedData['dob'];
-        $user->address = $validatedData['address'];
-        $user->phone = $phone;
-        $user->role_id = $validatedData['role_id'];
-        $user->user_type = $validatedData['user_type'];
-        $user->password = bcrypt($validatedData['password']);
-        $user->save();
+            $empRate = new EmpRate();
+            $empRate->hourly_rate = $validatedData['hourly_charge'];
+            $empRate->year = $validatedData['year'];
+            $empRate->user_id = $user->id;
+            $empRate->save();
 
-        return response()->json(['message' => 'User created successfully'], 200);
+            return response()->json(['message' => 'User created successfully'], 200);
+        }
+        catch (\Exception $e)
+        {
+
+            \Log::error('Error creating user: ' . $e->getMessage());
+
+            return response()->json(['error' => 'Failed to create user.'], 500);
+        }
     }
+
+
 
     public function deleteEmp($id)
     {
@@ -204,8 +222,6 @@ class UserManagementController extends Controller
         $client = User::find($id);
         return response()->json($client);
     }
-
-
     public function updateClient(Request $request, $id)
     {
         $client = User::find($id);

@@ -231,7 +231,7 @@
                     <div class="card text-dark bg-light">
                         <div class="modal-header">
                             <h5 class="modal-title text-dark" id="exampleModalLabel">Add Employees</h5>
-                            <button type="button" class="btn-close" aria-label="Close" ng-click="closeModal()">
+                            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -289,12 +289,9 @@
                                         placeholder="Enter password">
                                 </div>
                                 <br>
-                                <div class="float-end">
-                                    <button type="button" class="btn btn-secondary btn-sm"
-                                        ng-click="closeModal()">Close</button>
-                                    <button type="submit" class="btn btn-danger btn-sm">Submit</button>
-                                </div>
-
+                                <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    ng-click="closeModal()">Close</button>
                             </form>
                         </div>
                     </div>
@@ -324,34 +321,34 @@
             </div>
         </div>
 
-        <!-- Edit user type modal -->
-        <div class="modal fade" id="editUserTypeModal" tabindex="-1" role="dialog"
-            aria-labelledby="editUserTypeModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type</h5>
-                        <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="userType">Employee Type:</label>
-                                <select class="form-control" id="userType" ng-model="editedUser.user_type">
-                                    <option value="developer">Developer</option>
-                                    <option value="engineer">Engineer</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-sm" ng-click="updateUserType()">Update</button>
-                        <button type="button" class="btn btn-secondary btn-sm" ng-click="closeModal()">Close</button>
-                    </div>
+    <!-- Edit user type modal -->
+    <div class="modal fade" id="editUserTypeModal" tabindex="-1" role="dialog" aria-labelledby="editUserTypeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type</h5>
+                    <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="userType">Employee Type:</label>
+                            <select class="form-control" id="userType" ng-model="editedUser.user_type">
+                                <option value="developer">Developer</option>
+                                <option value="engineer">Engineer</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm" ng-click="updateUserType()">Update</button>
+                    <button type="button" class="btn btn-secondary btn-sm" ng-click="closeModal()">Close</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
 @endsection

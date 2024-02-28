@@ -110,23 +110,23 @@
                     });
             };
 
-            //Delete Client functions------------------------------------------------------------------
-            $scope.openDeleteModal = function(clientId) {
-                $scope.clientToDeleteId = clientId;
-                $scope.openModal('#deleteClientModal');
-            };
-            //delete client
-            $scope.deleteAdmin = function() {
-                $http.delete('/delete-Client/' + $scope.clientToDeleteId)
-                    .then(function(response) {
-                        console.log("User deleted successfully");
-                        ModalService.closeModal();
-                        fetchUsers();
-                    })
-                    .catch(function(error) {
-                        console.error("Error deleting user:", error);
-                    });
-            };
+//Delete Client functions------------------------------------------------------------------
+        $scope.openDeleteModal = function(clientId) {
+            $scope.clientToDeleteId = clientId;
+            $scope.openModal('#deleteClientModal');
+        };
+        //delete client
+        $scope.deleteAdmin = function() {
+            $http.delete('/delete-Client/' + $scope.clientToDeleteId)
+                .then(function(response) {
+                    console.log("User deleted successfully");
+                    ModalService.closeModal();
+                    fetchUsers();
+                })
+                .catch(function(error) {
+                    console.error("Error deleting user:", error);
+            });
+        };
 
             //Edit Client functions---------------------------------------------------------------------
             // Function to open the edit modal
