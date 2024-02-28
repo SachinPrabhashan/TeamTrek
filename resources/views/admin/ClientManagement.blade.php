@@ -222,7 +222,7 @@
                         <div class="card text-dark bg-light">
                             <div class="modal-header">
                                 <h5 class="modal-title text-dark" id="exampleModalLabel">Add Clients</h5>
-                                <button type="button" class="btn-close" aria-label="Close" ng-click="closeModal()">
+                                <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -283,7 +283,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
-                            <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
+                            <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -306,7 +306,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Edit Client</h5>
-                            <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
+                            <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>

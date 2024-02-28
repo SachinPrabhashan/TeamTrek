@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\RoleViewController;
+use App\Http\Controllers\SupportContractController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -72,6 +73,9 @@ Route::delete('/delete-Client/{id}', [UserManagementController::class,'deleteCli
 Route::get('/get-Client/{id}', [UserManagementController::class,'getClients']);
 Route::put('/update-Client/{id}', [UserManagementController::class,'updateClient']);
 Route::get('/emp-rates/{userId}', [UserManagementController::class,'getEmpRates']);
+
+    //Support Contract Handling
+Route::get('/admin-ScHandling',[SupportContractController::class,'ScIndex'])->name('admin.ScHandling');
 
 
 //All Users
