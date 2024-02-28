@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
-    <div class="container mt-4 col-12">
+    <div class="container col-12">
 
         <div class="bg-light rounded h-100 p-4 ">
             <h2>Module Manager</h2>

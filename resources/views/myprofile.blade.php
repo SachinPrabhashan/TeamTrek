@@ -19,91 +19,95 @@
         $age = $dob->age;
     @endphp
 
+    <div class="container col-12">
+        <div class="bg-light rounded h-100 p-4">
+            <section class="section about-section" id="about">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="container">
+                        <div class="row align-items-center flex-row-reverse">
+                            <div class="col-lg-6">
+                                <div class="about-text go-to">
+                                    <h3 class="dark-color">About Me</h3>
+                                    <div class="row about-list">
+                                        <div class="col-md-6">
 
-    <section class="section about-section" id="about">
-        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-            <div class="container">
-                <div class="row align-items-center flex-row-reverse">
-                    <div class="col-lg-6">
-                        <div class="about-text go-to">
-                            <h3 class="dark-color">About Me</h3>
-                            <div class="row about-list">
-                                <div class="col-md-6">
+                                            <div class="media">
+                                                <label>Name</label>
+                                                <p>{{ Auth::user()->name }}</p>
+                                            </div>
+                                            @AdminOrEmployee
+                                                <div class="media">
+                                                    <label>Birthday</label>
+                                                    <p>{{ Auth::user()->dob }}</p>
+                                                </div>
 
-                                    <div class="media">
-                                        <label>Name</label>
-                                        <p>{{ Auth::user()->name }}</p>
-                                    </div>
-                                    @AdminOrEmployee
-                                        <div class="media">
-                                            <label>Birthday</label>
-                                            <p>{{ Auth::user()->dob }}</p>
+                                                <div class="media">
+                                                    <label>Age</label>
+                                                    <p>{{ $age }}</p>
+                                                </div>
+                                            @endAdminOrEmployee
                                         </div>
-
-                                        <div class="media">
-                                            <label>Age</label>
-                                            <p>{{ $age }}</p>
-                                        </div>
-                                    @endAdminOrEmployee
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="media">
-                                        <label>E-mail</label>
-                                        <p>{{ Auth::user()->email }}</p>
-                                    </div>
-                                    <div class="media">
-                                        <label>Phone</label>
-                                        <p>{{ Auth::user()->phone }}</p>
-                                    </div>
-                                    <div class="media">
-                                        <label>Address</label>
-                                        <p>{{ Auth::user()->address }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="about-avatar ms-5 mt-5">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" title="" alt="">
-                        </div>
-                    </div>
-                    @Employee
-                        <div class="col-lg-6 row me-3 mb-4">
-                            <div class="col-sm-12">
-                                <div class="card bg-light">
-                                    <div class="card-body">
-                                        <h5 class="d-flex align-items-center mb-3">Project Status</h5>
-                                        <p>Web Design</p>
-                                        <div class="progress mb-3" style="height: 5px">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
-                                                aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <p>Website Markup</p>
-                                        <div class="progress mb-3" style="height: 5px">
-                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 72%"
-                                                aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="col-md-6">
+                                            <div class="media">
+                                                <label>E-mail</label>
+                                                <p>{{ Auth::user()->email }}</p>
+                                            </div>
+                                            <div class="media">
+                                                <label>Phone</label>
+                                                <p>{{ Auth::user()->phone }}</p>
+                                            </div>
+                                            <div class="media">
+                                                <label>Address</label>
+                                                <p>{{ Auth::user()->address }}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endEmployee
-                    <div class="col-lg-6">
-                        @AdminOrEmployee
-                            <button class="btn btn-primary" data-bs-target="#profileeditmodal" data-bs-toggle="modal"
-                                data-bs-dismiss="modal">Edit</button>
-                        @endAdminOrEmployee
-                        <button class="btn btn-primary" data-bs-target="#passwordresetmodal" data-bs-toggle="modal"
-                            data-bs-dismiss="modal">Change Password</button>
-                    </div>
+                            <div class="col-lg-6">
+                                <div class="about-avatar ms-5 mt-5">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" title=""
+                                        alt="">
+                                </div>
+                            </div>
+                            @Employee
+                                <div class="col-lg-6 row me-3 mb-4">
+                                    <div class="col-sm-12">
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <h5 class="d-flex align-items-center mb-3">Project Status</h5>
+                                                <p>Web Design</p>
+                                                <div class="progress mb-3" style="height: 5px">
+                                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
+                                                        aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <p>Website Markup</p>
+                                                <div class="progress mb-3" style="height: 5px">
+                                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 72%"
+                                                        aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endEmployee
+                            <div class="col-lg-6">
+                                @AdminOrEmployee
+                                    <button class="btn btn-primary" data-bs-target="#profileeditmodal" data-bs-toggle="modal"
+                                        data-bs-dismiss="modal">Edit</button>
+                                @endAdminOrEmployee
+                                <button class="btn btn-primary" data-bs-target="#passwordresetmodal" data-bs-toggle="modal"
+                                    data-bs-dismiss="modal">Change Password</button>
+                            </div>
 
+                        </div>
+
+                    </div>
                 </div>
-
-            </div>
+            </section>
         </div>
-    </section>
 
+    </div>
 
     {{-- Profile Details Change Modal --}}
     <div class="modal fade" id="profileeditmodal" aria-hidden="true" aria-labelledby="profileeditmodal" tabindex="-1">
