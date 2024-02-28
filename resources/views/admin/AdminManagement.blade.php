@@ -95,16 +95,16 @@
             }
 
 //Adding Admin-------------------------------------------------------------------------------
-                $scope.submitAdmin = function() {
-                    $http.post('/add-Admin', $scope.admin)
-                        .then(function(response) {
-                            $scope.admin = {};
-                            ModalService.closeModal();
-                            fetchUsers();
-                        })
-                        .catch(function(error) {
-                            console.error('Error:', error);
-                        });
+            $scope.submitAdmin = function() {
+                $http.post('/add-Admin', $scope.admin)
+                    .then(function(response) {
+                        $scope.admin = {};
+                        ModalService.closeModal();
+                        fetchUsers();
+                    })
+                    .catch(function(error) {
+                        console.error('Error:', error);
+                    });
             };
 
 //Delete Employee functions------------------------------------------------------------------
