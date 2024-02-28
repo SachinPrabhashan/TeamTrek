@@ -42,7 +42,7 @@
         });
 
         app.controller('AdminController', function($scope, $http, ModalService) {
-            $scope.admin = {};
+            $scope.admin = { role_id: "2"};
             $scope.admins = [];
 
             // Function to open the modal
@@ -136,6 +136,17 @@
                     .catch(function(error) {
                         console.error('Error fetching user details:', error);
                     });
+        };
+        $scope.submitEditAdmin = function() {
+                $http.put('/update-Admin/' + $scope.editedAdmin.id, $scope.editedAdmin)
+                    .then(function(response) {
+                        console.log('Admin details updated successfully');
+                        ModalService.closeModal();
+                        fetchUsers();
+                    })
+                    .catch(function(error) {
+                        console.error('Error updating user details:', error);
+                    });
             };
 
 
@@ -172,7 +183,7 @@
                             <td>{{ $admin->email }}</td>
                             <td class="text-center">
                                 <div class="d-inline-block mx-1">
-                                    <a href="#" ng-click="openEditUserTypeModal('{{ $admin->id }}')">
+                                    <a href="#" ng-click="openEditAdminModal('{{ $admin->id }}')">
                                         <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
                                     </a>
                                 </div>
@@ -223,12 +234,7 @@
                                 </div><br>
                                 <div class="form-group">
                                     <label for="role">Role ID</label>
-                                    <select class="form-control" id="role" ng-model="admin.role_id">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                    </select>
+                                    <input type="text" class="form-control" id="role" ng-model="admin.role_id" value="2" readonly>
                                 </div><br>
                                 <div class="form-group">
                                     <label for="password">Password</label>
@@ -237,9 +243,9 @@
                                 </div>
                                 <br>
                                 <div class="float-end">
-                                    <button type="button" class="btn btn-secondary btn-sm"
+                                    <button type="button" class="btn btn-danger btn-sm"
                                         ng-click="closeModal()">Close</button>
-                                    <button type="submit" class="btn btn-danger btn-sm">Submit</button>
+                                    <button type="submit" class="btn btn-success btn-sm">Submit</button>
                                 </div>
 
                             </form>
@@ -270,6 +276,45 @@
                 </div>
             </div>
         </div>
+        <!-- Edit Admin Modal -->
+        <div class="modal fade" id="editAdminModal" tabindex="-1" role="dialog" aria-labelledby="editAdminModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editAdminModalLabel">Edit Admin</h5>
+                        <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form ng-submit="submitEditAdmin()">
+                            <div class="form-group">
+                                <label for="editName">Name:</label>
+                                <input type="text" class="form-control" id="editName" ng-model="editedAdmin.name" placeholder="Enter name">
+                            </div><br>
+                            <div class="form-group">
+                                <label for="editEmail">Email:</label>
+                                <input type="email" class="form-control" id="editEmail" ng-model="editedAdmin.email" placeholder="Enter email">
+                            </div><br>
+                            <!--div class="form-group">
+                                <label for="editRoleId">Role ID</label>
+                                <input type="text" class="form-control" id="editRoleId"
+                                    ng-model="editedAdmin.role_id" placeholder="Role ID" readonly>
+                            </div><br-->
+                            <div class="form-group">
+                                <label for="editPassword">Password:</label>
+                                <input type="password" class="form-control" id="editPassword" ng-model="editedAdmin.password" placeholder="Enter password">
+                            </div><br>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" ng-click="closeModal()">Close</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                            </div><br>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 @endsection

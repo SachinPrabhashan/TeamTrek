@@ -73,8 +73,6 @@ class UserManagementController extends Controller
         }
     }
 
-
-
     public function deleteEmp($id)
     {
         $user = User::find($id);
@@ -89,14 +87,49 @@ class UserManagementController extends Controller
     public function updateEmpType(Request $request, $userId) {
         try {
             $user = User::findOrFail($userId);
-            $user->update($request->all());
 
+            $user->update([
+                'user_type' => $request->input('user_type')
+            ]);
+
+            $empRate = EmpRate::where('user_id', $userId)->firstOrFail();
+            $empRate->update([
+                'hourly_rate' => $request->input('hourly_rate')
+            ]);
             return response()->json($user, 200);
-        } catch (\Exception $e) {
-
-            return response()->json(['error' => 'Failed to update user type.'], 500);
+        }
+        catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update user type and hourly rate.'], 500);
         }
     }
+
+    public function getEmpRates($userId) {
+        try {
+            $user = User::findOrFail($userId);
+            $empRate = EmpRate::where('user_id', $userId)->first();
+
+            if (!$empRate) {
+                return response()->json(['error' => 'Hourly rate not found for this user.'], 404);
+            }
+
+            $userData = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'user_type'=>$user->user_type,
+
+                'hourly_rate' => $empRate->hourly_rate,
+            ];
+
+            return response()->json($userData, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch user details.'], 500);
+        }
+    }
+
+
+
+
 
 //User Management-Admin Management--------------------------------------
     public function AdminManagementView(UserManagement $usermanagement)

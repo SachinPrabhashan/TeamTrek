@@ -45,7 +45,7 @@ var app = angular.module('userApp', []);
 
 // Define your controller
 app.controller('UserController', function($scope, $http, ModalService) {
-    $scope.user = {};
+    $scope.user = { role_id: "3"};
     $scope.users = [];
 
 //Updating the table--------------------------------------------------------
@@ -130,24 +130,35 @@ app.controller('UserController', function($scope, $http, ModalService) {
 
 //Edit Employee functions---------------------------------------------------------------
     $scope.openEditUserTypeModal = function(userId) {
-        $scope.userToEditId = userId;
-        $scope.openModal('#editUserTypeModal');
-    };
+    $scope.userToEditId = userId;
+    // Fetch user details including hourly rate from the backend
+    $http.get('/emp-rates/' + userId)
+        .then(function(response) {
+            // Assuming response.data contains user details including hourly rate
+            $scope.editedUser = response.data;
+            $scope.openModal('#editUserTypeModal');
+        })
+        .catch(function(error) {
+            console.error("Error fetching user details:", error);
+        });
+};
 
-    $scope.updateUserType = function() {
-        var userType = $scope.editedUser.user_type;
-        var userId = $scope.userToEditId;
+$scope.updateUserType = function() {
+    var userType = $scope.editedUser.user_type;
+    var hourlyRate = $scope.editedUser.hourly_rate;
+    var userId = $scope.userToEditId;
 
-        $http.put('/update-Emp-type/' + userId, { user_type: userType })
-            .then(function(response) {
-                console.log("User type updated successfully");
-                ModalService.closeModal();
-                fetchUsers();
-            })
-            .catch(function(error) {
-                console.error("Error updating user type:", error);
-            });
-    };
+    $http.put('/update-Emp-type/' + userId, { user_type: userType, hourly_rate: hourlyRate })
+        .then(function(response) {
+            console.log("User type and hourly rate updated successfully");
+            ModalService.closeModal();
+            fetchUsers();
+        })
+        .catch(function(error) {
+            console.error("Error updating user type and hourly rate:", error);
+        });
+};
+
 
 
 });
@@ -260,12 +271,7 @@ app.controller('UserController', function($scope, $http, ModalService) {
                         </div><br>
                         <div class="form-group">
                             <label for="role">Role ID</label>
-                            <select class="form-control" id="role" ng-model="user.role_id">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
+                            <input type="text" class="form-control" id="role" ng-model="user.role_id" value="3" readonly>
                         </div><br>
                         <div class="form-group">
                             <label for="user_type">User Type</label>
@@ -317,12 +323,13 @@ app.controller('UserController', function($scope, $http, ModalService) {
             </div>
         </div>
 
+
     <!-- Edit user type modal -->
     <div class="modal fade" id="editUserTypeModal" tabindex="-1" role="dialog" aria-labelledby="editUserTypeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type</h5>
+                    <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type and Hourly Rate</h5>
                     <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -330,14 +337,22 @@ app.controller('UserController', function($scope, $http, ModalService) {
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
+                            <label for="userName">Name:</label>
+                            <input type="text" class="form-control" id="userName" ng-model="editedUser.name" readonly>
+                        </div><br>
+                        <div class="form-group">
                             <label for="userType">Employee Type:</label>
                             <select class="form-control" id="userType" ng-model="editedUser.user_type">
-                                <option value="developer">Developer</option>
-                                <option value="engineer">Engineer</option>
+                                <option value="developer" ng-selected="editedUser.user_type === 'developer'">Developer</option>
+                                <option value="engineer" ng-selected="editedUser.user_type === 'engineer'">Engineer</option>
                             </select>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="hourlyRate">Hourly Rate:</label>
+                            <input type="number" class="form-control" id="hourlyRate" ng-model="editedUser.hourly_rate" placeholder="Enter hourly rate">
                         </div>
                     </form>
-                </div>
+                </div><br>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary btn-sm" ng-click="updateUserType()">Update</button>
                     <button type="button" class="btn btn-secondary btn-sm" ng-click="closeModal()">Close</button>
