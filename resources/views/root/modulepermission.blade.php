@@ -107,7 +107,7 @@
         });
     </script>
 
-    <div class="container mt-4 col-12">
+    <div class="container col-12">
         <div class="rolebtn bg-light rounded h-100 p-4">
             <select class="btn btn-secondary dropdown-toggle" id="roleDropdown" type="button">
                 <option value="1" {{ $roleId == 1 ? 'selected' : '' }}>ROOT</option>
