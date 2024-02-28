@@ -142,11 +142,9 @@
                             @endAdminOrEmployee
                         </div>
                     </div>
-                    @AdminOrEmployee
                         <a href="{{ route('myprofile') }}" class="nav-item nav-link"><i
                                 class="fa-solid fa-user me-2"></i></i>My
                             Profile</a>
-                    @endAdminOrEmployee
 
                     @Root
                         <div class="nav-item dropdown">
