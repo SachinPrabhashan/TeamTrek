@@ -192,7 +192,7 @@
                 <br>
                 <br>
                 <div>
-                    <table id="example" class="table table-bordered" width="110%">
+                    <table id="example" class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Name</th>
