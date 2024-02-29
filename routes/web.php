@@ -76,6 +76,7 @@ Route::get('/emp-rates/{userId}', [UserManagementController::class,'getEmpRates'
 
     //Support Contract Handling
 Route::get('/admin-ScHandling',[SupportContractController::class,'ScIndex'])->name('admin.ScHandling');
+Route::post('/add-support-contract', [SupportContractController::class, 'addSC'])->name('support-contracts.add');
 
 
 //All Users

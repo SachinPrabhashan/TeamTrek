@@ -9,6 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -16,6 +17,11 @@
 
 
     <script>
+        $(document).ready(function() {
+            //tooltip
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+         });
+
         var app = angular.module('userApp', []);
         //Handling modals-------------------------------------------------
         app.service('ModalService', function($q) {
@@ -96,20 +102,43 @@
 
             //Adding user-------------------------------------------------------------------------------
             $scope.submitUser = function() {
-                var dob = moment($scope.user.dob, 'YYYY-MM-DD').format('YYYY-MM-DD');
-                $scope.user.dob = dob;
+            var enteredEmail = $scope.user.email;
+            var existingEmails = $('#example tbody td:nth-child(2)').map(function() {
+                return $(this).text();
+            }).get();
 
-                $http.post('/add-Emp', $scope.user)
-                    .then(function(response) {
-                        console.log(response.data);
-                        $scope.user = {};
-                        ModalService.closeModal();
-                        fetchUsers();
-                    })
-                    .catch(function(error) {
-                        console.error(error);
+            if (existingEmails.includes(enteredEmail)) {
+                ModalService.closeModal();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'The email you entered is already in use!'
+                });
+                return;
+            }
+
+            var dob = moment($scope.user.dob, 'YYYY-MM-DD').format('YYYY-MM-DD');
+            $scope.user.dob = dob;
+
+            $http.post('/add-Emp', $scope.user)
+                .then(function(response) {
+                    console.log(response.data);
+                    $scope.user = {};
+                    ModalService.closeModal();
+                    fetchUsers();
+                    Swal.fire({
+                    position: "top-middle",
+                    icon: "success",
+                    title: "An Employee Created Successfully!",
+                    showConfirmButton: false,
+                    timer: 1500
                     });
-            };
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        };
+
 
             // Function to open the modal
             $scope.openModal = function(modalId) {
@@ -133,6 +162,13 @@
                         console.log("User deleted successfully");
                         ModalService.closeModal();
                         fetchUsers();
+                        Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "An Employee deleted Successfully!",
+                        showConfirmButton: false,
+                        timer: 1500
+                        });
                     })
                     .catch(function(error) {
                         console.error("Error deleting user:", error);
@@ -183,7 +219,7 @@
                 <h1>Employee Management</h1>
                 <hr>
                 <div class="d-inline-block mx-1 float-end">
-                    <a href="#" ng-click="openModal('#addUserModal')"><button class="btn btn-primary"><i
+                    <a href="#" ng-click="openModal('#addUserModal')"><button class="btn btn-primary"data-toggle="tooltip"data-bs-placement="bottom" title="Add Employee"><i
                                 class="fa-solid fa-user-plus"></i></button>
 
                     </a>
@@ -192,7 +228,7 @@
                 <br>
                 <br>
                 <div>
-                    <table id="example" class="table table-bordered">
+                    <table id="example" class="table table-bordered"width="110%">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -217,19 +253,19 @@
                                     <td>{{ $user->user_type }}</td>
                                     <td class="text-center">
                                         <div class="d-inline-block mx-1">
-                                            <a href="#" ng-click="openEditUserTypeModal('{{ $user->id }}')">
+                                            <a href="#" ng-click="openEditUserTypeModal('{{ $user->id }}')"data-toggle="tooltip"data-bs-placement="bottom" title="Edit Employee">
                                                 <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
                                             </a>
                                         </div>
 
                                         <div class="d-inline-block mx-1">
-                                            <a href="#" ng-click="openDeleteModal('{{ $user->id }}')">
+                                            <a href="#" ng-click="openDeleteModal('{{ $user->id }}')"data-toggle="tooltip"data-bs-placement="bottom" title="Delete Employee">
                                                 <i class="fa-solid fa-trash" style="color: red;"></i>
                                             </a>
                                         </div>
                                         <div class="d-inline-block mx-1">
                                             <a href="#">
-                                                <i class="fa-solid fa-circle-info" style="color: black;"></i>
+                                                <i class="fa-solid fa-circle-info" style="color: black;"data-toggle="tooltip"data-bs-placement="bottom" title="Disable Employee"></i>
                                             </a>
                                         </div>
                                     </td>
