@@ -116,7 +116,7 @@
                                 class="fa fa-laptop me-2"></i>Support Contract</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             @AdminOrEmployee
-                                <a href="#" class="dropdown-item">SC Handling</a>
+                                <a href="{{ route('admin.ScHandling')}}" class="dropdown-item">SC Handling</a>
                                 <a href="#" class="dropdown-item">SC Instance Handling</a>
                                 @Admin
                                     <a href="#" class="dropdown-item">SC Access Granting</a>

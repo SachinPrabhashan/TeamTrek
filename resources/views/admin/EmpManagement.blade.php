@@ -192,7 +192,7 @@
                 <br>
                 <br>
                 <div>
-                    <table id="example" class="table table-bordered" width="108%">
+                    <table id="example" class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -329,7 +329,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
-                                <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
+                                <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -355,7 +355,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type and Hourly Rate
                                 </h5>
-                                <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
+                                <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
