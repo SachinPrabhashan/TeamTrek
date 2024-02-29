@@ -14,11 +14,27 @@
             <div class="d-flex justify-content-center">
                 <div class="w-50 justify-content-center">
                     <h3>Exisiting Permissions</h3>
-                    <ul id="permissionList">
-                        @foreach ($permissions as $permission)
-                            <li>{{ $permission->name }}</li>
-                        @endforeach
-                    </ul>
+                    <table>
+                        <td>
+                            <ul id="permissionList">
+                                @foreach ($permissions as $permission)
+                                    <li>{{ $permission->name }}</li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <td id="permissionCheckBoxes">
+                            <ul type="none">
+                                @foreach ($permissions as $permission)
+                                    <li><input type="checkbox" name="" id="{{ $permission->id }}"></li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <div>
+                            <button class="btn btn-danger float-end" id="permissionDeleteBtn" title="Delete"><i
+                                    class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </table>
+
                 </div>
             </div>
 
@@ -51,7 +67,7 @@
                 }
             });
 
-            $('#clearBtn').on('click', function(){
+            $('#clearBtn').on('click', function() {
                 $('#permissionName').val('');
             });
 
@@ -88,12 +104,61 @@
                         // Update the permission list without refreshing the page
                         $('#permissionList').append('<li>' + permissionName + '</li>');
                         $('#permissionName').val('');
+                        location.reload();
                     },
                     error: function(xhr, status, error) {
                         var errors = xhr.responseJSON.errors;
                         // Handle validation errors, e.g., display them to the user
                         console.log(errors);
                     }
+                });
+            });
+        });
+    </script>
+
+    {{-- //Delete Permssion --}}
+    <script>
+        //To Show Check Boxes
+        $('#permissionCheckBoxes').hide();
+
+
+        $(document).ready(function() {
+            $('#permissionDeleteBtn').click(function() {
+                // Toggle visibility of checkboxes
+                $('#permissionCheckBoxes').toggle();
+            });
+        });
+
+        $(document).ready(function() {
+            $('#permissionDeleteBtn').click(function() {
+                // Get the checked checkboxes
+                var checkedPermission = $('input[type="checkbox"]:checked');
+
+                // Iterate over each checked checkbox
+                checkedPermission.each(function() {
+                    var permissionId = $(this).attr('id');
+
+                    // Make an AJAX request to delete the module
+                    $.ajax({
+                        type: 'POST',
+                        url: '/delete-permission', // Replace with your actual delete module endpoint
+                        data: {
+                            id: permissionId
+                        },
+                        success: function(response) {
+                            // Handle success, e.g., remove the deleted module from the UI
+                            $('#permissionList li:has(input[id="' + permissionId +
+                                    '"])')
+                                .remove();
+
+                            // Reload the page
+                            location.reload();
+                        },
+                        error: function(error) {
+                            // Handle error
+                            console.error('Error deleting module: ', error);
+                        }
+                    });
                 });
             });
         });

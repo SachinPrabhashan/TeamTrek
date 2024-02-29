@@ -7,6 +7,7 @@ use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Models\ModulePermission;
 use Illuminate\Support\Facades\DB;
+use Laravel\Ui\Presets\React;
 
 class RootPermissionController extends Controller
 {
@@ -14,14 +15,18 @@ class RootPermissionController extends Controller
     public function index2()
     {
 
-        $permissions = DB::table('permissions')
-            ->select('name')
-            ->get();
+        // $permissions = DB::table('permissions')
+        //     ->select('name')
+        //     ->get();
+
+        $permissions = Permission::all();
+
 
         return view('root.permissions', compact('permissions'));
     }
 
-    public function addpermission(Request $request){
+    public function addpermission(Request $request)
+    {
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -34,18 +39,37 @@ class RootPermissionController extends Controller
 
 
         return response()->json(['message' => 'Permission create successfull!']);
+
+    }
+
+    public function deletepermission(Request $request){
+        $permissionID = $request->input('id');
+
+        $permission = Permission::find($permissionID);
+
+        if (!$permission) {
+            return response()->json(['error' => 'Permission not found'], 404);
+        }
+
+        $permission->delete();
+
+        return response()->json(['message' => 'Permission deleted successfully']);
     }
 
 
-    public function index3(){
-        $modules = DB::table('modules')
-            ->select('name')
-            ->get();
+    public function index3()
+    {
+        // $modules = DB::table('modules')
+        //     ->select('name')
+        //     ->get();
+
+        $modules = Module::all();
 
         return view('root.modules', compact('modules'));
     }
 
-    public function addmodule(Request $request){
+    public function addmodule(Request $request)
+    {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -56,6 +80,22 @@ class RootPermissionController extends Controller
         $module->save();
 
         return response()->json(['message' => 'Module create successfull!']);
+    }
+
+    public function deletemodule(Request $request)
+    {
+        $moduleID = $request->input('id');
+
+        $module = Module::find($moduleID);
+
+        if (!$module) {
+            return response()->json(['error' => 'Module not found'], 404);
+        }
+
+        $module->delete();
+
+        return response()->json(['message' => 'Module deleted successfully']);
+        // return redirect('root.modules');
     }
 
     public function index4()
