@@ -38,9 +38,11 @@ Route::get('/permissions/module-permission', [RootPermissionController::class, '
 Route::post('/save-module-permission', [RootPermissionController::class, 'save']);
 Route::get('/permissions/manage-permissions', [RootPermissionController::class, 'index2'])->name('root.permissions');
 Route::post('/save-permission', [RootPermissionController::class, 'addpermission']);
+Route::post('/delete-permission', [RootPermissionController::class, 'deletepermission']);
 
 Route::get('/permissions/manage-modules', [RootPermissionController::class, 'index3'])->name('root.modules');
 Route::post('/save-module', [RootPermissionController::class, 'addmodule']);
+Route::post('/delete-module', [RootPermissionController::class, 'deletemodule']);
 
 
 
