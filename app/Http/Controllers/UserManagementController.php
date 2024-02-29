@@ -188,16 +188,21 @@ class UserManagementController extends Controller
         return response()->json($admin);
     }
 
-
     public function updateAdmin(Request $request, $id)
     {
         $admin = User::find($id);
         $admin->name = $request->input('name');
         $admin->email = $request->input('email');
-        $admin->password = bcrypt($request->input('password'));
+
+        $password = $request->input('password');
+        if (!empty($password)) {
+            $admin->password = bcrypt($password);
+        }
+
         $admin->save();
         return response()->json(['message' => 'User details updated successfully']);
     }
+
 
 //User Management-Client Management----------------------------------------
     public function ClientManagementView(UserManagement $usermanagement)
