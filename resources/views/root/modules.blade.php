@@ -14,16 +14,32 @@
             <div class="d-flex justify-content-center">
                 <div class="w-50 justify-content-center">
                     <h3>Exisiting Modules</h3>
-                    <ul id="moduleList">
-                        @foreach ($modules as $module)
-                            <li>{{ $module->name }}</li>
-                        @endforeach
-                    </ul>
+                    <table>
+                        <td>
+                            <ul id="moduleList">
+                                @foreach ($modules as $module)
+                                    <li>{{ $module->name }}</li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <td id="moduleCheckBoxes">
+                            <ul type="none">
+                                @foreach ($modules as $module)
+                                    <li><input type="checkbox" name="" id="{{ $module->id }}"></li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <div>
+                            <button class="btn btn-danger float-end" id="modelDeleteBtn" title="Delete"><i id="deleteBtn"
+                                    class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </table>
                 </div>
+
             </div>
 
-
         </div>
+
     </div>
 
     <div class="container mt-4 col-12">
@@ -87,6 +103,8 @@
                         // Update the permission list without refreshing the page
                         $('#moduleList').append('<li>' + moduleName + '</li>');
                         $('#moduleName').val('');
+                        // Reload the page
+                        location.reload();
                     },
                     error: function(xhr, status, error) {
                         var errors = xhr.responseJSON.errors;
@@ -97,5 +115,55 @@
             });
         });
     </script>
+    {{-- //Delete Module --}}
+    <script>
+        //To Show Check Boxes
+        $('#moduleCheckBoxes').hide();
+
+
+        $(document).ready(function() {
+            $('#modelDeleteBtn').click(function() {
+                // Toggle visibility of checkboxes
+                $('#moduleCheckBoxes').toggle();
+            });
+        });
+
+        $(document).ready(function() {
+            $('#modelDeleteBtn').click(function() {
+                // Get the checked checkboxes
+                var checkedModules = $('input[type="checkbox"]:checked');
+
+                // Iterate over each checked checkbox
+                checkedModules.each(function() {
+                    var moduleId = $(this).attr('id');
+
+                    // Make an AJAX request to delete the module
+                    $.ajax({
+                        type: 'POST',
+                        url: '/delete-module', // Replace with your actual delete module endpoint
+                        data: {
+                            id: moduleId
+                        },
+                        success: function(response) {
+                            // Handle success, e.g., remove the deleted module from the UI
+                            $('#moduleList li:has(input[id="' + moduleId + '"])')
+                                .remove();
+
+                            // Reload the page
+                            location.reload();
+                        },
+                        error: function(error) {
+                            // Handle error
+                            console.error('Error deleting module: ', error);
+                        }
+                    });
+                });
+            });
+        });
+
+
+    </script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @endsection
