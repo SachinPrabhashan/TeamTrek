@@ -13,4 +13,9 @@ class SupportContract extends Model
         'user_id',
         'company_name',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

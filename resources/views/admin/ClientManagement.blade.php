@@ -15,6 +15,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
+
+
     <script>
         $(document).ready(function() {
             //tooltip
@@ -126,8 +128,10 @@
             $http.post('/add-Client', $scope.client)
                 .then(function(response) {
                     $scope.client = {};
+
                     ModalService.closeModal();
                     fetchUsers();
+
                     Swal.fire({
                     position: "center",
                     icon: "success",
@@ -145,6 +149,7 @@
             //Delete Client functions------------------------------------------------------------------
             $scope.openDeleteModal = function(clientId) {
                 $scope.clientToDeleteId = clientId;
+
                 $scope.openModal('#deleteClientModal');
             };
             //delete client
@@ -152,8 +157,12 @@
                 $http.delete('/delete-Client/' + $scope.clientToDeleteId)
                     .then(function(response) {
                         console.log("User deleted successfully");
+
+                        //location.reload();
+
                         ModalService.closeModal();
                         fetchUsers();
+
                         Swal.fire({
                         position: "center",
                         icon: "success",
@@ -192,8 +201,10 @@
                         console.error('Error updating user details:', error);
                     });
             };
-        });
-    </script>
+
+
+});
+</script>
     <div class="container col-12">
     <div class="bg-light rounded h-100 p-4">
         <div class="container-fluid" ng-app="clientApp" ng-controller="ClientController">
@@ -381,5 +392,5 @@
         </div>
 
     </div>
-    </div>
+    </div-->
 @endsection
