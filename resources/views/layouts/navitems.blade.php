@@ -69,16 +69,16 @@
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
                         @if (Auth::user()->role->id == 1)
-                            <img class="rounded-circle" src="{{ asset('img/root.png') }}" alt=""
+                            <img class="rounded-circle" src="{{ asset('img/root.gif') }}" alt=""
                                 style="width: 40px; height: 40px;">
                         @elseif(Auth::user()->role->id == 2)
-                            <img class="rounded-circle" src="{{ asset('img/admin.jpg') }}" alt=""
+                            <img class="rounded-circle" src="{{ asset('img/admin.gif') }}" alt=""
                                 style="width: 40px; height: 40px;">
                         @elseif(Auth::user()->role->id == 3)
-                            <img class="rounded-circle" src="{{ asset('img/employee.jpg') }}" alt=""
+                            <img class="rounded-circle" src="{{ asset('img/employee.gif') }}" alt=""
                                 style="width: 40px; height: 40px;">
                         @else
-                            <img class="rounded-circle" src="{{ asset('img/user.jpg') }}" alt=""
+                            <img class="rounded-circle" src="{{ asset('img/user.gif') }}" alt=""
                                 style="width: 40px; height: 40px;">
                         @endif
                         <div
@@ -252,16 +252,16 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             @if (Auth::user()->role->id == 1)
-                                <img class="rounded-circle me-lg-2" src="{{ asset('img/root.png') }}" alt=""
+                                <img class="rounded-circle me-lg-2" src="{{ asset('img/root.gif') }}" alt=""
                                     style="width: 40px; height: 40px;">
                             @elseif(Auth::user()->role->id == 2)
-                                <img class="rounded-circle me-lg-2" src="{{ asset('img/admin.jpg') }}"
+                                <img class="rounded-circle me-lg-2" src="{{ asset('img/admin.gif') }}"
                                     alt="" style="width: 40px; height: 40px;">
                             @elseif(Auth::user()->role->id == 3)
-                                <img class="rounded-circle me-lg-2" src="{{ asset('img/employee.jpg') }}"
+                                <img class="rounded-circle me-lg-2" src="{{ asset('img/employee.gif') }}"
                                     alt="" style="width: 40px; height: 40px;">
                             @else
-                                <img class="rounded-circle me-lg-2" src="{{ asset('img/user.jpg') }}" alt=""
+                                <img class="rounded-circle me-lg-2" src="{{ asset('img/user.gif') }}" alt=""
                                     style="width: 40px; height: 40px;">
                             @endif
                             <span class="d-none d-lg-inline-flex">{{ Auth::user()->name }}</span>
