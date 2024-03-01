@@ -30,7 +30,8 @@
                             </ul>
                         </td>
                         <div>
-                            <button class="btn btn-danger float-end" id="permissionDeleteBtn" title="Delete"><i
+                            <button class="btn btn-danger float-end" id="permissionDeleteBtn" data-toggle="tooltip"
+                                data-bs-placement="bottom" title="Delete Permissions"><i
                                     class="fa-solid fa-trash"></i></button>
                         </div>
                     </table>
@@ -58,6 +59,8 @@
 
         </div>
     </div>
+
+
 
     <script>
         $(document).ready(function() {

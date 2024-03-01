@@ -30,7 +30,7 @@
                             </ul>
                         </td>
                         <div>
-                            <button class="btn btn-danger float-end" id="modelDeleteBtn" title="Delete"><i id="deleteBtn"
+                            <button class="btn btn-danger float-end" id="modelDeleteBtn" data-toggle="tooltip" data-bs-placement="bottom" title="Delete Modules"><i id="deleteBtn"
                                     class="fa-solid fa-trash"></i></button>
                         </div>
                     </table>

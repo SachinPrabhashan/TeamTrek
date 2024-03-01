@@ -63,7 +63,7 @@
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
-                <a href="{{ route('dashboard.show')}}" class="navbar-brand mx-4 mb-3">
+                <a href="{{ route('dashboard.show') }}" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary">TeamTrek</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
@@ -103,10 +103,10 @@
                                     class="fa-solid fa-users me-2"></i>User Management</a>
                             <div class="dropdown-menu bg-transparent border-0">
                                 @Root
-                                <a href="{{ route('new.admins')}}" class="dropdown-item">Create Admin</a>
+                                    <a href="{{ route('new.admins') }}" class="dropdown-item">Create Admin</a>
                                 @endRoot
-                                <a href="{{ route('new.employee')}}" class="dropdown-item">Create Employee</a>
-                                <a href="{{ route('new.clients')}}" class="dropdown-item">Create Client</a>
+                                <a href="{{ route('new.employee') }}" class="dropdown-item">Create Employee</a>
+                                <a href="{{ route('new.clients') }}" class="dropdown-item">Create Client</a>
                             </div>
                         </div>
                     @endRootOrAdmin
@@ -116,7 +116,7 @@
                                 class="fa fa-laptop me-2"></i>Support Contract</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             @AdminOrEmployee
-                                <a href="{{ route('admin.ScHandling')}}" class="dropdown-item">SC Handling</a>
+                                <a href="{{ route('admin.ScHandling') }}" class="dropdown-item">SC Handling</a>
                                 <a href="#" class="dropdown-item">SC Instance Handling</a>
                                 @Admin
                                     <a href="#" class="dropdown-item">SC Access Granting</a>
@@ -142,9 +142,9 @@
                             @endAdminOrEmployee
                         </div>
                     </div>
-                        <a href="{{ route('myprofile') }}" class="nav-item nav-link"><i
-                                class="fa-solid fa-user me-2"></i></i>My
-                            Profile</a>
+                    <a href="{{ route('myprofile') }}" class="nav-item nav-link"><i
+                            class="fa-solid fa-user me-2"></i></i>My
+                        Profile</a>
 
                     @Root
                         <div class="nav-item dropdown">
@@ -272,7 +272,7 @@
 
                         </div>
                     </div>
-                    <div class="nav-item dropdown">
+                    <div class="nav-item dropdown" data-toggle="tooltip" data-bs-placement="right" title="Log Out">
                         <!-- Authentication Links -->
                         <ul class="navbar-nav ms-auto">
                             <!-- Authentication Links -->
@@ -380,6 +380,27 @@
         <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
 
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
+
+        <script>
+            $(document).ready(function() {
+                        //tooltip
+                        $("body").tooltip({
+                            selector: '[data-toggle=tooltip]'
+                        });
+
+                        $(".modal").each(function() {
+                            $(this).on("show.bs.modal", function() {
+                                var easeIn = $(this).data("easein");
+                                console.log("EaseIn value:", easeIn); // Log the value of easeIn variable
+                                if (easeIn) {
+                                    console.log("Adding animation class:",
+                                    easeIn); // Log that animation class is being added
+                                    $(this).find(".modal-dialog").addClass(" animated " + easeIn);
+                                }
+                            });
+                        })
+                    });
+        </script>
 </body>
 
 </html>
