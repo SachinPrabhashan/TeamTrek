@@ -30,7 +30,7 @@
                         <img width="48" height="48" src="https://img.icons8.com/fluency/48/customer-support.png" alt="customer-support"/>
                         <div class="ms-3">
                             <p class="mb-2">Support Contracts</p>
-                            <h6 class="mb-0">{{ DB::table('users')->where('role_id', 3)->COUNT(); }}</h6>
+                            <h6 class="mb-0">{{ DB::table('support_contracts')->COUNT(); }}</h6>
                         </div>
                     </div>
                 </div>
