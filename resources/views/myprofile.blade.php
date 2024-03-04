@@ -202,8 +202,14 @@
                                         <div class="col-sm-3">
                                             <h6 class="mb-0">New Password</h6>
                                         </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            <input type="password" class="form-control" id="newPassword" required>
+                                        <div class="col-sm-9 text-secondary" >
+                                            <div class="input-group mb-3" id="show_hide_password">
+                                                <input type="password" class="form-control" id="newPassword" required>
+                                                <span class="input-group-text" id="basic-addon2">
+                                                    <a href=""><i class="fa fa-eye-slash" style="color: #333"
+                                                            aria-hidden="true"></i></a></span>
+                                            </div>
+
                                         </div>
                                     </div>
                                     <div class="row mb-3">

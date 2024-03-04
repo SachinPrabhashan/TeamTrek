@@ -19,8 +19,10 @@
     <script>
         $(document).ready(function() {
             //tooltip
-            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
-         });
+            $("body").tooltip({
+                selector: '[data-toggle=tooltip]'
+            });
+        });
 
         var app = angular.module('userApp', []);
         //Handling modals-------------------------------------------------
@@ -102,42 +104,42 @@
 
             //Adding user-------------------------------------------------------------------------------
             $scope.submitUser = function() {
-            var enteredEmail = $scope.user.email;
-            var existingEmails = $('#example tbody td:nth-child(2)').map(function() {
-                return $(this).text();
-            }).get();
+                var enteredEmail = $scope.user.email;
+                var existingEmails = $('#example tbody td:nth-child(2)').map(function() {
+                    return $(this).text();
+                }).get();
 
-            if (existingEmails.includes(enteredEmail)) {
-                ModalService.closeModal();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'The email you entered is already in use!'
-                });
-                return;
-            }
-
-            var dob = moment($scope.user.dob, 'YYYY-MM-DD').format('YYYY-MM-DD');
-            $scope.user.dob = dob;
-
-            $http.post('/add-Emp', $scope.user)
-                .then(function(response) {
-                    console.log(response.data);
-                    $scope.user = {};
+                if (existingEmails.includes(enteredEmail)) {
                     ModalService.closeModal();
-                    fetchUsers();
                     Swal.fire({
-                    position: "top-middle",
-                    icon: "success",
-                    title: "An Employee Created Successfully!",
-                    showConfirmButton: false,
-                    timer: 1500
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'The email you entered is already in use!'
                     });
-                })
-                .catch(function(error) {
-                    console.error(error);
-                });
-        };
+                    return;
+                }
+
+                var dob = moment($scope.user.dob, 'YYYY-MM-DD').format('YYYY-MM-DD');
+                $scope.user.dob = dob;
+
+                $http.post('/add-Emp', $scope.user)
+                    .then(function(response) {
+                        console.log(response.data);
+                        $scope.user = {};
+                        ModalService.closeModal();
+                        fetchUsers();
+                        Swal.fire({
+                            position: "top-middle",
+                            icon: "success",
+                            title: "An Employee Created Successfully!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+                    .catch(function(error) {
+                        console.error(error);
+                    });
+            };
 
 
             // Function to open the modal
@@ -163,11 +165,11 @@
                         ModalService.closeModal();
                         fetchUsers();
                         Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "An Employee deleted Successfully!",
-                        showConfirmButton: false,
-                        timer: 1500
+                            position: "center",
+                            icon: "success",
+                            title: "An Employee deleted Successfully!",
+                            showConfirmButton: false,
+                            timer: 1500
                         });
                     })
                     .catch(function(error) {
@@ -219,7 +221,8 @@
                 <h1>Employee Management</h1>
                 <hr>
                 <div class="d-inline-block mx-1 float-end">
-                    <a href="#" ng-click="openModal('#addUserModal')"><button class="btn btn-primary"data-toggle="tooltip"data-bs-placement="bottom" title="Add Employee"><i
+                    <a href="#" ng-click="openModal('#addUserModal')"><button
+                            class="btn btn-primary"data-toggle="tooltip" data-bs-placement="bottom" title="Add Employee"><i
                                 class="fa-solid fa-user-plus"></i></button>
 
                     </a>
@@ -253,19 +256,25 @@
                                     <td>{{ $user->user_type }}</td>
                                     <td class="text-center">
                                         <div class="d-inline-block mx-1">
-                                            <a href="#" ng-click="openEditUserTypeModal('{{ $user->id }}')"data-toggle="tooltip"data-bs-placement="bottom" title="Edit Employee">
+                                            <a href="#"
+                                                ng-click="openEditUserTypeModal('{{ $user->id }}')"data-toggle="tooltip"
+                                                data-bs-placement="bottom" title="Edit Employee">
                                                 <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
                                             </a>
                                         </div>
 
                                         <div class="d-inline-block mx-1">
-                                            <a href="#" ng-click="openDeleteModal('{{ $user->id }}')"data-toggle="tooltip"data-bs-placement="bottom" title="Delete Employee">
+                                            <a href="#"
+                                                ng-click="openDeleteModal('{{ $user->id }}')"data-toggle="tooltip"
+                                                data-bs-placement="bottom" title="Delete Employee">
                                                 <i class="fa-solid fa-trash" style="color: red;"></i>
                                             </a>
                                         </div>
                                         <div class="d-inline-block mx-1">
                                             <a href="#">
-                                                <i class="fa-solid fa-circle-info" style="color: black;"data-toggle="tooltip"data-bs-placement="bottom" title="Disable Employee"></i>
+                                                <i class="fa-solid fa-circle-info"
+                                                    style="color: black;"data-toggle="tooltip" data-bs-placement="bottom"
+                                                    title="Disable Employee"></i>
                                             </a>
                                         </div>
                                     </td>
@@ -321,8 +330,8 @@
                                         </div><br>
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="text" class="form-control" id="phone" ng-model="user.phone"
-                                                placeholder="Enter phone number">
+                                            <input type="text" class="form-control" id="phone"
+                                                ng-model="user.phone" placeholder="Enter phone number">
                                         </div><br>
                                         <div class="form-group">
                                             <label for="role">Role ID</label>
@@ -344,8 +353,14 @@
                                         </div><br>
                                         <div class="form-group">
                                             <label for="password">Password</label>
-                                            <input type="password" class="form-control" id="password"
-                                                ng-model="user.password" placeholder="Enter password">
+                                            <div class="input-group mb-3" id="show_hide_password">
+                                                <input type="password" class="form-control" id="password"
+                                                    ng-model="user.password" placeholder="Enter password">
+                                                <span class="input-group-text" id="basic-addon2">
+                                                    <a href=""><i class="fa fa-eye-slash" style="color: #333"
+                                                            aria-hidden="true"></i></a></span>
+                                            </div>
+
                                         </div>
                                         <br>
                                         <button type="submit" class="btn btn-success btn-sm">Submit</button>
