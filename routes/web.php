@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\RoleViewController;
 use App\Http\Controllers\SupportContractController;
+use App\Http\Controllers\SupportContractInstanceController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -79,6 +80,11 @@ Route::get('/emp-rates/{userId}', [UserManagementController::class,'getEmpRates'
     //Support Contract Handling
 Route::get('/admin-ScHandling',[SupportContractController::class,'ScIndex'])->name('admin.ScHandling');
 Route::post('/add-support-contract', [SupportContractController::class, 'addSC'])->name('support-contracts.add');
+Route::put('/support-contracts/update/{id}', [SupportContractController::class,'updateSC'])->name('support-contracts.update');
+
+    //Support Contract Instance Handling
+Route::get('/admin-ScInstance',[SupportContractInstanceController::class,'ScInstanceIndex'])->name('admin.ScInstance');
+Route::post('/support-contract-instances-create', [SupportContractInstanceController::class, 'addScInstances'])->name('support-contract-instances.add');
 
 
 //All Users
