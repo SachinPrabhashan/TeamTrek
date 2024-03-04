@@ -18,10 +18,12 @@
     <link href="{{ asset('css/modal.css') }}" rel="stylesheet">
 
     <script>
-         $(document).ready(function() {
+        $(document).ready(function() {
             //tooltip
-            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
-         });
+            $("body").tooltip({
+                selector: '[data-toggle=tooltip]'
+            });
+        });
 
 
         var app = angular.module('adminApp', []);
@@ -107,37 +109,37 @@
 
 
             $scope.submitAdmin = function() {
-            var enteredEmail = $scope.admin.email;
-            var existingEmails = $('#example tbody td:nth-child(3)').map(function() {
-                return $(this).text();
-            }).get();
+                var enteredEmail = $scope.admin.email;
+                var existingEmails = $('#example tbody td:nth-child(3)').map(function() {
+                    return $(this).text();
+                }).get();
 
-            if (existingEmails.includes(enteredEmail)) {
-                ModalService.closeModal();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'The email you entered is already in use!'
-                });
-                return;
-            }
-            $http.post('/add-Admin', $scope.admin)
-                .then(function(response) {
-                    $scope.admin = {};
+                if (existingEmails.includes(enteredEmail)) {
                     ModalService.closeModal();
-                    fetchUsers();
                     Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "An Admin Created Successfully!",
-                    showConfirmButton: false,
-                    timer: 1500
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'The email you entered is already in use!'
                     });
-                })
-                .catch(function(error) {
-                    console.error('Error:', error);
-                });
-        };
+                    return;
+                }
+                $http.post('/add-Admin', $scope.admin)
+                    .then(function(response) {
+                        $scope.admin = {};
+                        ModalService.closeModal();
+                        fetchUsers();
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "An Admin Created Successfully!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+                    .catch(function(error) {
+                        console.error('Error:', error);
+                    });
+            };
 
 
             //Delete Employee functions------------------------------------------------------------------
@@ -153,11 +155,11 @@
                         ModalService.closeModal();
                         fetchUsers();
                         Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "An Admin deleted Successfully!",
-                        showConfirmButton: false,
-                        timer: 1500
+                            position: "center",
+                            icon: "success",
+                            title: "An Admin deleted Successfully!",
+                            showConfirmButton: false,
+                            timer: 1500
                         });
                     })
                     .catch(function(error) {
@@ -198,14 +200,15 @@
                 <h1>Admin Management</h1>
                 <hr>
                 <div class="d-inline-block mx-1 float-end">
-                    <a href="#" ng-click="openModal('#addAdminModal')"><button class="btn btn-primary"data-toggle="tooltip"data-bs-placement="bottom" title="Create Admin">
-                        <i class="fa-solid fa-user-plus"></i></button>
+                    <a href="#" ng-click="openModal('#addAdminModal')"><button
+                            class="btn btn-primary"data-toggle="tooltip" data-bs-placement="bottom" title="Create Admin">
+                            <i class="fa-solid fa-user-plus"></i></button>
                     </a>
                 </div>
                 <br>
                 <br>
                 <div>
-                    <table id="example" class="table table-bordered"  width="108%">
+                    <table id="example" class="table table-bordered" width="108%">
                         <thead>
                             <tr>
                                 <th>Role ID</th>
@@ -222,18 +225,23 @@
                                     <td>{{ $admin->email }}</td>
                                     <td class="text-center">
                                         <div class="d-inline-block mx-1">
-                                            <a href="#" ng-click="openEditAdminModal('{{ $admin->id }}')"data-toggle="tooltip"data-bs-placement="bottom" title="Edit Admin">
+                                            <a href="#"
+                                                ng-click="openEditAdminModal('{{ $admin->id }}')"data-toggle="tooltip"
+                                                data-bs-placement="bottom" title="Edit Admin">
                                                 <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
                                             </a>
                                         </div>
 
                                         <div class="d-inline-block mx-1">
-                                            <a href="#" ng-click="openDeleteModal('{{ $admin->id }}')"data-toggle="tooltip"data-bs-placement="bottom" title="Delete Admin">
+                                            <a href="#"
+                                                ng-click="openDeleteModal('{{ $admin->id }}')"data-toggle="tooltip"
+                                                data-bs-placement="bottom" title="Delete Admin">
                                                 <i class="fa-solid fa-trash" style="color: red;"></i>
                                             </a>
                                         </div>
                                         <div class="d-inline-block mx-1">
-                                            <a href="#"data-toggle="tooltip"data-bs-placement="bottom" title="Disable Admin">
+                                            <a href="#"data-toggle="tooltip" data-bs-placement="bottom"
+                                                title="Disable Admin">
                                                 <i class="fa-solid fa-circle-info" style="color: black;"></i>
                                             </a>
                                         </div>
@@ -252,7 +260,7 @@
                             <div class="card text-dark bg-light">
                                 <div class="modal-header">
                                     <h5 class="modal-title text-dark" id="exampleModalLabel">Add Admins</h5>
-                                    <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+                                    <button type="button" class="btn-close" aria-label="Close" ng-click="closeModal()">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
@@ -279,8 +287,14 @@
                                         </div><br>
                                         <div class="form-group">
                                             <label for="password">Password</label>
-                                            <input type="password" class="form-control" id="password"
+                                            <div  class="input-group mb-3" id="show_hide_password">
+                                                <input type="password" class="form-control" id="password"
                                                 ng-model="admin.password" placeholder="Enter password">
+                                            <span class="input-group-text" id="basic-addon2">
+                                                <a href=""><i class="fa fa-eye-slash" style="color: #333"
+                                                        aria-hidden="true"></i></a></span>
+                                            </div>
+
                                         </div>
                                         <br>
                                         <div class="float-end">

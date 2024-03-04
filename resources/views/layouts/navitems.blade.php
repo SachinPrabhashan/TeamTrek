@@ -383,23 +383,41 @@
 
         <script>
             $(document).ready(function() {
-                        //tooltip
-                        $("body").tooltip({
-                            selector: '[data-toggle=tooltip]'
-                        });
+                //tooltip
+                $("body").tooltip({
+                    selector: '[data-toggle=tooltip]'
+                });
 
-                        $(".modal").each(function() {
-                            $(this).on("show.bs.modal", function() {
-                                var easeIn = $(this).data("easein");
-                                console.log("EaseIn value:", easeIn); // Log the value of easeIn variable
-                                if (easeIn) {
-                                    console.log("Adding animation class:",
-                                    easeIn); // Log that animation class is being added
-                                    $(this).find(".modal-dialog").addClass(" animated " + easeIn);
-                                }
-                            });
-                        })
+                $(".modal").each(function() {
+                    $(this).on("show.bs.modal", function() {
+                        var easeIn = $(this).data("easein");
+                        console.log("EaseIn value:", easeIn); // Log the value of easeIn variable
+                        if (easeIn) {
+                            console.log("Adding animation class:",
+                                easeIn); // Log that animation class is being added
+                            $(this).find(".modal-dialog").addClass(" animated " + easeIn);
+                        }
                     });
+                })
+            });
+        </script>
+
+        <script>
+            // Show and Hide Password from Password Feild
+            $(document).ready(function() {
+                $("#show_hide_password a").on('click', function(event) {
+                    event.preventDefault();
+                    if ($('#show_hide_password input').attr("type") == "text") {
+                        $('#show_hide_password input').attr('type', 'password');
+                        $('#show_hide_password i').addClass("fa-eye-slash");
+                        $('#show_hide_password i').removeClass("fa-eye");
+                    } else if ($('#show_hide_password input').attr("type") == "password") {
+                        $('#show_hide_password input').attr('type', 'text');
+                        $('#show_hide_password i').removeClass("fa-eye-slash");
+                        $('#show_hide_password i').addClass("fa-eye");
+                    }
+                });
+            });
         </script>
 </body>
 
