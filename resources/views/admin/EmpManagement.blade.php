@@ -348,7 +348,7 @@
                                         </div><br>
                                         <div class="form-group">
                                             <label for="hourly_charge">Hourly Charge</label>
-                                            <input type="number" step="0.01" class="form-control" id="hourly_charge"
+                                            <input type="number" step="100" class="form-control" id="hourly_charge"
                                                 ng-model="user.hourly_charge" placeholder="Enter hourly charge">
                                         </div><br>
                                         <div class="form-group">

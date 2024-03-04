@@ -45,30 +45,24 @@ class SupportContractController extends Controller
 
     public function updateSC(Request $request, $id)
     {
-        // Validate the incoming request data
         $request->validate([
             'company_name' => 'required',
             'name' => 'required',
         ]);
 
-        // Find the support contract by ID
         $supportContract = SupportContract::findOrFail($id);
 
-        // Find the user by company name (assuming company_name is unique)
         $user = User::where('name', $request->input('company_name'))->first();
 
-        // If user is not found, return an error response
         if (!$user) {
             return response()->json(['error' => 'User not found for company name: ' . $request->input('company_name')], 404);
         }
 
-        // Update the support contract data
         $supportContract->user_id = $user->id;
         $supportContract->name = $request->input('name');
         $supportContract->company_name = $request->input('company_name');
         $supportContract->save();
 
-        // Return a success response
         return response()->json(['message' => 'Support contract updated successfully', 'support_contract' => $supportContract]);
     }
 
