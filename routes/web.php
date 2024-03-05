@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\RoleViewController;
+use App\Http\Controllers\SCTaskMonitorController;
 use App\Http\Controllers\SupportContractController;
 use App\Http\Controllers\SupportContractInstanceController;
 use Illuminate\Support\Facades\Auth;
@@ -87,6 +88,9 @@ Route::get('/admin-ScInstance',[SupportContractInstanceController::class,'ScInst
 Route::post('/support-contract-instances-create', [SupportContractInstanceController::class, 'addScInstances'])->name('support-contract-instances.add');
 Route::get('/get-support-contract-instances/{contractId}', [SupportContractInstanceController::class,'getSupportContractInstances']);
 
+
+    //SC task monitor
+Route::get('/support-contract/sc-task-monitor', [SCTaskMonitorController::class, 'index'])->name('scTaskMonitor');
 
 //All Users
 Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');

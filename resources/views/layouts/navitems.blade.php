@@ -121,7 +121,7 @@
                                 @Admin
                                     <a href="#" class="dropdown-item">SC Access Granting</a>
                                 @endAdmin
-                                <a href="#" class="dropdown-item">SC Task Monitor</a>
+                                <a href="{{ route('scTaskMonitor') }}" class="dropdown-item">SC Task Monitor</a>
                                 <a href="#" class="dropdown-item">SC Reports</a>
                             @endAdminOrEmployee
                             @Client
