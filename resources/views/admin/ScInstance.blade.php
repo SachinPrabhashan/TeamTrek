@@ -13,27 +13,37 @@
 <link href="{{ asset('css/modal.css') }}" rel="stylesheet">
 <script>
     $(document).ready(function() {
-        // Show form when "Create Support Contract Instance" button is clicked
+        //Form display and toggle functions
+        $('#createSupportContractInstanceForm').hide();
+
         $('#addSupportContractInstanceBtn').click(function() {
             $('#createSupportContractInstanceForm').toggle();
+            $('#supportContractInstanceTable').toggle();
+            $('#supportContractInstanceForm')[0].reset();
+
         });
 
-        // Close form when "Close" button is clicked
         $('#closeFormBtn').click(function() {
             $('#createSupportContractInstanceForm').hide();
-            // Optionally, reset form fields here
+            $('#supportContractInstanceTable').show();
+            $('#supportContractInstanceForm')[0].reset();
+
         });
 
-        
         // Handle form submission
         $('#supportContractInstanceForm').submit(function(event) {
             event.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
             var formData = $(this).serialize();
 
             $.ajax({
                 type: 'POST',
-                url: '/your-endpoint-url',
+                url: '/support-contract-instances-create',
                 data: formData,
                 success: function(response) {
                     Swal.fire({
@@ -43,18 +53,99 @@
                     });
 
                     $('#createSupportContractInstanceForm').hide();
+                    $('#supportContractInstanceForm')[0].reset();
+                    $('#supportContractInstanceTable').show();
                 },
                 error: function(xhr, status, error) {
+                    $('#createSupportContractInstanceForm').hide();
+                    var errorMessage = xhr.responseJSON.error;
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'An error occurred while creating the Support Contract Instance. Please try again later.'
+                        text: errorMessage
                     });
+                    $('#createSupportContractInstanceForm').hide();
+                    $('#supportContractInstanceForm')[0].reset();
+                    $('#supportContractInstanceTable').show();
                 }
+
             });
         });
+
+    // Function to load support contract instance data based on the selected contract
+    function loadSupportContractInstanceData(contractId) {
+    $.ajax({
+        type: 'GET',
+        url: '/get-support-contract-instances/' + contractId,
+        success: function(response) {
+            console.log(response); // Log the response to inspect its structure
+
+            // Clear existing table rows and headings
+            $('#supportContractInstanceTable thead').empty();
+            $('#supportContractInstanceTable tbody').empty();
+
+            // Add table headings
+            var tableHeadings = '<tr>' +
+                '<th>Support Contract</th>' +
+                '<th>Year</th>' +
+                '<th>Owner</th>' +
+                '<th>Development Hours</th>' +
+                '<th>Engineering Hours</th>' +
+                '<th>Development Rate per Hour</th>' +
+                '<th>Engineering Rate per Hour</th>' +
+                '</tr>';
+            $('#supportContractInstanceTable thead').append(tableHeadings);
+
+            // Check if instances array is not empty
+            if (response.instances.length > 0) {
+                // Loop through instances and populate the table
+                $.each(response.instances, function(index, instance) {
+                    // Get payment details for this instance
+                    var paymentDetails = response.paymentDetails[instance.id];
+
+                    // Create table row with instance data and payment details
+                    var row = '<tr>' +
+                        '<td>' + instance.support_contract_id + '</td>' +
+                        '<td>' + instance.year + '</td>' +
+                        '<td>' + instance.owner + '</td>' +
+                        '<td>' + instance.dev_hours + '</td>' +
+                        '<td>' + instance.eng_hours + '</td>' +
+                        '<td>' + paymentDetails.devRate + '</td>' +
+                        '<td>' + paymentDetails.engRate + '</td>' +
+                        '</tr>';
+                    $('#supportContractInstanceTable tbody').append(row);
+                });
+            } else {
+                // Display a message if there are no instances
+                $('#supportContractInstanceTable tbody').append('<tr><td colspan="7">No data available</td></tr>');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log(error); // Log the error
+            // Handle error
+        }
     });
+}
+
+
+// Initial retrieval of support contract instances for the selected contract
+var initialContractId = $('#selectSupportContract').val();
+console.log("Initial contract ID:", initialContractId); // Log the initial contract ID
+loadSupportContractInstanceData(initialContractId);
+
+// Handle dropdown change event
+$('#selectSupportContract').change(function() {
+    var selectedContractId = $(this).val();
+    console.log("Selected contract ID:", selectedContractId); // Log the selected contract ID
+    loadSupportContractInstanceData(selectedContractId);
+});
+
+
+
+});
 </script>
+
+
 
 <div class="container col-12">
     <div class="bg-light rounded h-100 p-4">
@@ -65,11 +156,37 @@
                 <button class="btn btn-primary" id="addSupportContractInstanceBtn"data-toggle="tooltip"data-bs-placement="bottom" title="Create Support Contract Instance">
                     <i class="fa-solid fa-folder-plus"></i>
                 </button>
-                <button class="btn btn-info" id="checkSupportContractInstances"data-toggle="tooltip"data-bs-placement="bottom" title="Check Support Contract Instances">
-                    <i class="fa-solid fa-eye"></i>
-                </button>
             </div>
             <br>
+             <!-- Table for displaying support contract instances -->
+             <div id="supportContractInstanceTable">
+                <div class="rolebtn bg-light rounded h-100 p-4">
+                    <!--label for="selectSupportContract" class="form-label">Select Support Contract:</label-->
+                    <select class="btn btn-secondary dropdown-toggle" id="selectSupportContract">
+                        <!-- Populate dropdown options with existing support contracts -->
+                        @foreach($supportcontracts as $contract)
+                            <option value="{{ $contract->id }}">{{ $contract->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <table class="table table-bordered"  width="108%" id="supportContractInstanceData"><!--table id="example"-->
+                    <thead>
+                        <tr>
+                            <th>Support Contract</th>
+                            <th>Year</th>
+                            <th>Owner</th>
+                            <th>Development Hours</th>
+                            <th>Engineering Hours</th>
+                            <th>Development Rate per Hour</th>
+                            <th>Engineering Rate per Hour</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+
             <!-- Form for creating support contract instances -->
             <div id="createSupportContractInstanceForm" style="display: none;">
                 <h4>Create Support Contract Instance</h4>
@@ -93,7 +210,7 @@
                             <option value="">Select Owner</option>
                             @foreach($users as $user)
                                 @if($user->role_id == 3)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    <option value="{{ $user->name }}">{{ $user->name }}</option>
                                 @endif
                             @endforeach
                         </select>
@@ -101,11 +218,11 @@
 
                     <div class="mb-3">
                         <label for="dev_hours" class="form-label">Development Hours:</label>
-                        <input type="number" class="form-control" id="dev_hours" name="dev_hours" value="0">
+                        <input type="number" class="form-control" id="dev_hours" name="dev_hours" value="10">
                     </div>
                     <div class="mb-3">
                         <label for="eng_hours" class="form-label">Engineering Hours:</label>
-                        <input type="number" class="form-control" id="eng_hours" name="eng_hours" value="0">
+                        <input type="number" class="form-control" id="eng_hours" name="eng_hours" value="10">
                     </div>
                     <div class="mb-3">
                         <label for="dev_rate" class="form-label">Development Rate per Hour:</label>
@@ -119,8 +236,6 @@
                     <button type="submit" class="btn btn-primary btn-sm">Create</button>
                 </form>
             </div>
-
-
         </div>
     </div>
 </div>
