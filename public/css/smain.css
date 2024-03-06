@@ -125,3 +125,10 @@ mark {
 .dark-color {
     color: var(--maincolor);
 }
+
+
+.taskviewtb td label{
+    padding-right: 1em;
+    margin: 1em;
+    width: 7em;
+}

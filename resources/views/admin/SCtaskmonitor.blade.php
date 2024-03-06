@@ -315,25 +315,37 @@
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4">
 
-            <div class="rolebtn bg-light rounded h-100 p-4">
+            <h1>Support Contract Task Monitor</h1>
+            <hr>
+            <div class="float-end">
+                @RootOrAdmin
+                    <button class="btn btn-primary" id="addSupportContractTaskBtn" data-toggle="tooltip" data-bs-placement="bottom"
+                        title="Create SC Tasks">
+                        <i class="fa-solid fa-folder-plus"></i>
+                    </button>
+                @endRootOrAdmin
+            </div>
+
+            {{-- <div class="rolebtn bg-light rounded h-100 p-4">
                 <label for="">Choose Support Contract Instance:</label>
                     <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContract">
-                        @foreach($supportcontracts as $contract)
+                        @foreach ($supportcontracts as $contract)
                             <option value="{{ $contract->id }}">{{ $contract->name }}</option>
                         @endforeach
                     </select>
                     <select class="btn btn-secondary dropdown-toggle" id="selectSupportContract">
-                        @foreach($supportcontractinstances->unique('year') as $instance)
+                        @foreach ($supportcontractinstances->unique('year') as $instance)
                             <option value="{{ $instance->year }}">{{ $instance->year }}</option>
                         @endforeach
                     </select>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col-lg-4">
                     <div class="card card-margin">
                         <div class="card-header no-border">
                             <h5 class="card-title">SPC Support Contact</h5>
+                            <hr>
                         </div>
                         <div class="card-body pt-0">
                             <div class="widget-49">
@@ -353,194 +365,125 @@
                                     </li>
                                 </ol>
                                 <div class="widget-49-meeting-action">
-                                    <a href="#" class="btn btn-sm btn-flash-border-primary">View All</a>
+                                    <a href="#" class="btn btn-sm btn-flash-border-primary" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">View All</a>
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {{-- <div class="col-lg-4">
-                    <div class="card card-margin">
-                        <div class="card-header no-border">
-                            <h5 class="card-title">SPC Support Contact</h5>
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="widget-49">
-                                <div class="widget-49-title-wrapper">
-                                    <div class="widget-49-date-primary">
-                                        <span class="widget-49-date-day">21</span>
-                                        <span class="widget-49-date-month">apr</span>
-                                    </div>
-                                    <div class="widget-49-meeting-info">
-                                        <span class="widget-49-pro-title">Revert to Regular Promotion Banner</span>
-                                        <span class="widget-49-meeting-time">10:00 to 10.15 Hrs</span>
-                                    </div>
-                                </div>
-                                <ol class="widget-49-meeting-points">
-                                    <li class="widget-49-meeting-item"><span>Update Banner on Home Page</span></li>
-                                    <li class="widget-49-meeting-item"><span>Background Overlay Update</span></li>
-                                    </li>
-                                </ol>
-                                <div class="widget-49-meeting-action">
-                                    <a href="#" class="btn btn-sm btn-flash-border-primary">View All</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="card card-margin">
-                        <div class="card-header no-border">
-                            <h5 class="card-title">SPC Support Contact</h5>
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="widget-49">
-                                <div class="widget-49-title-wrapper">
-                                    <div class="widget-49-date-primary">
-                                        <span class="widget-49-date-day">01</span>
-                                        <span class="widget-49-date-month">may</span>
-                                    </div>
-                                    <div class="widget-49-meeting-info">
-                                        <span class="widget-49-pro-title">Wesak banner</span>
-                                        <span class="widget-49-meeting-time">10:00 to 10.15 Hrs</span>
-                                    </div>
-                                </div>
-                                <ol class="widget-49-meeting-points">
-                                    <li class="widget-49-meeting-item"><span>Update Banner on Home Page</span></li>
-                                    </li>
-                                </ol>
-                                <div class="widget-49-meeting-action">
-                                    <a href="#" class="btn btn-sm btn-flash-border-primary">View All</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="card card-margin">
-                        <div class="card-header no-border">
-                            <h5 class="card-title">SPC Support Contact</h5>
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="widget-49">
-                                <div class="widget-49-title-wrapper">
-                                    <div class="widget-49-date-primary">
-                                        <span class="widget-49-date-day">25</span>
-                                        <span class="widget-49-date-month">may</span>
-                                    </div>
-                                    <div class="widget-49-meeting-info">
-                                        <span class="widget-49-pro-title">Revert Regular Banner</span>
-                                        <span class="widget-49-meeting-time">10:00 to 10.15 Hrs</span>
-                                    </div>
-                                </div>
-                                <ol class="widget-49-meeting-points">
-                                    <li class="widget-49-meeting-item"><span>Update Banner on Home Page</span></li>
-                                    </li>
-                                </ol>
-                                <div class="widget-49-meeting-action">
-                                    <a href="#" class="btn btn-sm btn-flash-border-primary">View All</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
             </div>
 
+
+            <!-- Task View All Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="width: 100%;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Task Overview</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="taskviewtb">
+                                <tr>
+                                    <td><label for=""><b>Client :</b></label></td>
+                                    <td>
+                                        <p>SPC</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for=""><b>Contract :</b></label></td>
+                                    <td>
+                                        <p>SPC Support Contact</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for=""><b>Description :</b></label></td>
+                                    <td>
+                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam aperiam dolores
+                                            vel, sunt nam, fuga ab rerum reprehenderit illum animi labore, quis assumenda
+                                            nihil quia laborum veritatis officiis expedita libero!</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for=""><b>Handle by :</b></label></td>
+                                    <td>
+                                        <p>Emp 01</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for=""><b>Created on :</b></label></td>
+                                    <td>
+                                        <p>1st April 2024</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for=""><b>Created by :</b></label></td>
+                                    <td>
+                                        <p>Admin 01</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                        </div>
+                        <div class="modal-body">
+                            <button type="button" class="btn btn-danger btn-sm float-end"
+                                data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Modal -->
+            <div class="modal fade" id="addSupportContractTaskModal" data-easein="flipYin" tabindex="-1"
+                aria-labelledby="addSupportContractModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addSupportContractModalLabel">Create Support Contract</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addSupportContractForm">
+                                <div class="mb-3">
+                                    <label for="company_name" class="form-label"><b>Company Name</b></label>
+                                    <select class="form-select" id="company_name" name="company_name">
+                                        <option value="">Select Company</option>
+
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label"><b>Support Contract</b></label>
+                                    <input type="text" class="form-control" id="sc" name="sc" >
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label"><b>Task</b></label>
+                                    <input type="text" class="form-control" id="task" name="task" >
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label"><b>Description</b></label>
+                                    <input type="text" class="form-control" id="description" name="description" >
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success btn-sm" id="submitSupportContract">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    {{-- <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="card card-margin">
-                    <div class="card-header no-border">
-                        <h5 class="card-title">MOM</h5>
-                    </div>
-                    <div class="card-body pt-0">
-                        <div class="widget-49">
-                            <div class="widget-49-title-wrapper">
-                                <div class="widget-49-date-primary">
-                                    <span class="widget-49-date-day">09</span>
-                                    <span class="widget-49-date-month">apr</span>
-                                </div>
-                                <div class="widget-49-meeting-info">
-                                    <span class="widget-49-pro-title">PRO-08235 DeskOpe. Website</span>
-                                    <span class="widget-49-meeting-time">12:00 to 13.30 Hrs</span>
-                                </div>
-                            </div>
-                            <ol class="widget-49-meeting-points">
-                                <li class="widget-49-meeting-item"><span>Expand module is removed</span></li>
-                                <li class="widget-49-meeting-item"><span>Data migration is in scope</span></li>
-                                <li class="widget-49-meeting-item"><span>Session timeout increase to 30 minutes</span></li>
-                            </ol>
-                            <div class="widget-49-meeting-action">
-                                <a href="#" class="btn btn-sm btn-flash-border-primary">View All</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card card-margin">
-                    <div class="card-header no-border">
-                        <h5 class="card-title">MOM</h5>
-                    </div>
-                    <div class="card-body pt-0">
-                        <div class="widget-49">
-                            <div class="widget-49-title-wrapper">
-                                <div class="widget-49-date-danger">
-                                    <span class="widget-49-date-day">13</span>
-                                    <span class="widget-49-date-month">apr</span>
-                                </div>
-                                <div class="widget-49-meeting-info">
-                                    <span class="widget-49-pro-title">PRO-08235 Lexa Corp.</span>
-                                    <span class="widget-49-meeting-time">12:00 to 13.30 Hrs</span>
-                                </div>
-                            </div>
-                            <ol class="widget-49-meeting-points">
-                                <li class="widget-49-meeting-item"><span>Scheming module is removed</span></li>
-                                <li class="widget-49-meeting-item"><span>App design contract confirmed</span></li>
-                                <li class="widget-49-meeting-item"><span>Client request to send invoice</span></li>
-                            </ol>
-                            <div class="widget-49-meeting-action">
-                                <a href="#" class="btn btn-sm btn-flash-border-warning">View All</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card card-margin">
-                    <div class="card-header no-border">
-                        <h5 class="card-title">MOM</h5>
-                    </div>
-                    <div class="card-body pt-0">
-                        <div class="widget-49">
-                            <div class="widget-49-title-wrapper">
-                                <div class="widget-49-date-success">
-                                    <span class="widget-49-date-day">22</span>
-                                    <span class="widget-49-date-month">apr</span>
-                                </div>
-                                <div class="widget-49-meeting-info">
-                                    <span class="widget-49-pro-title">PRO-027865 Opera module</span>
-                                    <span class="widget-49-meeting-time">12:00 to 13.30 Hrs</span>
-                                </div>
-                            </div>
-                            <ol class="widget-49-meeting-points">
-                                <li class="widget-49-meeting-item"><span>Scope is revised and updated</span></li>
-                                <li class="widget-49-meeting-item"><span>Time-line has been changed</span></li>
-                                <li class="widget-49-meeting-item"><span>Received approval to start wire-frame</span></li>
-                            </ol>
-                            <div class="widget-49-meeting-action">
-                                <a href="#" class="btn btn-sm btn-flash-border-success">View All</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
+    <script>
+        //Open the Task Create modal
+        $('#addSupportContractTaskBtn').click(function() {
+            $('#addSupportContractTaskModal').modal('show');
+        });
+    </script>
 @endsection
