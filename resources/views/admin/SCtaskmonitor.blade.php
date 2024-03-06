@@ -326,7 +326,7 @@
                 @endRootOrAdmin
             </div>
 
-            {{-- <div class="rolebtn bg-light rounded h-100 p-4">
+            <div class="rolebtn bg-light rounded h-100 p-4">
                 <label for="">Choose Support Contract Instance:</label>
                     <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContract">
                         @foreach ($supportcontracts as $contract)
@@ -338,7 +338,7 @@
                             <option value="{{ $instance->year }}">{{ $instance->year }}</option>
                         @endforeach
                     </select>
-            </div> --}}
+            </div>
 
             <div class="row">
                 <div class="col-lg-4">
