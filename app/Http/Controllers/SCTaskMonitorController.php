@@ -11,10 +11,11 @@ class SCTaskMonitorController extends Controller
 {
     public function index(){
 
-        $supportcontracts=SupportContract::All();
-        $supportcontractinstances= SupportContractInstance::All();
-        $users=User::All();
+        // $supportcontracts=SupportContract::All();
+        // $supportcontractinstances= SupportContractInstance::All();
+        // $users=User::All();
 
-        return view('admin.SCtaskmonitor',compact('supportcontractinstances','users','supportcontracts'));
+        // return view('admin.SCtaskmonitor',compact('supportcontractinstances','users','supportcontracts'));
+        return view('admin.SCtaskmonitor');
     }
 }
