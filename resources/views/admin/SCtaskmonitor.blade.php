@@ -317,16 +317,16 @@
 
             <div class="rolebtn bg-light rounded h-100 p-4">
                 <label for="">Choose Support Contract Instance:</label>
-                <!--label for="selectSupportContract" class="form-label">Select Support Contract:</label-->
-                <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContract">
-                    <!-- Populate dropdown options with existing support contracts -->
-                    <option value="">SPC Support Contract</option>
-                </select>
-                <select class="btn btn-secondary dropdown-toggle" id="selectSupportContract">
-                    <!-- Populate dropdown options with existing support contracts -->
-                    <option value="">2024</option>
-                </select>
-
+                    <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContract">
+                        @foreach($supportcontracts as $contract)
+                            <option value="{{ $contract->id }}">{{ $contract->name }}</option>
+                        @endforeach
+                    </select>
+                    <select class="btn btn-secondary dropdown-toggle" id="selectSupportContract">
+                        @foreach($supportcontractinstances->unique('year') as $instance)
+                            <option value="{{ $instance->year }}">{{ $instance->year }}</option>
+                        @endforeach
+                    </select>
             </div>
 
             <div class="row">
