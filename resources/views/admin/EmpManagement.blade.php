@@ -2,7 +2,157 @@
 
 @section('content')
     <style>
+        body{
+    background:#eee;
+    margin-top:20px;}
 
+
+.team {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.team .team-content {
+    position: absolute;
+    bottom: 25px;
+    margin: 0 20px;
+    left: 0;
+    right: 0;
+}
+
+.team .team-content-inner {
+    background-color: #ffffff;
+    padding: 20px 20px;
+    width: 100%;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.team .team-content-inner .team-social {
+    margin-left: auto;
+}
+
+.team .team-content-inner .team-social .nav .nav-link {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.team .team-content-inner .team-contact {
+    opacity: 0;
+    position: absolute;
+    bottom: 0px;
+    left: 20px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.team:hover .team-content-inner {
+    background-color: #009CFF;
+    color: #ffffff;
+    padding: 20px 20px 90px;
+}
+
+.team:hover .team-content-inner .team-info .team-position {
+    color: #ffffff;
+}
+
+.team:hover .team-content-inner .team-contact {
+    opacity: 1;
+    bottom: 20px;
+}
+
+.team:hover .team-content-inner .team-contact .nav .nav-link {
+    color: #ffffff;
+}
+
+.team:hover .team-content-inner .team-contact .nav .nav-link:hover {
+    color: #000000;
+}
+
+.team:hover .team-content-inner .team-social .nav .nav-link {
+    color: #ffffff;
+}
+
+.team:hover .team-content-inner .team-social .nav .nav-link:hover {
+    color: #000000;
+}
+
+.team:hover .team-info .avatar-name {
+    color: #ffffff;
+}
+
+.team-content-inner .team-info .avatar-name {
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+.team-content-inner .team-info .team-position {
+    color:#009CFF;
+}
+
+.team-02 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.team-02 .team-avatar {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 50%;
+    flex: 0 50%;
+}
+
+.team-02 .team-content {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 50%;
+    flex: 0 50%;
+}
+
+.team-02 .team-content-inner {
+    padding: 0px;
+}
+
+.team-02 .team-content-inner .team-contact {
+    margin-top: 20px;
+}
+
+.team-02 .team-content-inner .team-contact .nav .nav-link {
+    color: #2d3037;
+    padding: 5px;
+}
+
+.team-02 .team-content-inner .team-contact .nav .nav-link:hover {
+    color: #009b72;
+}
+
+.team-02 .team-content-inner .team-desc {
+    color: #2d3037;
+}
+
+.social a.text-muted:hover {
+    color: #009b72 !important;
+}
+
+@media (max-width: 575.98px) {
+    .team .team-content {
+        margin: 0 15px;
+    }
+}
+.nav {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
     </style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
@@ -58,7 +208,7 @@
             $scope.users = [];
 
             //Updating the table--------------------------------------------------------
-            function fetchUsers() {
+            /*function fetchUsers() {
                 $.ajax({
                     url: '/fetch/Employees',
                     method: 'GET',
@@ -100,7 +250,7 @@
                         console.error(error);
                     }
                 });
-            }
+            }*/
 
             //Adding user-------------------------------------------------------------------------------
             $scope.submitUser = function() {
@@ -127,7 +277,7 @@
                         console.log(response.data);
                         $scope.user = {};
                         ModalService.closeModal();
-                        fetchUsers();
+                        location.reload();
                         Swal.fire({
                             position: "top-middle",
                             icon: "success",
@@ -152,29 +302,40 @@
                 ModalService.closeModal();
             };
 
-            //Delete Employee functions------------------------------------------------------------------
-            $scope.openDeleteModal = function(userId) {
-                $scope.userToDeleteId = userId;
-                $scope.openModal('#deleteUserModal');
-            };
-            //delete user
-            $scope.deleteUser = function() {
-                $http.delete('/delete-Emp/' + $scope.userToDeleteId)
-                    .then(function(response) {
-                        console.log("User deleted successfully");
-                        ModalService.closeModal();
-                        fetchUsers();
-                        Swal.fire({
-                            position: "center",
-                            icon: "success",
-                            title: "An Employee deleted Successfully!",
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    })
-                    .catch(function(error) {
-                        console.error("Error deleting user:", error);
+
+            $scope.deleteUser = function(userId) {
+            $http.delete('/delete-Emp/' + userId)
+                .then(function(response) {
+                    console.log("User deleted successfully");
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "A User deleted Successfully!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
                     });
+                })
+                .catch(function(error) {
+                    console.error("Error deleting user:", error);
+                });
+            };
+
+            $scope.confirmDelete = function(userId) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $scope.deleteUser(userId);
+                    }
+                });
             };
 
             //Edit Employee functions---------------------------------------------------------------
@@ -202,9 +363,15 @@
                         hourly_rate: hourlyRate
                     })
                     .then(function(response) {
-                        console.log("User type and hourly rate updated successfully");
+                        Swal.fire({
+                            position: "top-middle",
+                            icon: "success",
+                            title: "An Employee Updated Successfully!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                         ModalService.closeModal();
-                        fetchUsers();
+                        location.reload();
                     })
                     .catch(function(error) {
                         console.error("Error updating user type and hourly rate:", error);
@@ -218,70 +385,73 @@
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4">
             <div class="container-fluid" ng-app="userApp" ng-controller="UserController">
-                <h1>Employee Management</h1>
+                <h1>Meet Our Team</h1>
+                <!--p>Without clarity, you send a very garbled message
+                     out to the Universe. We know that the Law of Attraction says that we will attract what we focus on, so if we don’t have clarity, we will attract confusion.</p-->
                 <hr>
                 <div class="d-inline-block mx-1 float-end">
                     <a href="#" ng-click="openModal('#addUserModal')"><button
                             class="btn btn-primary"data-toggle="tooltip" data-bs-placement="bottom" title="Add Employee"><i
                                 class="fa-solid fa-user-plus"></i></button>
-
                     </a>
                 </div>
-
                 <br>
                 <br>
                 <div>
-                    <table id="example" class="table table-bordered"width="110%">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Date of Birth</th>
-                                <th>Address</th>
-                                <th>Phone</th>
-                                <th>Role ID</th>
-                                <th>Employee Type</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->dob }}</td>
-                                    <td>{{ $user->address }}</td>
-                                    <td>{{ $user->phone }}</td>
-                                    <td>{{ $user->role_id }}</td>
-                                    <td>{{ $user->user_type }}</td>
-                                    <td class="text-center">
-                                        <div class="d-inline-block mx-1">
-                                            <a href="#"
-                                                ng-click="openEditUserTypeModal('{{ $user->id }}')"data-toggle="tooltip"
-                                                data-bs-placement="bottom" title="Edit Employee">
-                                                <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
-                                            </a>
-                                        </div>
 
-                                        <div class="d-inline-block mx-1">
-                                            <a href="#"
-                                                ng-click="openDeleteModal('{{ $user->id }}')"data-toggle="tooltip"
-                                                data-bs-placement="bottom" title="Delete Employee">
-                                                <i class="fa-solid fa-trash" style="color: red;"></i>
-                                            </a>
-                                        </div>
-                                        <div class="d-inline-block mx-1">
-                                            <a href="#">
-                                                <i class="fa-solid fa-circle-info"
-                                                    style="color: black;"data-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Disable Employee"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        @foreach ($users as $user)
+                        <div class="col-lg-4 col-md-6">
+                          <div class="team">
+                            <div class="team-avatar">
+                              <img class="w-100" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+                            </div>
+                            <div class="team-content">
+                              <div class=" team-content-inner">
+                                <div class="d-flex">
+                                  <div class="team-info mb-4">
+                                    <h5 class="mb-0"><a href="#" class="avatar-name">{{ $user->name }}</a></h5>
+                                    <span class="team-position">{{ $user->user_type }}</span>
+                                    <p class="mb-0"><a href="#" class="text-white d-block">Birthday:{{ $user->dob }}</a></p>
+                                  </div>
+                                </div>
+                                <div class="team-contact mt-2">
+                                  <a class="text-white d-block" href="#">
+                                    <i class="fas fa-phone fa-flip-horizontal mr-1"></i>
+                                    Call Now  {{ $user->phone }}
+                                  </a>
+                                  <a class="text-white d-block" href="#">
+                                    <i class="far fa-envelope mr-1"></i>
+                                    {{ $user->email }}
+                                  </a>
+                                  <a class="text-white d-block" href="#">
+                                    {{ $user->address }}
+                                </a>
+                                <div class="text-center">
+                                    <div class="d-inline-block mx-1">
+                                        <a href="#"
+                                            ng-click="openEditUserTypeModal('{{ $user->id }}')"data-toggle="tooltip"
+                                            data-bs-placement="bottom" title="Edit Employee">
+                                            <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
+                                        </a>
+                                    </div>
+                                    <div class="d-inline-block mx-1">
+                                        <a href="#" ng-click="confirmDelete('{{ $user->id }}')" data-toggle="tooltip" data-bs-placement="bottom" title="Delete Admin">
+                                            <i class="fa-solid fa-trash" style="color: red;"></i>
+                                        </a>
+                                    </div>
+                                    <div class="d-inline-block mx-1">
+                                        <a href="#">
+                                            <i class="fa-solid fa-circle-info"style="color: black;"data-toggle="tooltip" data-bs-placement="bottom"title="Disable Employee"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        @endforeach
                 </div>
 
                 <!--Add Modal -->
