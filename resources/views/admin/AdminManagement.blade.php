@@ -1,9 +1,159 @@
 @extends('layouts.navitems')
 
 @section('content')
-    <style>
+<style>
+    body{
+background:#eee;
+margin-top:20px;}
 
-    </style>
+
+.team {
+position: relative;
+margin-bottom: 20px;
+}
+
+.team .team-content {
+position: absolute;
+bottom: 25px;
+margin: 0 20px;
+left: 0;
+right: 0;
+}
+
+.team .team-content-inner {
+background-color: #ffffff;
+padding: 20px 20px;
+width: 100%;
+-webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+-webkit-transition: all 0.3s ease-in-out;
+transition: all 0.3s ease-in-out;
+}
+
+.team .team-content-inner .team-social {
+margin-left: auto;
+}
+
+.team .team-content-inner .team-social .nav .nav-link {
+padding-top: 0;
+padding-bottom: 0;
+}
+
+.team .team-content-inner .team-contact {
+opacity: 0;
+position: absolute;
+bottom: 0px;
+left: 20px;
+-webkit-transition: all 0.3s ease-in-out;
+transition: all 0.3s ease-in-out;
+}
+
+.team:hover .team-content-inner {
+background-color: #009CFF;
+color: #ffffff;
+padding: 20px 20px 90px;
+}
+
+.team:hover .team-content-inner .team-info .team-position {
+color: #ffffff;
+}
+
+.team:hover .team-content-inner .team-contact {
+opacity: 1;
+bottom: 20px;
+}
+
+.team:hover .team-content-inner .team-contact .nav .nav-link {
+color: #ffffff;
+}
+
+.team:hover .team-content-inner .team-contact .nav .nav-link:hover {
+color: #000000;
+}
+
+.team:hover .team-content-inner .team-social .nav .nav-link {
+color: #ffffff;
+}
+
+.team:hover .team-content-inner .team-social .nav .nav-link:hover {
+color: #000000;
+}
+
+.team:hover .team-info .avatar-name {
+color: #ffffff;
+}
+
+.team-content-inner .team-info .avatar-name {
+margin-bottom: 0;
+font-weight: 600;
+}
+
+.team-content-inner .team-info .team-position {
+color:#009CFF;
+}
+
+.team-02 {
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+-webkit-box-align: center;
+-ms-flex-align: center;
+align-items: center;
+}
+
+.team-02 .team-avatar {
+-webkit-box-flex: 0;
+-ms-flex: 0 50%;
+flex: 0 50%;
+}
+
+.team-02 .team-content {
+-webkit-box-flex: 0;
+-ms-flex: 0 50%;
+flex: 0 50%;
+}
+
+.team-02 .team-content-inner {
+padding: 0px;
+}
+
+.team-02 .team-content-inner .team-contact {
+margin-top: 20px;
+}
+
+.team-02 .team-content-inner .team-contact .nav .nav-link {
+color: #2d3037;
+padding: 5px;
+}
+
+.team-02 .team-content-inner .team-contact .nav .nav-link:hover {
+color: #009b72;
+}
+
+.team-02 .team-content-inner .team-desc {
+color: #2d3037;
+}
+
+.social a.text-muted:hover {
+color: #009b72 !important;
+}
+
+@media (max-width: 575.98px) {
+.team .team-content {
+    margin: 0 15px;
+}
+}
+.nav {
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+-ms-flex-wrap: wrap;
+flex-wrap: wrap;
+padding-left: 0;
+margin-bottom: 0;
+list-style: none;
+}
+</style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -69,7 +219,7 @@
             };
 
             //Updating the table--------------------------------------------------------
-            function fetchUsers() {
+            /*function fetchUsers() {
                 $.ajax({
                     url: '/fetch/Admins',
                     method: 'GET',
@@ -105,7 +255,7 @@
                         console.error(error);
                     }
                 });
-            }
+            }*/
 
 
             $scope.submitAdmin = function() {
@@ -127,7 +277,7 @@
                     .then(function(response) {
                         $scope.admin = {};
                         ModalService.closeModal();
-                        fetchUsers();
+                        location.reload();
                         Swal.fire({
                             position: "center",
                             icon: "success",
@@ -142,30 +292,42 @@
             };
 
 
-            //Delete Employee functions------------------------------------------------------------------
-            $scope.openDeleteModal = function(adminId) {
-                $scope.adminToDeleteId = adminId;
-                $scope.openModal('#deleteAdminModal');
-            };
-            //delete user
-            $scope.deleteAdmin = function() {
-                $http.delete('/delete-Admin/' + $scope.adminToDeleteId)
-                    .then(function(response) {
-                        console.log("User deleted successfully");
-                        ModalService.closeModal();
-                        fetchUsers();
-                        Swal.fire({
-                            position: "center",
-                            icon: "success",
-                            title: "An Admin deleted Successfully!",
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    })
-                    .catch(function(error) {
-                        console.error("Error deleting user:", error);
+
+            $scope.deleteAdmin = function(adminId) {
+            $http.delete('/delete-Admin/' + adminId)
+                .then(function(response) {
+                    console.log("User deleted successfully");
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "An Admin deleted Successfully!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
                     });
+                })
+                .catch(function(error) {
+                    console.error("Error deleting user:", error);
+                });
             };
+
+            $scope.confirmDelete = function(adminId) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $scope.deleteAdmin(adminId);
+                    }
+                });
+            };
+
 
             //Edit Admin functions---------------------------------------------------------------------
             $scope.openEditAdminModal = function(adminId) {
@@ -183,7 +345,7 @@
                     .then(function(response) {
                         console.log('Admin details updated successfully');
                         ModalService.closeModal();
-                        fetchUsers();
+                        location.reload();
                     })
                     .catch(function(error) {
                         console.error('Error updating user details:', error);
@@ -197,7 +359,7 @@
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4">
             <div class="container-fluid" ng-app="adminApp" ng-controller="AdminController">
-                <h1>Admin Management</h1>
+                <h1>Meet Our Administration</h1>
                 <hr>
                 <div class="d-inline-block mx-1 float-end">
                     <a href="#" ng-click="openModal('#addAdminModal')"><button
@@ -208,49 +370,58 @@
                 <br>
                 <br>
                 <div>
-                    <table id="example" class="table table-bordered" width="108%">
-                        <thead>
-                            <tr>
-                                <th>Role ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($admins as $admin)
-                                <tr>
-                                    <td>{{ $admin->role_id }}</td>
-                                    <td>{{ $admin->name }}</td>
-                                    <td>{{ $admin->email }}</td>
-                                    <td class="text-center">
-                                        <div class="d-inline-block mx-1">
-                                            <a href="#"
-                                                ng-click="openEditAdminModal('{{ $admin->id }}')"data-toggle="tooltip"
-                                                data-bs-placement="bottom" title="Edit Admin">
-                                                <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
-                                            </a>
-                                        </div>
 
-                                        <div class="d-inline-block mx-1">
-                                            <a href="#"
-                                                ng-click="openDeleteModal('{{ $admin->id }}')"data-toggle="tooltip"
-                                                data-bs-placement="bottom" title="Delete Admin">
-                                                <i class="fa-solid fa-trash" style="color: red;"></i>
-                                            </a>
-                                        </div>
-                                        <div class="d-inline-block mx-1">
-                                            <a href="#"data-toggle="tooltip" data-bs-placement="bottom"
-                                                title="Disable Admin">
-                                                <i class="fa-solid fa-circle-info" style="color: black;"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        @foreach ($admins as $admin)
+                        <div class="col-lg-4 col-md-6">
+                          <div class="team">
+                            <div class="team-avatar">
+                              <img class="w-100" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                            </div>
+                            <div class="team-content">
+                              <div class=" team-content-inner">
+                                <div class="d-flex">
+                                  <div class="team-info mb-4">
+                                    <h5 class="mb-0"><a href="#" class="avatar-name">{{ $admin->name }}</a></h5>
+                                    <span class="team-position">Role_Id: {{ $admin->role_id }}</span>
+
+                                  </div>
+                                </div>
+                                <div class="team-contact mt-2">
+                                  <a class="text-white d-block" href="#">
+                                    <i class="far fa-envelope mr-1"></i>
+                                    {{ $admin->email }}
+                                  </a>
+                                <div class="text-center">
+                                    <div class="d-inline-block mx-1">
+                                        <a href="#"
+                                            ng-click="openEditAdminModal('{{ $admin->id }}')"data-toggle="tooltip"
+                                            data-bs-placement="bottom" title="Edit Admin">
+                                            <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="d-inline-block mx-1">
+                                        <a href="#" ng-click="confirmDelete('{{ $admin->id }}')" data-toggle="tooltip" data-bs-placement="bottom" title="Delete Admin">
+                                            <i class="fa-solid fa-trash" style="color: red;"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="d-inline-block mx-1">
+                                        <a href="#"data-toggle="tooltip" data-bs-placement="bottom"
+                                            title="Disable Admin">
+                                            <i class="fa-solid fa-circle-info" style="color: black;"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
                 </div>
+            @endforeach
+        </div>
+
 
                 <!--Add Modal -->
                 <div class="modal fade" id="addAdminModal"tabindex="-1" role="dialog"
