@@ -92,16 +92,16 @@
                 </div>
                 <div class="navbar-nav w-100">
 
-                    <a href="{{ route('dashboard.show') }}" class="nav-item nav-link"><i
+                    <a href="{{ route('dashboard.show') }}" class="nav-item nav-link  {{ request()->is('dashboard') ? ' active' : '' }}"><i
                             class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
 
                     @RootOrAdmin
                         {{-- <a href="/admin/UserManagement" class="nav-item nav-link"><i class="fa-solid fa-users me-2"></i>User Management</a> --}}
 
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            <a href="#" class="nav-link dropdown-toggle {{ request()->is('user-managements/*') ? ' active' : '' }}" data-bs-toggle="dropdown"><i
                                     class="fa-solid fa-users me-2"></i>User Management</a>
-                            <div class="dropdown-menu bg-transparent border-0">
+                            <div class="dropdown-menu {{ request()->is('user-managements/*') ? ' show' : '' }} bg-transparent border-0">
                                 @Root
                                     <a href="{{ route('new.admins') }}" class="dropdown-item">Create Admin</a>
                                 @endRoot
@@ -111,10 +111,12 @@
                         </div>
                     @endRootOrAdmin
 
+
+
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                        <a href="#" class="nav-link dropdown-toggle  {{ request()->is('support-contract/*') ? ' active' : '' }}" data-bs-toggle="dropdown"><i
                                 class="fa fa-laptop me-2"></i>Support Contract</a>
-                        <div class="dropdown-menu bg-transparent border-0">
+                        <div class="dropdown-menu {{ request()->is('support-contract/*') ? ' show' : '' }} bg-transparent border-0">
                             @AdminOrEmployee
                                 <a href="{{ route('admin.ScHandling') }}" class="dropdown-item">SC Handling</a>
                                 <a href="{{ route('admin.ScInstance') }}" class="dropdown-item">SC Instance Handling</a>
@@ -131,7 +133,7 @@
                     </div>
 
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                        <a href="#" class="nav-link dropdown-toggle   {{ request()->is('performance/*') ? ' active' : '' }}" data-bs-toggle="dropdown"><i
                                 class="fa-solid fa-chart-simple me-2"></i>Performance</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="#" class="dropdown-item">SC Analysis View</a>
@@ -142,15 +144,15 @@
                             @endAdminOrEmployee
                         </div>
                     </div>
-                    <a href="{{ route('myprofile') }}" class="nav-item nav-link"><i
+                    <a href="{{ route('myprofile') }}" class="nav-item nav-link {{ request()->is('myprofile') ? ' active' : '' }}"><i
                             class="fa-solid fa-user me-2"></i></i>My
                         Profile</a>
 
                     @Root
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            <a href="#" class="nav-link dropdown-toggle  {{ request()->is('permissions/*') ? ' active' : '' }}" data-bs-toggle="dropdown"><i
                                     class="fa-solid fa-gears me-2"></i>Permissions</a>
-                            <div class="dropdown-menu bg-transparent border-0">
+                            <div class="dropdown-menu {{ request()->is('permissions/*') ? ' show' : '' }} bg-transparent border-0">
                                 <a href="#" class="dropdown-item">Roles</a>
                                 <a href="{{ route('root.permissions') }}" class="dropdown-item">Permissions</a>
                                 <a href="{{ route('root.modules') }}" class="dropdown-item">Module</a>
