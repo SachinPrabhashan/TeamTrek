@@ -84,7 +84,7 @@ Route::post('/support-contract/add-support-contract', [SupportContractController
 Route::put('/support-contract/update/{id}', [SupportContractController::class,'updateSC'])->name('support-contracts.update');
 
     //Support Contract Instance Handling
-Route::get('/support-contract/admin-ScInstance',[SupportContractInstanceController::class,'ScInstanceIndex'])->name('admin.ScInstance');
+Route::get('/support-contract/admin-scinstance',[SupportContractInstanceController::class,'ScInstanceIndex'])->name('admin.ScInstance');
 Route::post('/support-contract-instances-create', [SupportContractInstanceController::class, 'addScInstances'])->name('support-contract-instances.add');
 Route::get('/get-support-contract-instances/{contractId}', [SupportContractInstanceController::class,'getSupportContractInstances']);
 
