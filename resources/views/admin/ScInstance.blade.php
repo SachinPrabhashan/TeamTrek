@@ -76,6 +76,7 @@
                         $('#createSupportContractInstanceForm').hide();
                         $('#supportContractInstanceForm')[0].reset();
                         $('#supportContractInstanceTable').show();
+                        $(location.reload());
                     },
                     error: function(xhr, status, error) {
                         $('#createSupportContractInstanceForm').hide();
@@ -93,7 +94,7 @@
                 });
             });
 
-            
+
 
 
 
@@ -120,6 +121,7 @@
                         <!--label for="selectSupportContract" class="form-label">Select Support Contract:</label-->
                         <select class="btn btn-secondary dropdown-toggle" id="selectSupportContract">
                             <!-- Populate dropdown options with existing support contracts -->
+                            {{-- <option disabled selected>Select Support Contract</option> --}}
                             @foreach ($supportcontracts as $contract)
                                 <option value="{{ $contract->id }}">{{ $contract->name }}</option>
                             @endforeach
@@ -129,67 +131,33 @@
 
 
                 <div class="scroll-container mt-2" id="instancewidgets" style="width: 100%; overflow-x: auto;">
-                    <div class="row ms-4" style="width: 200%;">
+                    <div class="row ms-4" style="width: 150%;">
 
-                        <div class="card me-2 mb-2" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">Tim Support Contact</h5>
-                                <h1 class="m-1">2024</h1>
-                                <div class="d-flex">
-                                    <div class="me-3" data-toggle="tooltip" data-bs-placement="bottom"
-                                        title="Support Hours">
-                                        <img width="24" height="24"
-                                            src="https://img.icons8.com/windows/32/meeting-time.png" alt="meeting-time" /> |
-                                        20H
-                                    </div>
-                                    <div class="me-3"data-toggle="tooltip" data-bs-placement="bottom" title="Owner">
-                                        <img width="24" height="24"
-                                            src="https://img.icons8.com/windows/32/landlord.png" alt="landlord" /> | Sam
-                                        Kevin
+                        @foreach ($instances->sortByDesc('created_at') as $instance)
+                            <div class="card me-2 mb-2" style="width: 18rem;"
+                                data-contract-id="{{ $instance->supportContract->id }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $instance->supportContract->name }}</h5>
+                                    <h1 class="m-1">{{ $instance->year }}</h1>
+                                    <div class="d-flex">
+                                        <div class="me-3" data-toggle="tooltip" data-bs-placement="bottom"
+                                            title="Support Hours">
+                                            <img width="24" height="24"
+                                                src="https://img.icons8.com/windows/32/meeting-time.png"
+                                                alt="meeting-time" /> |
+                                            {{ $instance->dev_hours + $instance->eng_hours }}H
+                                        </div>
+                                        <div class="me-3"data-toggle="tooltip" data-bs-placement="bottom" title="Owner">
+                                            <img width="24" height="24"
+                                                src="https://img.icons8.com/windows/32/landlord.png" alt="landlord" /> |
+                                            {{ $instance->owner }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
 
 
-                        <div class="card me-2 mb-2" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">Tim Support Contact</h5>
-                                <h1 class="m-1">2023</h1>
-                                <div class="d-flex">
-                                    <div class="me-3" data-toggle="tooltip" data-bs-placement="bottom"
-                                        title="Support Hours">
-                                        <img width="24" height="24"
-                                            src="https://img.icons8.com/windows/32/meeting-time.png" alt="meeting-time" /> |
-                                        13H
-                                    </div>
-                                    <div class="me-3"data-toggle="tooltip" data-bs-placement="bottom" title="Owner">
-                                        <img width="24" height="24"
-                                            src="https://img.icons8.com/windows/32/landlord.png" alt="landlord" /> | Andrew
-                                        Stark
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card me-2 mb-2" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">Tim Support Contact</h5>
-                                <h1 class="m-1">2022</h1>
-                                <div class="d-flex">
-                                    <div class="me-3" data-toggle="tooltip" data-bs-placement="bottom"
-                                        title="Support Hours">
-                                        <img width="24" height="24"
-                                            src="https://img.icons8.com/windows/32/meeting-time.png" alt="meeting-time" /> |
-                                        10H
-                                    </div>
-                                    <div class="me-3"data-toggle="tooltip" data-bs-placement="bottom" title="Owner">
-                                        <img width="24" height="24"
-                                            src="https://img.icons8.com/windows/32/landlord.png" alt="landlord" /> | Bold
-                                        Max
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -201,7 +169,7 @@
                         <div class="mb-3">
                             <label for="support_contract" class="form-label">Support Contract:</label>
                             <select class="form-select" id="support_contract" name="support_contract">
-                                <option value="">Select Support Contract</option>
+                                <option disabled selected>Select Support Contract</option>
                                 @foreach ($supportcontracts as $contract)
                                     <option value="{{ $contract->id }}">{{ $contract->name }}</option>
                                 @endforeach
@@ -215,7 +183,7 @@
                         <div class="mb-3">
                             <label for="owner" class="form-label">Owner:</label>
                             <select class="form-select" id="owner" name="owner">
-                                <option value="">Select Owner</option>
+                                <option disabled selected>Select Owner</option>
                                 @foreach ($users as $user)
                                     @if ($user->role_id == 3)
                                         <option value="{{ $user->name }}">{{ $user->name }}</option>
@@ -249,4 +217,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            // Initial load: display instances related to the first support contract
+            filterInstances($("#selectSupportContract").val());
+
+            // Event listener for dropdown change
+            $("#selectSupportContract").change(function() {
+                // Get the selected support contract ID
+                var selectedContractId = $(this).val();
+
+                // Call the function to filter and display instances based on the selected support contract
+                filterInstances(selectedContractId);
+            });
+
+            // Function to filter and display instances based on the selected support contract
+            function filterInstances(contractId) {
+                // Hide all instances
+                $(".card").hide();
+
+                // Show instances related to the selected support contract
+                $(".card[data-contract-id='" + contractId + "']").show();
+            }
+        });
+    </script>
 @endsection

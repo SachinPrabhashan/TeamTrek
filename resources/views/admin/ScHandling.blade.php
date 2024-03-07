@@ -283,7 +283,7 @@ $(document).ready(function() {
                         <div class="mb-3">
                             <label for="company_name" class="form-label">Company Name</label>
                             <select class="form-select" id="company_name" name="company_name">
-                                <option value="">Select Company</option>
+                                <option disabled selected>Select Company</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->name }}">{{ $user->name }}</option>
                                 @endforeach

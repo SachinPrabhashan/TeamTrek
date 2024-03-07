@@ -451,7 +451,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Create Task</h4>
-                        <button type="button" id="closeHeadBtn" class="close" data-dismiss="modal">&times;</button>
+                        <button type="button" id="closeHeadBtn" class="btn-close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <form id="taskForm">
