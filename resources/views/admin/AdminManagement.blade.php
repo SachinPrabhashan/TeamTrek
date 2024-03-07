@@ -376,15 +376,15 @@ list-style: none;
                         <div class="col-lg-4 col-md-6">
                           <div class="team">
                             <div class="team-avatar">
-                              <img class="w-100" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                              <!--img class="w-100" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""-->
+                              <img class="w-100" src="{{ asset('img/adminImg.jpg') }}" alt="">
                             </div>
                             <div class="team-content">
                               <div class=" team-content-inner">
                                 <div class="d-flex">
                                   <div class="team-info mb-4">
                                     <h5 class="mb-0"><a href="#" class="avatar-name">{{ $admin->name }}</a></h5>
-                                    <span class="team-position">Role_Id: {{ $admin->role_id }}</span>
-
+                                    <span class="team-position">Role: {{ $admin->role->name }}</span>
                                   </div>
                                 </div>
                                 <div class="team-contact mt-2">
