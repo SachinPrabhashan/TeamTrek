@@ -15,64 +15,85 @@ class TaskController extends Controller
     public function TaskIndex(Task $task)
     {
         //$this->authorize('view', $usermanagement);
-        $users = Task::All();
+        $tasks = Task::All();
         $scInstances=SupportContractInstance::All();
         $supportcontracts=SupportContract::All();
 
-        return view('admin.SCtaskmonitor', compact('users','scInstances','supportcontracts'));
+        return view('admin.SCtaskmonitor', compact('tasks','scInstances','supportcontracts'));
     }
 
     public function addTask(Request $request)
-{
-    try {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'taskName' => 'required|string',
-            'taskDescription' => 'required|string',
-            'startDate' => 'required|date',
-            //'endDate' => 'required|date',
-            'supportContractId' => 'required|integer',
-            'supportContractInstance' => 'required|integer'
-        ]);
+    {
+        try {
+            $validatedData = $request->validate([
+                'taskName' => 'required|string',
+                'taskDescription' => 'required|string',
+                'startDate' => 'required|date',
+                //'endDate' => 'required|date',
+                'supportContractId' => 'required|integer',
+                'supportContractInstance' => 'required|integer'
+            ]);
 
-        // Log validated data for debugging
-        Log::info('Validated data: ' . json_encode($validatedData));
+            $task = new Task();
+            $task->name = $validatedData['taskName'];
+            $task->description = $validatedData['taskDescription'];
+            $task->start_date = $validatedData['startDate'];
+            //$task->end_date = $validatedData['endDate'];
 
-        // Create a new task instance
-        $task = new Task();
-        $task->name = $validatedData['taskName'];
-        $task->description = $validatedData['taskDescription'];
-        $task->start_date = $validatedData['startDate'];
-        //$task->end_date = $validatedData['endDate'];
+            $supportContractInstanceId = SupportContractInstance::where('support_contract_id', $validatedData['supportContractId'])
+                ->where('year', $validatedData['supportContractInstance'])
+                ->value('id');
 
-        // Fetch the support_contract_instance_id based on supportContractId and supportContractInstance
-        $supportContractInstanceId = SupportContractInstance::where('support_contract_id', $validatedData['supportContractId'])
-            ->where('year', $validatedData['supportContractInstance'])
-            ->value('id');
+            // Check if support_contract_instance_id was found
+            if (!$supportContractInstanceId) {
+                return response()->json(['error' => 'Support contract instance not found'], 404);
+            }
 
-        // Log support contract instance ID for debugging
-        Log::info('Support contract instance ID: ' . $supportContractInstanceId);
+            $task->support_contract_instance_id = $supportContractInstanceId;
 
-        // Check if support_contract_instance_id was found
-        if (!$supportContractInstanceId) {
-            // Return a response indicating failure
-            return response()->json(['error' => 'Support contract instance not found'], 404);
+            $task->save();
+
+
+            return response()->json(['message' => 'Task created successfully'], 201);
         }
+        catch (\Exception $e)
+        {
 
-        // Assign the support_contract_instance_id to the task
-        $task->support_contract_instance_id = $supportContractInstanceId;
-
-        // Save the task to the database
-        $task->save();
-
-        // Return a response indicating success
-        return response()->json(['message' => 'Task created successfully'], 201);
-    } catch (\Exception $e) {
-        // Log the exception for debugging
-        Log::error('Error: ' . $e->getMessage());
-
-        // Handle the error gracefully, e.g., return a JSON response with an error message
-        return response()->json(['error' => 'An error occurred'], 500);
+            return response()->json(['error' => 'An error occurred'], 500);
+        }
     }
-}
+
+    public function fetchTasks(Request $request)
+    {
+        try {
+            // Validate request data
+            $validatedData = $request->validate([
+                'supportContractId' => 'required|integer',
+                'supportContractYear' => 'required|integer',
+            ]);
+
+            // Fetch the support contract instance ID
+            $supportContractInstanceId = SupportContractInstance::where('support_contract_id', $validatedData['supportContractId'])
+                ->where('year', $validatedData['supportContractYear'])
+                ->value('id');
+
+            // Check if support contract instance ID is found
+            if (!$supportContractInstanceId) {
+                throw new \Exception('Support contract instance not found.');
+            }
+
+            // Fetch tasks based on the support contract instance ID
+            $tasks = Task::where('support_contract_instance_id', $supportContractInstanceId)->get();
+
+            // Return tasks as JSON response
+            return response()->json($tasks);
+        } catch (\Exception $e) {
+            // Log the exception
+            Log::error('Error fetching tasks:', ['error' => $e->getMessage()]);
+
+            // Return an error response
+            return response()->json(['error' => 'An error occurred while fetching tasks.'], 500);
+        }
+    }
+
 }
