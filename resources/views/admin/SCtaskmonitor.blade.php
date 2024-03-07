@@ -1,5 +1,12 @@
 @extends('layouts.navitems')
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         .card-margin {
             margin-bottom: 1.875rem;
@@ -310,7 +317,71 @@
         .widget-49 .widget-49-meeting-action a {
             text-transform: uppercase;
         }
-    </style>
+</style>
+
+<script>
+    $(document).ready(function(){
+
+        $("#addSupportContractTaskBtn").click(function(){
+            $("#Addmodal").modal("show");
+        });
+        $("#closeBtn").click(function(){
+            $("#Addmodal").modal("hide");
+        });
+        $("#closeHeadBtn").click(function(){
+            $("#Addmodal").modal("hide");
+        });
+
+        $("#submitBtn").click(function(){
+            // Get CSRF token from the page's meta tag
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            // Get form data
+            var taskName = $("#taskName").val();
+            var taskDescription = $("#taskDescription").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
+            // Get selected values from dropdowns
+            var supportContractId = $("#selectSupportContract").val();
+            var supportContractInstance = $("#selectSupportContractYear").val();
+
+            // Create an object to store the form data
+            var formData = {
+                taskName: taskName,
+                taskDescription: taskDescription,
+                startDate: startDate,
+                endDate: endDate,
+                supportContractId: supportContractId,
+                supportContractInstance: supportContractInstance
+            };
+
+            // Perform AJAX request to submit form data
+            $.ajax({
+                type: "POST",
+                url: "/support-contract/tasks",
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken // Include CSRF token in the headers
+                },
+                success: function(response) {
+                    // Handle success response, if needed
+                    console.log("Form submitted successfully");
+                    console.log("Server response:", response);
+                    // Close modal after successful submission
+                    $("#myModal").modal("hide");
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response, if needed
+                    console.error("Form submission failed");
+                    console.error("Error:", error);
+                }
+            });
+        });
+
+
+});
+</script>
 
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4">
@@ -319,10 +390,9 @@
             <hr>
             <div class="float-end">
                 @RootOrAdmin
-                    <button class="btn btn-primary" id="addSupportContractTaskBtn" data-toggle="tooltip" data-bs-placement="bottom"
-                        title="Create SC Tasks">
-                        <i class="fa-solid fa-folder-plus"></i>
-                    </button>
+                <button class="btn btn-primary" id="addSupportContractTaskBtn" data-toggle="tooltip" data-bs-placement="bottom" title="Create SC Tasks">
+                    <i class="fa-solid fa-folder-plus"></i>
+                </button>
                 @endRootOrAdmin
             </div>
 
@@ -333,14 +403,14 @@
                             <option value="{{ $contract->id }}">{{ $contract->name }}</option>
                         @endforeach
                     </select>
-                    <select class="btn btn-secondary dropdown-toggle" id="selectSupportContract">
-                        @foreach ($supportcontractinstances->unique('year') as $instance)
+                    <select class="btn btn-secondary dropdown-toggle" id="selectSupportContractYear">
+                        @foreach ($scInstances->unique('year') as $instance)
                             <option value="{{ $instance->year }}">{{ $instance->year }}</option>
                         @endforeach
                     </select>
             </div>
 
-            <div class="row">
+            <!--div class="row">
                 <div class="col-lg-4">
                     <div class="card card-margin">
                         <div class="card-header no-border">
@@ -373,125 +443,47 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div-->
 
-
-            <!-- Task View All Modal -->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content" style="width: 100%;">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Task Overview</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <table class="taskviewtb">
-                                <tr>
-                                    <td><label for=""><b>Client :</b></label></td>
-                                    <td>
-                                        <p>SPC</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><label for=""><b>Contract :</b></label></td>
-                                    <td>
-                                        <p>SPC Support Contact</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><label for=""><b>Description :</b></label></td>
-                                    <td>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam aperiam dolores
-                                            vel, sunt nam, fuga ab rerum reprehenderit illum animi labore, quis assumenda
-                                            nihil quia laborum veritatis officiis expedita libero!</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><label for=""><b>Handle by :</b></label></td>
-                                    <td>
-                                        <p>Emp 01</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><label for=""><b>Created on :</b></label></td>
-                                    <td>
-                                        <p>1st April 2024</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><label for=""><b>Created by :</b></label></td>
-                                    <td>
-                                        <p>Admin 01</p>
-                                    </td>
-                                </tr>
-                            </table>
-
-
-                        </div>
-                        <div class="modal-body">
-                            <button type="button" class="btn btn-danger btn-sm float-end"
-                                data-bs-dismiss="modal">Close</button>
-                        </div>
+        <!--Add Modal -->
+        <div class="modal" id="Addmodal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create Task</h4>
+                        <button type="button" id="closeHeadBtn" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                </div>
-            </div>
-
-            <!-- Add Modal -->
-            <div class="modal fade" id="addSupportContractTaskModal" data-easein="flipYin" tabindex="-1"
-                aria-labelledby="addSupportContractModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addSupportContractModalLabel">Create Support Contract</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="addSupportContractForm">
-                                <div class="mb-3">
-                                    <label for="company_name" class="form-label"><b>Company Name</b></label>
-                                    <select class="form-select" id="company_name" name="company_name">
-                                        <option value="">Select Company</option>
-
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="name" class="form-label"><b>Support Contract</b></label>
-                                    <select class="form-select" id="company_name" name="company_name">
-                                        <option value="">Select Support Contract</option>
-
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="name" class="form-label"><b>Task</b></label>
-                                    <input type="text" class="form-control" id="task" name="task" >
-                                </div>
-                                <div class="mb-3">
-                                    <label for="name" class="form-label"><b>Description</b></label>
-                                    <input type="text" class="form-control" id="description" name="description" >
-                                </div>
-                                <div class="mb-3">
-                                    <label for="name" class="form-label"><b>Start Date</b></label>
-                                    <input type="date" class="form-control" id="startdate" name="startdate" >
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success btn-sm" id="submitSupportContract">Submit</button>
-                        </div>
+                    <div class="modal-body">
+                        <form id="taskForm">
+                            <div class="form-group">
+                                <label for="taskName">Name:</label>
+                                <input type="text" class="form-control" id="taskName">
+                            </div><br>
+                            <div class="form-group">
+                                <label for="taskDescription">Description:</label>
+                                <textarea class="form-control" id="taskDescription"></textarea>
+                            </div><br>
+                            <div class="form-group">
+                                <label for="startDate">Start Date:</label>
+                                <input type="date" class="form-control" id="startDate">
+                            </div><br>
+                            <!--div class="form-group">
+                                <label for="endDate">End Date:</label>
+                                <input type="date" class="form-control" id="endDate">
+                            </div--><br>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" id="submitBtn">Submit</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"id="closeBtn">Close</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        //Open the Task Create modal
-        $('#addSupportContractTaskBtn').click(function() {
-            $('#addSupportContractTaskModal').modal('show');
-        });
-    </script>
+
+
+
 @endsection

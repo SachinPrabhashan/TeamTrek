@@ -73,6 +73,8 @@ class SupportContractInstanceController extends Controller
         return response()->json(['message' => 'Support Contract Instance created successfully'], 200);
     }
 
+    
+
     /*public function getSupportContractInstances($contractId)
     {
         try {
