@@ -18,9 +18,10 @@ class SupportContractInstanceController extends Controller
         //$this->authorize('view', $usermanagement);
         $supportcontracts=SupportContract::All();
         $supportcontractinstances= SupportContractInstance::All();
+        $instances = SupportContractInstance::all();
         $users=User::All();
 
-        return view('admin.ScInstance', compact('supportcontractinstances','users','supportcontracts'));
+        return view('admin.ScInstance', compact('supportcontractinstances','users','supportcontracts', 'instances'));
     }
 
     public function addScInstances(Request $request)
@@ -72,8 +73,6 @@ class SupportContractInstanceController extends Controller
         }
         return response()->json(['message' => 'Support Contract Instance created successfully'], 200);
     }
-
-    
 
     /*public function getSupportContractInstances($contractId)
     {
