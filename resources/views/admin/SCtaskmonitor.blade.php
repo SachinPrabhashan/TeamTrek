@@ -326,7 +326,7 @@
                 @endRootOrAdmin
             </div>
 
-            {{-- <div class="rolebtn bg-light rounded h-100 p-4">
+            <div class="rolebtn bg-light rounded h-100 p-4">
                 <label for="">Choose Support Contract Instance:</label>
                     <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContract">
                         @foreach ($supportcontracts as $contract)
@@ -338,7 +338,7 @@
                             <option value="{{ $instance->year }}">{{ $instance->year }}</option>
                         @endforeach
                     </select>
-            </div> --}}
+            </div>
 
             <div class="row">
                 <div class="col-lg-4">
@@ -458,7 +458,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="name" class="form-label"><b>Support Contract</b></label>
-                                    <input type="text" class="form-control" id="sc" name="sc" >
+                                    <select class="form-select" id="company_name" name="company_name">
+                                        <option value="">Select Support Contract</option>
+
+                                        <option value=""></option>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="name" class="form-label"><b>Task</b></label>
@@ -467,6 +471,10 @@
                                 <div class="mb-3">
                                     <label for="name" class="form-label"><b>Description</b></label>
                                     <input type="text" class="form-control" id="description" name="description" >
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label"><b>Start Date</b></label>
+                                    <input type="date" class="form-control" id="startdate" name="startdate" >
                                 </div>
                             </form>
                         </div>
