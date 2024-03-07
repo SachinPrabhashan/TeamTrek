@@ -103,10 +103,10 @@
                                     class="fa-solid fa-users me-2"></i>User Management</a>
                             <div class="dropdown-menu {{ request()->is('user-managements/*') ? ' show' : '' }} bg-transparent border-0">
                                 @Root
-                                    <a href="{{ route('new.admins') }}" class="dropdown-item">Create Admin</a>
+                                    <a href="{{ route('new.admins') }}" class="dropdown-item {{ request()->is('user-managements/admin') ? ' active' : '' }}">Create Admin</a>
                                 @endRoot
-                                <a href="{{ route('new.employee') }}" class="dropdown-item">Create Employee</a>
-                                <a href="{{ route('new.clients') }}" class="dropdown-item">Create Client</a>
+                                <a href="{{ route('new.employee') }}" class="dropdown-item {{ request()->is('user-managements/employee') ? ' active' : '' }}">Create Employee</a>
+                                <a href="{{ route('new.clients') }}" class="dropdown-item {{ request()->is('user-managements/client') ? ' active' : '' }}">Create Client</a>
                             </div>
                         </div>
                     @endRootOrAdmin
@@ -118,12 +118,12 @@
                                 class="fa fa-laptop me-2"></i>Support Contract</a>
                         <div class="dropdown-menu {{ request()->is('support-contract/*') ? ' show' : '' }} bg-transparent border-0">
                             @AdminOrEmployee
-                                <a href="{{ route('admin.ScHandling') }}" class="dropdown-item">SC Handling</a>
-                                <a href="{{ route('admin.ScInstance') }}" class="dropdown-item">SC Instance Handling</a>
+                                <a href="{{ route('admin.ScHandling') }}" class="dropdown-item {{ request()->is('support-contract/admin-schandling') ? ' active' : '' }}">SC Handling</a>
+                                <a href="{{ route('admin.ScInstance') }}" class="dropdown-item {{ request()->is('support-contract/admin-scinstance') ? ' active' : '' }}">SC Instance Handling</a>
                                 @Admin
                                     <a href="#" class="dropdown-item">SC Access Granting</a>
                                 @endAdmin
-                                <a href="{{ route('scTaskMonitor') }}" class="dropdown-item">SC Task Monitor</a>
+                                <a href="{{ route('scTaskMonitor') }}" class="dropdown-item {{ request()->is('support-contract/sc-task-monitor') ? ' active' : '' }}">SC Task Monitor</a>
                                 <a href="#" class="dropdown-item">SC Reports</a>
                             @endAdminOrEmployee
                             @Client
@@ -154,9 +154,9 @@
                                     class="fa-solid fa-gears me-2"></i>Permissions</a>
                             <div class="dropdown-menu {{ request()->is('permissions/*') ? ' show' : '' }} bg-transparent border-0">
                                 <a href="#" class="dropdown-item">Roles</a>
-                                <a href="{{ route('root.permissions') }}" class="dropdown-item">Permissions</a>
-                                <a href="{{ route('root.modules') }}" class="dropdown-item">Module</a>
-                                <a href="{{ route('root.modulepermission') }}" class="dropdown-item">Module
+                                <a href="{{ route('root.permissions') }}" class="dropdown-item {{ request()->is('permissions/manage-permissions') ? ' active' : '' }}">Permissions</a>
+                                <a href="{{ route('root.modules') }}" class="dropdown-item {{ request()->is('permissions/manage-modules') ? ' active' : '' }}">Module</a>
+                                <a href="{{ route('root.modulepermission') }}" class="dropdown-item {{ request()->is('permissions/module-permission') ? ' active' : '' }}">Module
                                     Permission</a>
                             </div>
                         </div>

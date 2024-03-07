@@ -458,7 +458,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="name" class="form-label"><b>Support Contract</b></label>
-                                    <input type="text" class="form-control" id="sc" name="sc" >
+                                    <select class="form-select" id="company_name" name="company_name">
+                                        <option value="">Select Support Contract</option>
+
+                                        <option value=""></option>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="name" class="form-label"><b>Task</b></label>
@@ -467,6 +471,10 @@
                                 <div class="mb-3">
                                     <label for="name" class="form-label"><b>Description</b></label>
                                     <input type="text" class="form-control" id="description" name="description" >
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label"><b>Start Date</b></label>
+                                    <input type="date" class="form-control" id="startdate" name="startdate" >
                                 </div>
                             </form>
                         </div>
