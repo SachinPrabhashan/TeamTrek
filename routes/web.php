@@ -8,6 +8,7 @@ use App\Http\Controllers\RoleViewController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\SupportContractController;
 use App\Http\Controllers\SupportContractInstanceController;
+use App\Models\SupportContractInstance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 

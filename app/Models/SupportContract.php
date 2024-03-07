@@ -18,4 +18,9 @@ class SupportContract extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function instances()
+    {
+        return $this->hasMany(SupportContractInstance::class);
+    }
+
 }

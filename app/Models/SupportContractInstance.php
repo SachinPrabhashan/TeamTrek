@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SupportContractInstance extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'support_contract_id',
         'year',
@@ -16,4 +16,13 @@ class SupportContractInstance extends Model
         'dev_hours',
         'eng_hours',
     ];
+
+    // public function supportcontract(){
+    //     return $this->belongsTo(SupportContract::class);
+    // }
+
+    public function supportContract()
+    {
+        return $this->belongsTo(SupportContract::class, 'support_contract_id');
+    }
 }
