@@ -365,11 +365,13 @@
                     'X-CSRF-TOKEN': csrfToken // Include CSRF token in the headers
                 },
                 success: function(response) {
-                    // Handle success response, if needed
-                    console.log("Form submitted successfully");
-                    console.log("Server response:", response);
-                    // Close modal after successful submission
-                    $("#myModal").modal("hide");
+                    $("#Addmodal").modal("hide");
+                    Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Support Contract Instance created successfully!'
+                        });
+                        location.reload();
                 },
                 error: function(xhr, status, error) {
                     // Handle error response, if needed
@@ -410,28 +412,35 @@
                     </select>
             </div>
 
-            <!--div class="row">
+            <div class="row">
+                @foreach ($tasks as $task)
                 <div class="col-lg-4">
                     <div class="card card-margin">
                         <div class="card-header no-border">
-                            <h5 class="card-title">SPC Support Contact</h5>
+                            <h5 class="card-title">Task :- {{$task->name}}</h5>
                             <hr>
                         </div>
                         <div class="card-body pt-0">
                             <div class="widget-49">
                                 <div class="widget-49-title-wrapper">
                                     <div class="widget-49-date-primary">
-                                        <span class="widget-49-date-day">01</span>
-                                        <span class="widget-49-date-month">apr</span>
+                                        <span class="widget-49-date-day">{{$task->id}}</span>
+                                        <!--span class="widget-49-date-month">apr</span-->
                                     </div>
                                     <div class="widget-49-meeting-info">
-                                        <span class="widget-49-pro-title">New Year Banner</span>
-                                        <span class="widget-49-meeting-time">12:00 to 12.15 Hrs</span>
+                                        <span class="widget-49-pro-title">{{$task->start_date}}</span>
+                                        <span class="widget-49-meeting-time">
+                                            @if ($task->end_date)
+                                                End Date: {{$task->end_date}}
+                                            @else
+                                            <span style="color: red;">Ongoing</span>
+                                            @endif
+                                        </span>
                                     </div>
                                 </div>
                                 <ol class="widget-49-meeting-points">
-                                    <li class="widget-49-meeting-item"><span>Update Banner on Home Page</span></li>
-                                    <li class="widget-49-meeting-item"><span>Background Overlay Update</span></li>
+                                    <li class="widget-49-meeting-item"><span>{{$task->Description}}</span></li>
+                                    <!--li class="widget-49-meeting-item"><span>Background Overlay Update</span></li-->
                                     </li>
                                 </ol>
                                 <div class="widget-49-meeting-action">
@@ -443,7 +452,8 @@
                         </div>
                     </div>
                 </div>
-            </div-->
+                @endforeach
+            </div>
 
         <!--Add Modal -->
         <div class="modal" id="Addmodal">
@@ -482,6 +492,7 @@
         </div>
     </div>
 </div>
+
 
 
 

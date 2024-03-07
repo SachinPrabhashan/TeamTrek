@@ -92,6 +92,7 @@ Route::get('/get-support-contract-instances/{contractId}', [SupportContractInsta
     //SC task monitor
 Route::get('/support-contract/sc-task-monitor', [TaskController::class, 'TaskIndex'])->name('scTaskMonitor');
 Route::post('/support-contract/tasks', [TaskController::class, 'addTask'])->name('tasks.add');
+Route::get('/fetch-support-contract/tasks', [TaskController::class, 'fetchTasks']);
 
 //All Users
 Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');
