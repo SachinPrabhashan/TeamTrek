@@ -404,7 +404,9 @@
                         <div class="col-lg-4 col-md-6">
                           <div class="team">
                             <div class="team-avatar">
-                              <img class="w-100" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+                              <!--img class="w-100" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt=""-->
+                              <img class="w-100" src="{{ asset('img/empImg.jpg') }}" alt="">
+
                             </div>
                             <div class="team-content">
                               <div class=" team-content-inner">
