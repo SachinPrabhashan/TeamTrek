@@ -5,7 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\RoleViewController;
-use App\Http\Controllers\SCTaskMonitorController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\SupportContractController;
 use App\Http\Controllers\SupportContractInstanceController;
 use Illuminate\Support\Facades\Auth;
@@ -90,7 +90,8 @@ Route::get('/get-support-contract-instances/{contractId}', [SupportContractInsta
 
 
     //SC task monitor
-Route::get('/support-contract/sc-task-monitor', [SCTaskMonitorController::class, 'index'])->name('scTaskMonitor');
+Route::get('/support-contract/sc-task-monitor', [TaskController::class, 'TaskIndex'])->name('scTaskMonitor');
+Route::post('/support-contract/tasks', [TaskController::class, 'addTask'])->name('tasks.add');
 
 //All Users
 Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');
