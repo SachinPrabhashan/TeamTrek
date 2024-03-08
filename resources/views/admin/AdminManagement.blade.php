@@ -219,7 +219,7 @@ list-style: none;
             };
 
             //Updating the table--------------------------------------------------------
-            /*function fetchUsers() {
+            function fetchUsers() {
                 $.ajax({
                     url: '/fetch/Admins',
                     method: 'GET',
@@ -255,7 +255,7 @@ list-style: none;
                         console.error(error);
                     }
                 });
-            }*/
+            }
 
 
             $scope.submitAdmin = function() {
@@ -370,57 +370,53 @@ list-style: none;
                 <br>
                 <br>
                 <div>
+                    <table id="example" class="table table-bordered" width="108%">
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th>Name</th>
+                                <th>Email</th>
 
-                    <div class="row">
-                        @foreach ($admins as $admin)
-                        <div class="col-lg-4 col-md-6">
-                          <div class="team">
-                            <div class="team-avatar">
-                              <!--img class="w-100" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""-->
-                              <img class="w-100" src="{{ asset('img/adminImg.jpg') }}" alt="">
-                            </div>
-                            <div class="team-content">
-                              <div class=" team-content-inner">
-                                <div class="d-flex">
-                                  <div class="team-info mb-4">
-                                    <h5 class="mb-0"><a href="#" class="avatar-name">{{ $admin->name }}</a></h5>
-                                    <span class="team-position">Role: {{ $admin->role->name }}</span>
-                                  </div>
-                                </div>
-                                <div class="team-contact mt-2">
-                                  <a class="text-white d-block" href="#">
-                                    <i class="far fa-envelope mr-1"></i>
-                                    {{ $admin->email }}
-                                  </a>
-                                <div class="text-center">
-                                    <div class="d-inline-block mx-1">
-                                        <a href="#"
-                                            ng-click="openEditAdminModal('{{ $admin->id }}')"data-toggle="tooltip"
-                                            data-bs-placement="bottom" title="Edit Admin">
-                                            <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
-                                        </a>
-                                    </div>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($admins as $admin)
+                                <tr>
+                                    <td>{{ $admin->role->name }}</td>
+                                    <td>{{ $admin->name }}</td>
+                                    <td>{{ $admin->email }}</td>
 
-                                    <div class="d-inline-block mx-1">
-                                        <a href="#" ng-click="confirmDelete('{{ $admin->id }}')" data-toggle="tooltip" data-bs-placement="bottom" title="Delete Admin">
-                                            <i class="fa-solid fa-trash" style="color: red;"></i>
-                                        </a>
-                                    </div>
+                                    <td class="text-center">
+                                        <div class="d-inline-block mx-1">
+                                            <a href="#"
+                                                ng-click="openEditAdminModal('{{ $admin->id }}')"data-toggle="tooltip"
+                                                data-bs-placement="bottom" title="Edit Admin">
+                                                <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
+                                            </a>
+                                        </div>
 
-                                    <div class="d-inline-block mx-1">
-                                        <a href="#"data-toggle="tooltip" data-bs-placement="bottom"
-                                            title="Disable Admin">
-                                            <i class="fa-solid fa-circle-info" style="color: black;"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
+                                        <div class="d-inline-block mx-1">
+                                            <a href="#" ng-click="confirmDelete('{{ $admin->id }}')" data-toggle="tooltip" data-bs-placement="bottom" title="Delete Admin">
+                                                <i class="fa-solid fa-trash" style="color: red;"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="d-inline-block mx-1">
+                                            <a href="#"data-toggle="tooltip" data-bs-placement="bottom"
+                                                title="Disable Admin">
+                                                <i class="fa-solid fa-circle-info" style="color: black;"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-            @endforeach
-        </div>
+
+
+
 
 
                 <!--Add Modal -->

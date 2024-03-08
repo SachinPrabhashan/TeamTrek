@@ -93,15 +93,8 @@
 
                 });
             });
-
-
-
-
-
-
-
         });
-    </script>
+</script>
 
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4" style="overflow: hidden;">
