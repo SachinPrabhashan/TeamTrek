@@ -94,10 +94,14 @@ Route::get('/get-support-contract-instances/{contractId}', [SupportContractInsta
 Route::get('/support-contract/sc-task-monitor', [TaskController::class, 'TaskIndex'])->name('scTaskMonitor');
 Route::post('/support-contract/tasks', [TaskController::class, 'addTask'])->name('tasks.add');
 Route::get('/fetch-support-contract/tasks', [TaskController::class, 'fetchTasks']);
+Route::get('/support-contract/sc-All-task-monitor', [TaskController::class, 'AllTaskIndex'])->name('scAllTaskMonitor');
+Route::delete('/delete-task/{id}', [TaskController::class,'deleteTask'])->name('delete.Task');
+Route::get('/emp-for-tasks', [TaskController::class,'getUEmpForTasks']);
+Route::post('/grant-access-tasks', [TaskController::class, 'grantAccess'])->name('grant.access');
 
 //All Users
 Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');
 Route::post('/myprofile/password-change', [ProfileController::class, 'resetPassword'])->name('updatepassword');
 Route::post('/myprofile/save-profile-details', [ProfileController::class, 'editProfile'])->name('saveeditprofile');
 Route::post('/myprofile/password-change', [ProfileController::class, 'resetPassword'])->name('updatepassword');
-Route::post('/myprofile/save-profile-details', [ProfileController::class, 'editProfile']);
+//Route::post('/myprofile/save-profile-details', [ProfileController::class, 'editProfile']);
