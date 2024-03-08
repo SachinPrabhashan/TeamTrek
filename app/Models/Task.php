@@ -17,4 +17,16 @@ class Task extends Model
         'isCompleted',
         'Description',
     ];
+    public function supportContractInstance()
+    {
+        return $this->belongsTo(SupportContractInstance::class);
+    }
+
+    /**
+     * Get the support contract associated with the task through the support contract instance.
+     */
+    public function supportContract()
+    {
+        return $this->hasOneThrough(SupportContract::class, SupportContractInstance::class);
+    }
 }

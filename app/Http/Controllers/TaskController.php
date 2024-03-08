@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\SupportContractInstance;
 use App\Models\Task;
 use App\Models\SupportContract;
+use App\Models\TaskAccess;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -15,11 +16,21 @@ class TaskController extends Controller
     public function TaskIndex(Task $task)
     {
         //$this->authorize('view', $usermanagement);
-        $tasks = Task::All();
+        $tasks = Task::where('isCompleted', 0)->get();
         $scInstances=SupportContractInstance::All();
         $supportcontracts=SupportContract::All();
 
         return view('admin.SCtaskmonitor', compact('tasks','scInstances','supportcontracts'));
+    }
+
+    public function AllTaskIndex(Task $task)
+    {
+        //$this->authorize('view', $usermanagement);
+        $tasks = Task::where('isCompleted', 1)->get();
+        $scInstances=SupportContractInstance::All();
+        $supportcontracts=SupportContract::All();
+
+        return view('admin.allTasks', compact('tasks','scInstances','supportcontracts'));
     }
 
     public function addTask(Request $request)
@@ -66,34 +77,71 @@ class TaskController extends Controller
     public function fetchTasks(Request $request)
     {
         try {
-            // Validate request data
             $validatedData = $request->validate([
                 'supportContractId' => 'required|integer',
-                'supportContractYear' => 'required|integer',
+                'year' => 'required|integer',
             ]);
 
-            // Fetch the support contract instance ID
             $supportContractInstanceId = SupportContractInstance::where('support_contract_id', $validatedData['supportContractId'])
-                ->where('year', $validatedData['supportContractYear'])
+                ->where('year', $validatedData['year'])
                 ->value('id');
 
-            // Check if support contract instance ID is found
             if (!$supportContractInstanceId) {
                 throw new \Exception('Support contract instance not found.');
             }
 
-            // Fetch tasks based on the support contract instance ID
-            $tasks = Task::where('support_contract_instance_id', $supportContractInstanceId)->get();
+            $tasks = Task::where('support_contract_instance_id', $supportContractInstanceId)
+            ->where('isCompleted', 0)
+            ->get();
 
-            // Return tasks as JSON response
             return response()->json($tasks);
-        } catch (\Exception $e) {
-            // Log the exception
-            Log::error('Error fetching tasks:', ['error' => $e->getMessage()]);
-
-            // Return an error response
+        }
+        catch (\Exception $e)
+        {
             return response()->json(['error' => 'An error occurred while fetching tasks.'], 500);
         }
     }
+
+    public function deleteTask($id)
+    {
+        $task =Task::find($id);
+        if ($task) {
+            $task->delete();
+            return response()->json(['message' => 'Task deleted successfully'], 200);
+        } else {
+            return response()->json(['error' => 'Task not found'], 404);
+        }
+    }
+    public function getUEmpForTasks(Request $request)
+    {
+
+        $users = User::where('role_id', 3)->get();
+
+        return response()->json($users);
+    }
+    
+    public function grantAccess(Request $request)
+    {
+        Log::info('Grant access request received.');
+
+        $taskId = $request->input('task_id');
+        $selectedUsers = $request->input('selected_users');
+
+        Log::info('Task ID: ' . $taskId);
+        Log::info('Selected Users: ' . json_encode($selectedUsers));
+
+        $userNames = User::whereIn('id', $selectedUsers)->pluck('name', 'id');
+
+        foreach ($selectedUsers as $userId) {
+        TaskAccess::create([
+            'task_id' => $taskId,
+            'emp_name' => $userNames[$userId] // Use the fetched name corresponding to the user ID
+        ]);
+    }
+
+        return response()->json(['message' => 'Access granted successfully']);
+    }
+
+
 
 }

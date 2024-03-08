@@ -208,7 +208,7 @@
             $scope.users = [];
 
             //Updating the table--------------------------------------------------------
-            /*function fetchUsers() {
+            function fetchUsers() {
                 $.ajax({
                     url: '/fetch/Employees',
                     method: 'GET',
@@ -250,7 +250,7 @@
                         console.error(error);
                     }
                 });
-            }*/
+            }
 
             //Adding user-------------------------------------------------------------------------------
             $scope.submitUser = function() {
@@ -398,63 +398,56 @@
                 <br>
                 <br>
                 <div>
+                    <table id="example" class="table table-bordered" width="108%">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Emp Type</th>
+                                <th>DOB</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($users as $user)
+                                <tr>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->user_type }}</td>
+                                    <td>{{ $user->dob }}</td>
+                                    <td>{{ $user->phone }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->address }}</td>
 
-                    <div class="row">
-                        @foreach ($users as $user)
-                        <div class="col-lg-4 col-md-6">
-                          <div class="team">
-                            <div class="team-avatar">
-                              <!--img class="w-100" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt=""-->
-                              <img class="w-100" src="{{ asset('img/empImg.jpg') }}" alt="">
 
-                            </div>
-                            <div class="team-content">
-                              <div class=" team-content-inner">
-                                <div class="d-flex">
-                                  <div class="team-info mb-4">
-                                    <h5 class="mb-0"><a href="#" class="avatar-name">{{ $user->name }}</a></h5>
-                                    <span class="team-position">{{ $user->user_type }}</span>
-                                    <p class="mb-0"><a href="#" class="text-white d-block">Birthday:{{ $user->dob }}</a></p>
-                                  </div>
-                                </div>
-                                <div class="team-contact mt-2">
-                                  <a class="text-white d-block" href="#">
-                                    <i class="fas fa-phone fa-flip-horizontal mr-1"></i>
-                                    Call Now  {{ $user->phone }}
-                                  </a>
-                                  <a class="text-white d-block" href="#">
-                                    <i class="far fa-envelope mr-1"></i>
-                                    {{ $user->email }}
-                                  </a>
-                                  <a class="text-white d-block" href="#">
-                                    {{ $user->address }}
-                                </a>
-                                <div class="text-center">
-                                    <div class="d-inline-block mx-1">
-                                        <a href="#"
-                                            ng-click="openEditUserTypeModal('{{ $user->id }}')"data-toggle="tooltip"
-                                            data-bs-placement="bottom" title="Edit Employee">
-                                            <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
-                                        </a>
+                                    <td class="text-center">
+                                        <div class="d-inline-block mx-1">
+                                            <a href="#"
+                                                ng-click="openEditUserTypeModal('{{ $user->id }}')"data-toggle="tooltip"
+                                                data-bs-placement="bottom" title="Edit Employee">
+                                                <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
+                                            </a>
+                                        </div>
+                                        <div class="d-inline-block mx-1">
+                                            <a href="#" ng-click="confirmDelete('{{ $user->id }}')" data-toggle="tooltip" data-bs-placement="bottom" title="Delete Admin">
+                                                <i class="fa-solid fa-trash" style="color: red;"></i>
+                                            </a>
+                                        </div>
+                                        <div class="d-inline-block mx-1">
+                                            <a href="#">
+                                                <i class="fa-solid fa-circle-info"style="color: black;"data-toggle="tooltip" data-bs-placement="bottom"title="Disable Employee"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="d-inline-block mx-1">
-                                        <a href="#" ng-click="confirmDelete('{{ $user->id }}')" data-toggle="tooltip" data-bs-placement="bottom" title="Delete Admin">
-                                            <i class="fa-solid fa-trash" style="color: red;"></i>
-                                        </a>
-                                    </div>
-                                    <div class="d-inline-block mx-1">
-                                        <a href="#">
-                                            <i class="fa-solid fa-circle-info"style="color: black;"data-toggle="tooltip" data-bs-placement="bottom"title="Disable Employee"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        @endforeach
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
+
+
 
                 <!--Add Modal -->
                 <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog"
