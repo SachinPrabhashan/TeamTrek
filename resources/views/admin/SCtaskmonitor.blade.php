@@ -321,17 +321,6 @@
 
 <script>
     $(document).ready(function(){
-
-        /*$("#addSupportContractTaskBtn").click(function(){
-            $("#Addmodal").modal("show");
-        });
-        $("#closeBtn").click(function(){
-            $("#Addmodal").modal("hide");
-        });
-        $("#closeHeadBtn").click(function(){
-            $("#Addmodal").modal("hide");
-        });*/
-
 //Adding Tasks using swal---------------------------------------------
         $(document).on('click', '#openCreateTaskModalBtn', function() {
             Swal.fire({
@@ -472,9 +461,9 @@
         taskHtml += '<li class="widget-49-meeting-item"><span>' + task.Description + '</span></li>';
         taskHtml += '</ol>';
         taskHtml += '<div class="widget-49-meeting-action">';
-        taskHtml += '<span style="margin-right: 5px;"><i class="fa-solid fa-users"style="color: green;"></i></span>'; // Add the users icon
+        taskHtml += '<span style="margin-right: 5px;"><i class="fa-solid fa-users" style="color: green;"></i></span>'; // Add the users icon // Add the users icon
         taskHtml += '<span style="margin-right: 5px;"><i class="fa-solid fa-trash delete-task" style="color: red;" data-task-id="' + task.id + '"></i></span>';
-        taskHtml += '<span><i class="fa-solid fa-eye"style="color: blue;"></i></span>'; // Add the eye icon
+        taskHtml += '<span class="view-task" data-task-id="' + task.id + '"><i class="fa-solid fa-eye" style="color: blue;"></i></span>';
         taskHtml += '</div></div></div></div></div>';
     });
 
@@ -482,7 +471,6 @@
 
     // Event listener for showing access granting modal
     $(document).on('click', '.fa-users', function() {
-        // Get the task ID from the data-task-id attribute of the clicked element
         var taskId = $(this).closest('.card').find('.widget-49-date-day').text().trim();
         showAccessGrantingModal(taskId);
     });
@@ -536,11 +524,11 @@ function deleteTask(taskId) {
         });
     }
 
-// Event listener for confirming delete---------------------------------------------------------
-    $(document).on('click', '.delete-task', function() {
-        var taskId = $(this).data('task-id');
-        confirmDelete(taskId);
-    });
+    // Event listener for confirming delete---------------------------------------------------------
+        $(document).on('click', '.delete-task', function() {
+            var taskId = $(this).data('task-id');
+            confirmDelete(taskId);
+        });
 
 // Set up global AJAX setup to include CSRF token in all requests
 $.ajaxSetup({
@@ -549,73 +537,142 @@ $.ajaxSetup({
     }
 });
 
-function showAccessGrantingModal(taskId) {
-    console.log('Task ID:', taskId);
-    $.ajax({
-        url: '/emp-for-tasks',
-        type: 'GET',
-        success: function(users) {
-            var optionsHtml = '';
-            users.forEach(function(user) {
-                optionsHtml += '<label><input type="checkbox" name="user" value="' + user.id + '"> ' + user.name + '</label><br>';
-            });
-
-            Swal.fire({
-                title: 'Grant Access To Users',
-                html: optionsHtml,
-                showCloseButton: true,
-                showCancelButton: true,
-                confirmButtonText: 'Submit',
-                cancelButtonText: 'Close'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var selectedUsers = [];
-                    $('input[name="user"]:checked').each(function() {
-                        selectedUsers.push($(this).val());
-                    });
-
-                    // Send selected users and task ID to backend
-                    $.ajax({
-                        url: '/grant-access-tasks',
-                        type: 'POST',
-                        data: {
-                            task_id: taskId,
-                            selected_users: selectedUsers
-                        },
-                        success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success',
-                                text: response.message
-                            }).then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function(error) {
-                            console.error('Error granting access:', error);
-                        }
-                    });
-                }
-            });
+//Granting Access and revoking them---------------------------
+    function showAccessGrantingModal(taskId) {
+        //console.log('Task ID:', taskId);
+        $.ajax({
+            url: '/emp-for-tasks',
+            type: 'GET',
+            data: {
+            taskId: taskId // Include taskId in the data object
         },
-        error: function(error) {
-            console.error("Error fetching users:", error);
-        }
+            success: function(users) {
+                var optionsHtml = '';
+                users.forEach(function(user) {
+                    var isChecked = user.isGranted ? 'checked' : ''; // Check if user is granted access
+                    optionsHtml += '<label><input type="checkbox" class="user-checkbox" name="user" value="' + user.id + '" ' + isChecked + '> ' + user.name + '</label><br>';
+                });
+
+                Swal.fire({
+                    title: 'Grant Access To Users',
+                    html: optionsHtml,
+                    showCloseButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'Submit',
+                    cancelButtonText: 'Close'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var selectedUsers = [];
+                        $('input[name="user"]:checked').each(function() {
+                            selectedUsers.push($(this).val());
+                        });
+
+                        // Send selected users and task ID to backend
+                        $.ajax({
+                            url: '/grant-access-tasks',
+                            type: 'POST',
+                            data: {
+                                task_id: taskId,
+                                selected_users: selectedUsers
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function(error) {
+                                console.error('Error granting access:', error);
+                            }
+                        });
+                    }
+                });
+
+                // Add click event listener to checkboxes
+                $('.user-checkbox').on('click', function() {
+                    var userId = $(this).val();
+                    var isChecked = $(this).prop('checked');
+
+                    if (!isChecked) {
+                        $.ajax({
+                            url: '/revoke-access-tasks',
+                            type: 'POST',
+                            data: {
+                                task_id: taskId,
+                                user_id: userId
+                            },
+                            success: function(response) {
+                                console.log('Access revoked for user ' + userId);
+                            },
+                            error: function(error) {
+                                console.error('Error revoking access:', error);
+                            }
+                        });
+                    }
+                });
+            },
+            error: function(error) {
+                console.error("Error fetching users:", error);
+            }
+        });
+    }
+
+// Function to display task details with employee names
+    function showTaskDetails(taskId) {
+        $.ajax({
+            url: '/get-task-details/' + taskId,
+            type: 'GET',
+            success: function(response) {
+                // Prepare HTML content for displaying task details
+                var htmlContent = '<div style="text-align: left;">';
+                htmlContent += '<p>Support Contract Year: ' + response.support_contract_year + '</p>';
+                htmlContent += '<p>Support Contract Name: ' + response.support_contract_name + '</p>';
+                htmlContent += '<p>Task Name: ' + response.task_name + '</p>';
+                htmlContent += '<p>Start Date: ' + response.start_date + '</p>';
+
+                if (response.end_date) {
+                    htmlContent += '<p>End Date: ' + response.end_date + '</p>';
+                }else {
+                    htmlContent += '<p>End Date:</p><span style="color: red;">Ongoing</span>';
+                }
+                htmlContent += '<p>Is Completed: ' + (response.is_completed ? 'Yes' : 'No') + '</p>';
+                htmlContent += '<p>Description: ' + response.description + '</p>';
+                htmlContent += '<p>Assigned Employees:</p>';
+                htmlContent += '<ul>';
+                response.emp_names.forEach(function(empName) {
+                    htmlContent += '<li>' + empName + '</li>';
+                });
+                htmlContent += '</ul>';
+                htmlContent += '</div>';
+
+                // Display task details in a modal
+                Swal.fire({
+                    title: 'Task Details',
+                    html: htmlContent,
+                    showCloseButton: true
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching task details:', error);
+            }
+        });
+    }
+
+    // Event listener for clicking the eye icon to view task details
+    $(document).on('click', '.view-task', function() {
+        var taskId = $(this).data('task-id');
+        showTaskDetails(taskId);
     });
-}
-
-
 
 });
 </script>
 
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4">
-
             <h1>On Going Tasks</h1>
-
-
-
             <div class="float-end">
                 @RootOrAdmin
                 <button class="btn btn-primary" id="openCreateTaskModalBtn" data-toggle="tooltip" data-bs-placement="bottom" title="Create SC Tasks">
@@ -626,8 +683,6 @@ function showAccessGrantingModal(taskId) {
                         <i class="fa-solid fa-folder-open"></i>
                     </button>
                 </a>
-
-
                 @endRootOrAdmin
             </div>
 
@@ -648,6 +703,7 @@ function showAccessGrantingModal(taskId) {
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
             </div>
+
             <!--div id="TaskView">Available Tasks Will Display Here</div-->
             <div class="row">
 
@@ -657,9 +713,5 @@ function showAccessGrantingModal(taskId) {
 
     </div>
 </div>
-
-
-
-
 
 @endsection

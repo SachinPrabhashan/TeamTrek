@@ -10,6 +10,7 @@ class TaskAccess extends Model
     use HasFactory;
     protected $fillable = [
         'task_id',
+        'user_id',
         'emp_name',
         'isGranted',
     ];
