@@ -94,7 +94,7 @@
                 });
             });
         });
-</script>
+    </script>
 
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4" style="overflow: hidden;">
@@ -131,16 +131,24 @@
                                 data-contract-id="{{ $instance->supportContract->id }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $instance->supportContract->name }}</h5>
-                                    <h1 class="m-1">{{ $instance->year }}</h1>
+                                    <h1 class="m-1">{{ $instance->year }} Year</h1>
                                     <div class="d-flex">
-                                        <div class="me-3" data-toggle="tooltip" data-bs-placement="bottom"
+                                        <div class="me-3 d-flex" data-toggle="tooltip" data-bs-placement="bottom"
                                             title="Support Hours">
-                                            <img width="24" height="24"
-                                                src="https://img.icons8.com/windows/32/meeting-time.png"
-                                                alt="meeting-time" /> |
-                                            {{ $instance->dev_hours + $instance->eng_hours }}H
+                                            <div class="mt-2">
+                                                <img width="24" height="24"
+                                                    src="https://img.icons8.com/windows/32/meeting-time.png"
+                                                    alt="meeting-time" /> |
+                                            </div>
+                                            {{-- {{ $instance->dev_hours + $instance->eng_hours }}H --}}
+                                            <div style="font-size: 9pt;">
+                                                Dev {{ $instance->dev_hours }}H
+                                                <br>
+                                                Eng {{ $instance->eng_hours }}H
+                                            </div>
                                         </div>
-                                        <div class="me-3"data-toggle="tooltip" data-bs-placement="bottom" title="Owner">
+                                        <div class="me-3 mt-2"data-toggle="tooltip" data-bs-placement="bottom"
+                                            title="Owner">
                                             <img width="24" height="24"
                                                 src="https://img.icons8.com/windows/32/landlord.png" alt="landlord" /> |
                                             {{ $instance->owner }}

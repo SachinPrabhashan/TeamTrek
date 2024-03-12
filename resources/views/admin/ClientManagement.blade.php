@@ -298,6 +298,7 @@
                                             <small id="emailHelp text-white" class="form-text text-muted">We'll never share
                                                 your
                                                 email with anyone else.</small>
+                                                <p id="emailHelp"></p>
                                         </div><br>
                                         <div class="form-group">
                                             <label for="address">Address</label>
@@ -359,7 +360,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
-                                <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
+                                <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -398,7 +399,7 @@
                                         <label for="editEmail">Email</label>
                                         <input type="email" class="form-control" id="editEmail"
                                             ng-model="editedClient.email" placeholder="Enter email">
-                                    </div><br>
+                                    </div><span id="emailHelpedit"></span><br>
                                     <div class="form-group">
                                         <label for="editEmail">Phone</label>
                                         <input type="phone" class="form-control" id="editPhone"

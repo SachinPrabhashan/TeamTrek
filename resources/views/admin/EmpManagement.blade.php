@@ -457,7 +457,7 @@
                             <div class="card text-dark bg-light">
                                 <div class="modal-header">
                                     <h5 class="modal-title text-dark" id="exampleModalLabel">Add Employees</h5>
-                                    <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+                                    <button type="button" class="btn-close" aria-label="Close" ng-click="closeModal()">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
@@ -476,6 +476,7 @@
                                             <small id="emailHelp text-white" class="form-text text-muted">We'll never share
                                                 your
                                                 email with anyone else.</small>
+                                                <p id="emailHelp"></p>
                                         </div><br>
                                         <div class="form-group">
                                             <label for="dob">Date of Birth</label>
@@ -545,7 +546,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
-                                <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
+                                <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -571,7 +572,7 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type and Hourly Rate
                                 </h5>
-                                <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
+                                <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
