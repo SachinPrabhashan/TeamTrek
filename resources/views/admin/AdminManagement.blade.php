@@ -1,159 +1,161 @@
 @extends('layouts.navitems')
 
 @section('content')
-<style>
-    body{
-background:#eee;
-margin-top:20px;}
+    <style>
+        body {
+            background: #eee;
+            margin-top: 20px;
+        }
 
 
-.team {
-position: relative;
-margin-bottom: 20px;
-}
+        .team {
+            position: relative;
+            margin-bottom: 20px;
+        }
 
-.team .team-content {
-position: absolute;
-bottom: 25px;
-margin: 0 20px;
-left: 0;
-right: 0;
-}
+        .team .team-content {
+            position: absolute;
+            bottom: 25px;
+            margin: 0 20px;
+            left: 0;
+            right: 0;
+        }
 
-.team .team-content-inner {
-background-color: #ffffff;
-padding: 20px 20px;
-width: 100%;
--webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
--webkit-transition: all 0.3s ease-in-out;
-transition: all 0.3s ease-in-out;
-}
+        .team .team-content-inner {
+            background-color: #ffffff;
+            padding: 20px 20px;
+            width: 100%;
+            -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
 
-.team .team-content-inner .team-social {
-margin-left: auto;
-}
+        .team .team-content-inner .team-social {
+            margin-left: auto;
+        }
 
-.team .team-content-inner .team-social .nav .nav-link {
-padding-top: 0;
-padding-bottom: 0;
-}
+        .team .team-content-inner .team-social .nav .nav-link {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
 
-.team .team-content-inner .team-contact {
-opacity: 0;
-position: absolute;
-bottom: 0px;
-left: 20px;
--webkit-transition: all 0.3s ease-in-out;
-transition: all 0.3s ease-in-out;
-}
+        .team .team-content-inner .team-contact {
+            opacity: 0;
+            position: absolute;
+            bottom: 0px;
+            left: 20px;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
 
-.team:hover .team-content-inner {
-background-color: #009CFF;
-color: #ffffff;
-padding: 20px 20px 90px;
-}
+        .team:hover .team-content-inner {
+            background-color: #009CFF;
+            color: #ffffff;
+            padding: 20px 20px 90px;
+        }
 
-.team:hover .team-content-inner .team-info .team-position {
-color: #ffffff;
-}
+        .team:hover .team-content-inner .team-info .team-position {
+            color: #ffffff;
+        }
 
-.team:hover .team-content-inner .team-contact {
-opacity: 1;
-bottom: 20px;
-}
+        .team:hover .team-content-inner .team-contact {
+            opacity: 1;
+            bottom: 20px;
+        }
 
-.team:hover .team-content-inner .team-contact .nav .nav-link {
-color: #ffffff;
-}
+        .team:hover .team-content-inner .team-contact .nav .nav-link {
+            color: #ffffff;
+        }
 
-.team:hover .team-content-inner .team-contact .nav .nav-link:hover {
-color: #000000;
-}
+        .team:hover .team-content-inner .team-contact .nav .nav-link:hover {
+            color: #000000;
+        }
 
-.team:hover .team-content-inner .team-social .nav .nav-link {
-color: #ffffff;
-}
+        .team:hover .team-content-inner .team-social .nav .nav-link {
+            color: #ffffff;
+        }
 
-.team:hover .team-content-inner .team-social .nav .nav-link:hover {
-color: #000000;
-}
+        .team:hover .team-content-inner .team-social .nav .nav-link:hover {
+            color: #000000;
+        }
 
-.team:hover .team-info .avatar-name {
-color: #ffffff;
-}
+        .team:hover .team-info .avatar-name {
+            color: #ffffff;
+        }
 
-.team-content-inner .team-info .avatar-name {
-margin-bottom: 0;
-font-weight: 600;
-}
+        .team-content-inner .team-info .avatar-name {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
 
-.team-content-inner .team-info .team-position {
-color:#009CFF;
-}
+        .team-content-inner .team-info .team-position {
+            color: #009CFF;
+        }
 
-.team-02 {
-display: -webkit-box;
-display: -ms-flexbox;
-display: flex;
--webkit-box-align: center;
--ms-flex-align: center;
-align-items: center;
-}
+        .team-02 {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+        }
 
-.team-02 .team-avatar {
--webkit-box-flex: 0;
--ms-flex: 0 50%;
-flex: 0 50%;
-}
+        .team-02 .team-avatar {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 50%;
+            flex: 0 50%;
+        }
 
-.team-02 .team-content {
--webkit-box-flex: 0;
--ms-flex: 0 50%;
-flex: 0 50%;
-}
+        .team-02 .team-content {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 50%;
+            flex: 0 50%;
+        }
 
-.team-02 .team-content-inner {
-padding: 0px;
-}
+        .team-02 .team-content-inner {
+            padding: 0px;
+        }
 
-.team-02 .team-content-inner .team-contact {
-margin-top: 20px;
-}
+        .team-02 .team-content-inner .team-contact {
+            margin-top: 20px;
+        }
 
-.team-02 .team-content-inner .team-contact .nav .nav-link {
-color: #2d3037;
-padding: 5px;
-}
+        .team-02 .team-content-inner .team-contact .nav .nav-link {
+            color: #2d3037;
+            padding: 5px;
+        }
 
-.team-02 .team-content-inner .team-contact .nav .nav-link:hover {
-color: #009b72;
-}
+        .team-02 .team-content-inner .team-contact .nav .nav-link:hover {
+            color: #009b72;
+        }
 
-.team-02 .team-content-inner .team-desc {
-color: #2d3037;
-}
+        .team-02 .team-content-inner .team-desc {
+            color: #2d3037;
+        }
 
-.social a.text-muted:hover {
-color: #009b72 !important;
-}
+        .social a.text-muted:hover {
+            color: #009b72 !important;
+        }
 
-@media (max-width: 575.98px) {
-.team .team-content {
-    margin: 0 15px;
-}
-}
-.nav {
-display: -webkit-box;
-display: -ms-flexbox;
-display: flex;
--ms-flex-wrap: wrap;
-flex-wrap: wrap;
-padding-left: 0;
-margin-bottom: 0;
-list-style: none;
-}
-</style>
+        @media (max-width: 575.98px) {
+            .team .team-content {
+                margin: 0 15px;
+            }
+        }
+
+        .nav {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            padding-left: 0;
+            margin-bottom: 0;
+            list-style: none;
+        }
+    </style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -294,22 +296,22 @@ list-style: none;
 
 
             $scope.deleteAdmin = function(adminId) {
-            $http.delete('/delete-Admin/' + adminId)
-                .then(function(response) {
-                    console.log("User deleted successfully");
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "An Admin deleted Successfully!",
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        location.reload();
+                $http.delete('/delete-Admin/' + adminId)
+                    .then(function(response) {
+                        console.log("User deleted successfully");
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "An Admin deleted Successfully!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload();
+                        });
+                    })
+                    .catch(function(error) {
+                        console.error("Error deleting user:", error);
                     });
-                })
-                .catch(function(error) {
-                    console.error("Error deleting user:", error);
-                });
             };
 
             $scope.confirmDelete = function(adminId) {
@@ -397,7 +399,8 @@ list-style: none;
                                         </div>
 
                                         <div class="d-inline-block mx-1">
-                                            <a href="#" ng-click="confirmDelete('{{ $admin->id }}')" data-toggle="tooltip" data-bs-placement="bottom" title="Delete Admin">
+                                            <a href="#" ng-click="confirmDelete('{{ $admin->id }}')"
+                                                data-toggle="tooltip" data-bs-placement="bottom" title="Delete Admin">
                                                 <i class="fa-solid fa-trash" style="color: red;"></i>
                                             </a>
                                         </div>
@@ -446,6 +449,7 @@ list-style: none;
                                             <small id="emailHelp text-white" class="form-text text-muted">We'll never share
                                                 your
                                                 email with anyone else.</small>
+                                                <p id="emailHelp"></p>
                                         </div><br>
                                         <div class="form-group">
                                             <label for="role">Role ID</label>
@@ -454,12 +458,12 @@ list-style: none;
                                         </div><br>
                                         <div class="form-group">
                                             <label for="password">Password</label>
-                                            <div  class="input-group mb-3" id="show_hide_password">
+                                            <div class="input-group mb-3" id="show_hide_password">
                                                 <input type="password" class="form-control" id="password"
-                                                ng-model="admin.password" placeholder="Enter password">
-                                            <span class="input-group-text" id="basic-addon2">
-                                                <a href=""><i class="fa fa-eye-slash" style="color: #333"
-                                                        aria-hidden="true"></i></a></span>
+                                                    ng-model="admin.password" placeholder="Enter password">
+                                                <span class="input-group-text" id="basic-addon2">
+                                                    <a href=""><i class="fa fa-eye-slash" style="color: #333"
+                                                            aria-hidden="true"></i></a></span>
                                             </div>
 
                                         </div>
@@ -507,7 +511,7 @@ list-style: none;
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editAdminModalLabel">Edit Admin</h5>
-                                <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
+                                <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -522,7 +526,8 @@ list-style: none;
                                         <label for="editEmail">Email:</label>
                                         <input type="email" class="form-control" id="editEmail"
                                             ng-model="editedAdmin.email" placeholder="Enter email">
-                                    </div><br>
+                                    </div>
+                                    <span id="emailHelpedit"></span><br>
                                     <div class="form-group">
                                         <label for="editPassword">Password:</label>
                                         <input type="password" class="form-control" id="editPassword"
@@ -541,4 +546,6 @@ list-style: none;
             </div>
         </div>
     </div>
+
+
 @endsection
