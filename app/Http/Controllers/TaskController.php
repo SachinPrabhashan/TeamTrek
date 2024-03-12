@@ -8,8 +8,9 @@ use App\Models\SupportContract;
 use App\Models\TaskAccess;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class TaskController extends Controller
 {
@@ -112,36 +113,133 @@ class TaskController extends Controller
             return response()->json(['error' => 'Task not found'], 404);
         }
     }
+
     public function getUEmpForTasks(Request $request)
     {
 
+        $taskId = $request->input('taskId');
+
         $users = User::where('role_id', 3)->get();
 
+        $grantedUserIds = TaskAccess::where('task_id', $taskId)->pluck('user_id')->toArray();
+
+        foreach ($users as $user) {
+            $user->isGranted = in_array($user->id, $grantedUserIds);
+        }
         return response()->json($users);
     }
-    
+
+
     public function grantAccess(Request $request)
     {
-        Log::info('Grant access request received.');
-
         $taskId = $request->input('task_id');
         $selectedUsers = $request->input('selected_users');
 
-        Log::info('Task ID: ' . $taskId);
-        Log::info('Selected Users: ' . json_encode($selectedUsers));
-
-        $userNames = User::whereIn('id', $selectedUsers)->pluck('name', 'id');
-
         foreach ($selectedUsers as $userId) {
-        TaskAccess::create([
-            'task_id' => $taskId,
-            'emp_name' => $userNames[$userId] // Use the fetched name corresponding to the user ID
-        ]);
-    }
+            // Check if an access record already exists for this user and task
+            $existingAccess = TaskAccess::where('task_id', $taskId)
+                                        ->where('user_id', $userId)
+                                        ->first();
+
+            // If an access record already exists, skip creating a new one
+            if ($existingAccess) {
+                continue;
+            }
+
+            // If no existing access record, create a new one
+            $userName = User::findOrFail($userId)->name;
+
+            TaskAccess::create([
+                'task_id' => $taskId,
+                'user_id' => $userId,
+                'emp_name' => $userName,
+                'isGranted' => true,
+            ]);
+        }
 
         return response()->json(['message' => 'Access granted successfully']);
     }
 
 
+    public function revokeAccess(Request $request)
+    {
+        $request->validate([
+            'task_id' => 'required|integer',
+            'user_id' => 'required|integer',
+        ]);
+
+        $taskId = $request->input('task_id');
+        $userId = $request->input('user_id');
+
+        try {
+
+            TaskAccess::where('task_id', $taskId)->where('user_id', $userId)->delete();
+            return response()->json(['message' => 'Access revoked successfully']);
+        }
+        catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to revoke access'], 500);
+        }
+    }
+
+    public function getTaskDetailsWithEmp($taskId)
+    {
+        // Log that the method is being called
+        Log::info('Fetching task details for Task ID: ' . $taskId);
+
+        // Retrieve task details along with support contract information
+        $taskDetails = Task::with('supportContractInstance.supportContract')
+            ->where('id', $taskId)
+            ->first();
+
+        if (!$taskDetails) {
+            // Task not found
+            Log::warning('Task not found for Task ID: ' . $taskId);
+            return response()->json(['error' => 'Task not found'], 404);
+        }
+
+        // Log retrieved task details
+        Log::info('Retrieved task details: ' . json_encode($taskDetails));
+
+        // Extracting necessary data
+        $supportContractYear = $taskDetails->supportContractInstance->year;
+        $supportContractName = $taskDetails->supportContractInstance->supportContract->name;
+        $taskName = $taskDetails->name;
+        $startDate = $taskDetails->start_date;
+        $endDate = $taskDetails->end_date;
+        $isCompleted = $taskDetails->isCompleted;
+        $description = $taskDetails->Description;
+
+        // Retrieve emp_name from task_accesses table
+        $empNames = DB::table('task_accesses')
+            ->where('task_id', $taskId)
+            ->pluck('emp_name')
+            ->toArray();
+
+        // Log extracted data
+        Log::info('Extracted data: ' . json_encode([
+            'support_contract_year' => $supportContractYear,
+            'support_contract_name' => $supportContractName,
+            'task_name' => $taskName,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'is_completed' => $isCompleted,
+            'description' => $description,
+            'emp_names' => $empNames,
+        ]));
+
+        // Prepare the response
+        $responseData = [
+            'support_contract_year' => $supportContractYear,
+            'support_contract_name' => $supportContractName,
+            'task_name' => $taskName,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'is_completed' => $isCompleted,
+            'description' => $description,
+            'emp_names' => $empNames,
+        ];
+
+        return response()->json($responseData);
+    }
 
 }
