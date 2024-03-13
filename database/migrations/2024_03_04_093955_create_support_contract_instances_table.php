@@ -20,6 +20,9 @@ return new class extends Migration
             $table->double('dev_hours');
             $table->double('eng_hours');
 
+            $table->boolean('isDelete')->nullable()->default(false);
+            $table->boolean('isUpdate')->nullable()->default(false);
+
             $table->foreign('support_contract_id')->references('id')->on('support_contracts');
         });
     }
