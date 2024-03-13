@@ -13,5 +13,6 @@ class SupportPayment extends Model
         'support_contract_instance_id',
         'dev_rate_per_hour',
         'eng_rate_per_hour',
+        'year',
     ];
 }

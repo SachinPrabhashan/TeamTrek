@@ -18,6 +18,8 @@ return new class extends Migration
             $table->timestamps();
             $table->string('emp_name');
             $table->boolean('isGranted')->nullable()->default(false);
+            $table->boolean('isDelete')->nullable()->default(false);
+            $table->boolean('isUpdate')->nullable()->default(false);
 
             $table->foreign('task_id')->references('id')->on('tasks');
             $table->foreign('user_id')->references('id')->on('users');
