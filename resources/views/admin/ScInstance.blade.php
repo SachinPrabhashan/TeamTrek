@@ -212,7 +212,7 @@
                                 value="2000">
                         </div>
                         <button type="button" class="btn btn-secondary btn-sm" id="closeFormBtn">Close</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Create</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Create</button>
                     </form>
                 </div>
             </div>

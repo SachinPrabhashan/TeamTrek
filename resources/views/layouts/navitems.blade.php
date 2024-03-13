@@ -129,20 +129,21 @@
                         <div
                             class="dropdown-menu {{ request()->is('support-contract/*') ? ' show' : '' }} bg-transparent border-0">
                             @AdminOrEmployee
-                                <a href="{{ route('admin.ScHandling') }}"
-                                    class="dropdown-item {{ request()->is('support-contract/admin-schandling') ? ' active' : '' }}">SC
-                                    Handling</a>
-                                <a href="{{ route('admin.ScInstance') }}"
-                                    class="dropdown-item {{ request()->is('support-contract/admin-scinstance') ? ' active' : '' }}">SC
-                                    Instance Handling</a>
-
-
-
+                                @Admin
+                                    <a href="{{ route('admin.ScHandling') }}"
+                                        class="dropdown-item {{ request()->is('support-contract/admin-schandling') ? ' active' : '' }}">SC
+                                        Handling</a>
+                                    <a href="{{ route('admin.ScInstance') }}"
+                                        class="dropdown-item {{ request()->is('support-contract/admin-scinstance') ? ' active' : '' }}">SC
+                                        Instance Handling</a>
+                                @endAdmin
                                 <a href="{{ route('scTaskMonitor') }}"
                                     class="dropdown-item {{ request()->is('support-contract/sc-task-monitor') ? ' active' : '' }}">SC
                                     Task Monitor</a>
                                 <a href="#" class="dropdown-item">SC Sub-Task Handling</a>
-                                <a href="#" class="dropdown-item">SC Reports</a>
+                                @Admin
+                                    <a href="#" class="dropdown-item">SC Reports</a>
+                                @endAdmin
                             @endAdminOrEmployee
                             @Client
                                 <a href="#" class="dropdown-item">Support Contract View</a>
@@ -490,6 +491,34 @@
                 }
             });
         </script>
+
+        <script>
+            //Password validation part.
+            $(document).ready(function() {
+                $("#password").on("click", function() {
+                    $("#passwordValidate").text("Password should be minimum 8 characters").addClass(
+                        "text-danger");
+                });
+            });
+        </script>
+
+        <script>
+            function validateNumberLength(input) {
+                // Set the maximum allowed length
+                var maxLength = 10;
+
+                // Remove any non-numeric characters
+                var phone = input.value.replace(/\D/g, '');
+
+                // Trim the input to the maximum length
+                var trimmedValue = phone.slice(0, maxLength);
+
+                // Update the input value
+                input.value = trimmedValue;
+            }
+        </script>
+
+
 </body>
 
 </html>

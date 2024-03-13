@@ -296,8 +296,8 @@ $(document).ready(function() {
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success btn-sm" id="submitSupportContract">Submit</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="submitSupportContract">Submit</button>
                 </div>
             </div>
         </div>

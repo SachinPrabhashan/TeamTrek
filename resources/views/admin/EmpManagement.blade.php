@@ -2,157 +2,159 @@
 
 @section('content')
     <style>
-        body{
-    background:#eee;
-    margin-top:20px;}
+        body {
+            background: #eee;
+            margin-top: 20px;
+        }
 
 
-.team {
-    position: relative;
-    margin-bottom: 20px;
-}
+        .team {
+            position: relative;
+            margin-bottom: 20px;
+        }
 
-.team .team-content {
-    position: absolute;
-    bottom: 25px;
-    margin: 0 20px;
-    left: 0;
-    right: 0;
-}
+        .team .team-content {
+            position: absolute;
+            bottom: 25px;
+            margin: 0 20px;
+            left: 0;
+            right: 0;
+        }
 
-.team .team-content-inner {
-    background-color: #ffffff;
-    padding: 20px 20px;
-    width: 100%;
-    -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
-    -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-}
+        .team .team-content-inner {
+            background-color: #ffffff;
+            padding: 20px 20px;
+            width: 100%;
+            -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
 
-.team .team-content-inner .team-social {
-    margin-left: auto;
-}
+        .team .team-content-inner .team-social {
+            margin-left: auto;
+        }
 
-.team .team-content-inner .team-social .nav .nav-link {
-    padding-top: 0;
-    padding-bottom: 0;
-}
+        .team .team-content-inner .team-social .nav .nav-link {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
 
-.team .team-content-inner .team-contact {
-    opacity: 0;
-    position: absolute;
-    bottom: 0px;
-    left: 20px;
-    -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-}
+        .team .team-content-inner .team-contact {
+            opacity: 0;
+            position: absolute;
+            bottom: 0px;
+            left: 20px;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
 
-.team:hover .team-content-inner {
-    background-color: #009CFF;
-    color: #ffffff;
-    padding: 20px 20px 90px;
-}
+        .team:hover .team-content-inner {
+            background-color: #009CFF;
+            color: #ffffff;
+            padding: 20px 20px 90px;
+        }
 
-.team:hover .team-content-inner .team-info .team-position {
-    color: #ffffff;
-}
+        .team:hover .team-content-inner .team-info .team-position {
+            color: #ffffff;
+        }
 
-.team:hover .team-content-inner .team-contact {
-    opacity: 1;
-    bottom: 20px;
-}
+        .team:hover .team-content-inner .team-contact {
+            opacity: 1;
+            bottom: 20px;
+        }
 
-.team:hover .team-content-inner .team-contact .nav .nav-link {
-    color: #ffffff;
-}
+        .team:hover .team-content-inner .team-contact .nav .nav-link {
+            color: #ffffff;
+        }
 
-.team:hover .team-content-inner .team-contact .nav .nav-link:hover {
-    color: #000000;
-}
+        .team:hover .team-content-inner .team-contact .nav .nav-link:hover {
+            color: #000000;
+        }
 
-.team:hover .team-content-inner .team-social .nav .nav-link {
-    color: #ffffff;
-}
+        .team:hover .team-content-inner .team-social .nav .nav-link {
+            color: #ffffff;
+        }
 
-.team:hover .team-content-inner .team-social .nav .nav-link:hover {
-    color: #000000;
-}
+        .team:hover .team-content-inner .team-social .nav .nav-link:hover {
+            color: #000000;
+        }
 
-.team:hover .team-info .avatar-name {
-    color: #ffffff;
-}
+        .team:hover .team-info .avatar-name {
+            color: #ffffff;
+        }
 
-.team-content-inner .team-info .avatar-name {
-    margin-bottom: 0;
-    font-weight: 600;
-}
+        .team-content-inner .team-info .avatar-name {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
 
-.team-content-inner .team-info .team-position {
-    color:#009CFF;
-}
+        .team-content-inner .team-info .team-position {
+            color: #009CFF;
+        }
 
-.team-02 {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-}
+        .team-02 {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+        }
 
-.team-02 .team-avatar {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 50%;
-    flex: 0 50%;
-}
+        .team-02 .team-avatar {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 50%;
+            flex: 0 50%;
+        }
 
-.team-02 .team-content {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 50%;
-    flex: 0 50%;
-}
+        .team-02 .team-content {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 50%;
+            flex: 0 50%;
+        }
 
-.team-02 .team-content-inner {
-    padding: 0px;
-}
+        .team-02 .team-content-inner {
+            padding: 0px;
+        }
 
-.team-02 .team-content-inner .team-contact {
-    margin-top: 20px;
-}
+        .team-02 .team-content-inner .team-contact {
+            margin-top: 20px;
+        }
 
-.team-02 .team-content-inner .team-contact .nav .nav-link {
-    color: #2d3037;
-    padding: 5px;
-}
+        .team-02 .team-content-inner .team-contact .nav .nav-link {
+            color: #2d3037;
+            padding: 5px;
+        }
 
-.team-02 .team-content-inner .team-contact .nav .nav-link:hover {
-    color: #009b72;
-}
+        .team-02 .team-content-inner .team-contact .nav .nav-link:hover {
+            color: #009b72;
+        }
 
-.team-02 .team-content-inner .team-desc {
-    color: #2d3037;
-}
+        .team-02 .team-content-inner .team-desc {
+            color: #2d3037;
+        }
 
-.social a.text-muted:hover {
-    color: #009b72 !important;
-}
+        .social a.text-muted:hover {
+            color: #009b72 !important;
+        }
 
-@media (max-width: 575.98px) {
-    .team .team-content {
-        margin: 0 15px;
-    }
-}
-.nav {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    padding-left: 0;
-    margin-bottom: 0;
-    list-style: none;
-}
+        @media (max-width: 575.98px) {
+            .team .team-content {
+                margin: 0 15px;
+            }
+        }
+
+        .nav {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            padding-left: 0;
+            margin-bottom: 0;
+            list-style: none;
+        }
     </style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
@@ -304,22 +306,22 @@
 
 
             $scope.deleteUser = function(userId) {
-            $http.delete('/delete-Emp/' + userId)
-                .then(function(response) {
-                    console.log("User deleted successfully");
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "A User deleted Successfully!",
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        location.reload();
+                $http.delete('/delete-Emp/' + userId)
+                    .then(function(response) {
+                        console.log("User deleted successfully");
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "A User deleted Successfully!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload();
+                        });
+                    })
+                    .catch(function(error) {
+                        console.error("Error deleting user:", error);
                     });
-                })
-                .catch(function(error) {
-                    console.error("Error deleting user:", error);
-                });
             };
 
             $scope.confirmDelete = function(userId) {
@@ -387,7 +389,7 @@
             <div class="container-fluid" ng-app="userApp" ng-controller="UserController">
                 <h1>Meet Our Team</h1>
                 <!--p>Without clarity, you send a very garbled message
-                     out to the Universe. We know that the Law of Attraction says that we will attract what we focus on, so if we don’t have clarity, we will attract confusion.</p-->
+                             out to the Universe. We know that the Law of Attraction says that we will attract what we focus on, so if we don’t have clarity, we will attract confusion.</p-->
                 <hr>
                 <div class="d-inline-block mx-1 float-end">
                     <a href="#" ng-click="openModal('#addUserModal')"><button
@@ -430,185 +432,195 @@
                                             </a>
                                         </div>
                                         <div class="d-inline-block mx-1">
-                                            <a href="#" ng-click="confirmDelete('{{ $user->id }}')" data-toggle="tooltip" data-bs-placement="bottom" title="Delete Admin">
+                                            <a href="#" ng-click="confirmDelete('{{ $user->id }}')"
+                                                data-toggle="tooltip" data-bs-placement="bottom" title="Delete Admin">
                                                 <i class="fa-solid fa-trash" style="color: red;"></i>
                                             </a>
                                         </div>
                                         <div class="d-inline-block mx-1">
                                             <a href="#">
-                                                <i class="fa-solid fa-circle-info"style="color: black;"data-toggle="tooltip" data-bs-placement="bottom"title="Disable Employee"></i>
+                                                <i class="fa-solid fa-circle-info"style="color: black;"
+                                                    data-toggle="tooltip"
+                                                    data-bs-placement="bottom"title="Disable Employee"></i>
                                             </a>
                                         </div>
-                                    </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
                 </div>
+                </td>
+                </tr>
+                @endforeach
+                </tbody>
+                </table>
+            </div>
 
 
 
-                <!--Add Modal -->
-                <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel"aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="card text-dark bg-light">
-                                <div class="modal-header">
-                                    <h5 class="modal-title text-dark" id="exampleModalLabel">Add Employees</h5>
-                                    <button type="button" class="btn-close" aria-label="Close" ng-click="closeModal()">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-
-                                <div class="modal-body">
-                                    <form ng-submit="submitUser()">
-                                        <div class="form-group">
-                                            <label for="name">Name</label>
-                                            <input type="text" class="form-control" id="name" ng-model="user.name"
-                                                placeholder="Enter name">
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="email">Email address</label>
-                                            <input type="email" class="form-control" id="email" ng-model="user.email"
-                                                placeholder="Enter email">
-                                            <small id="emailHelp text-white" class="form-text text-muted">We'll never share
-                                                your
-                                                email with anyone else.</small>
-                                                <p id="emailHelp"></p>
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="dob">Date of Birth</label>
-                                            <!--input type="date" class="form-control" id="dob" ng-model="user.dob"-->
-                                            <input type="date" class="form-control" id="dob" ng-model="user.dob"
-                                                ng-model-options="{timezone: null, updateOn: 'blur'}">
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="year">Year</label>
-                                            <input type="number" class="form-control" id="year" ng-model="user.year"
-                                                placeholder="Enter year">
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="address">Address</label>
-                                            <input type="text" class="form-control" id="address"
-                                                ng-model="user.address" placeholder="Enter address">
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="phone">Phone</label>
-                                            <input type="text" class="form-control" id="phone"
-                                                ng-model="user.phone" placeholder="Enter phone number">
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="role">Role ID</label>
-                                            <input type="text" class="form-control" id="role"
-                                                ng-model="user.role_id" value="3" readonly>
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="user_type">User Type</label>
-                                            <select class="form-control" id="user_type" ng-model="user.user_type">
-                                                <option value="developer">Developer</option>
-                                                <option value="engineer">Engineer</option>
-                                                <!--option value="client">Client</option-->
-                                            </select>
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="hourly_charge">Hourly Charge</label>
-                                            <input type="number" step="100" class="form-control" id="hourly_charge"
-                                                ng-model="user.hourly_charge" placeholder="Enter hourly charge">
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="password">Password</label>
-                                            <div class="input-group mb-3" id="show_hide_password">
-                                                <input type="password" class="form-control" id="password"
-                                                    ng-model="user.password" placeholder="Enter password">
-                                                <span class="input-group-text" id="basic-addon2">
-                                                    <a href=""><i class="fa fa-eye-slash" style="color: #333"
-                                                            aria-hidden="true"></i></a></span>
-                                            </div>
-
-                                        </div>
-                                        <br>
-                                        <button type="submit" class="btn btn-success btn-sm">Submit</button>
-                                        <button type="button" class="btn btn-danger btn-sm"
-                                            ng-click="closeModal()">Close</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Delete Confirmation Modal -->
-                <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
+            <!--Add Modal -->
+            <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel"aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="card text-dark bg-light">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
-                                <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
+                                <h5 class="modal-title text-dark" id="exampleModalLabel">Add Employees</h5>
+                                <button type="button" class="btn-close" aria-label="Close" ng-click="closeModal()">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                Are you sure you want to delete this Employee?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary btn-sm"
-                                    ng-click="closeModal()">Close</button>
-                                <button type="button" class="btn btn-danger btn-sm"
-                                    ng-click="deleteUser()">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-
-                <!-- Edit user type modal -->
-                <div class="modal fade" id="editUserTypeModal" tabindex="-1" role="dialog"
-                    aria-labelledby="editUserTypeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type and Hourly Rate
-                                </h5>
-                                <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
                             <div class="modal-body">
-                                <form>
+                                <form ng-submit="submitUser()">
                                     <div class="form-group">
-                                        <label for="userName">Name:</label>
-                                        <input type="text" class="form-control" id="userName"
-                                            ng-model="editedUser.name" readonly>
+                                        <label for="name">Name</label> <span id="Required"
+                                            style="color:crimson; font-size:12pt; ">*</span>
+                                        <input type="text" class="form-control" id="name" ng-model="user.name"
+                                            placeholder="Enter name">
                                     </div><br>
                                     <div class="form-group">
-                                        <label for="userType">Employee Type:</label>
-                                        <select class="form-control" id="userType" ng-model="editedUser.user_type">
-                                            <option value="developer" ng-selected="editedUser.user_type === 'developer'">
-                                                Developer</option>
-                                            <option value="engineer" ng-selected="editedUser.user_type === 'engineer'">
-                                                Engineer</option>
+                                        <label for="email">Email address</label> <span id="Required"
+                                            style="color:crimson; font-size:12pt; ">*</span>
+                                        <input type="email" class="form-control" id="email" ng-model="user.email"
+                                            placeholder="Enter email">
+                                        <small id="emailHelp text-white" class="form-text text-muted">We'll never share
+                                            your
+                                            email with anyone else.</small>
+                                        <p id="emailHelp"></p>
+                                    </div><br>
+                                    <div class="form-group">
+                                        <label for="dob">Date of Birth</label>
+                                        <!--input type="date" class="form-control" id="dob" ng-model="user.dob"-->
+                                        <input type="date" class="form-control" id="dob" ng-model="user.dob"
+                                            ng-model-options="{timezone: null, updateOn: 'blur'}">
+                                    </div><br>
+                                    <div class="form-group">
+                                        <label for="year">Year</label>
+                                        <input type="number" class="form-control" id="year" ng-model="user.year"
+                                            placeholder="Enter year">
+                                    </div><br>
+                                    <div class="form-group">
+                                        <label for="address">Address</label>
+                                        <input type="text" class="form-control" id="address"
+                                            ng-model="user.address" placeholder="Enter address">
+                                    </div><br>
+                                    <div class="form-group">
+                                        <label for="phone">Phone</label>
+                                        <input type="text" class="form-control" id="phone" ng-model="user.phone"
+                                            placeholder="Enter phone number" oninput="validateNumberLength(this)">
+                                    </div><br>
+                                    <div class="form-group">
+                                        <label for="role">Role ID</label>
+                                        <input type="text" class="form-control" id="role"
+                                            ng-model="user.role_id" value="3" readonly>
+                                    </div><br>
+                                    <div class="form-group">
+                                        <label for="user_type">User Type</label>
+                                        <select class="form-control" id="user_type" ng-model="user.user_type">
+                                            <option value="developer">Developer</option>
+                                            <option value="engineer">Engineer</option>
+                                            <!--option value="client">Client</option-->
                                         </select>
                                     </div><br>
                                     <div class="form-group">
-                                        <label for="hourlyRate">Hourly Rate:</label>
-                                        <input type="number" class="form-control" id="hourlyRate"
-                                            ng-model="editedUser.hourly_rate" placeholder="Enter hourly rate">
+                                        <label for="hourly_charge">Hourly Charge</label>
+                                        <input type="number" step="100" class="form-control" id="hourly_charge"
+                                            ng-model="user.hourly_charge" placeholder="Enter hourly charge">
+                                    </div><br>
+                                    <div class="form-group">
+                                        <label for="password">Password</label> <span id="Required"
+                                            style="color:crimson; font-size:12pt; ">*</span>
+                                        <div class="input-group mb-3" id="show_hide_password">
+                                            <input type="password" class="form-control" id="password"
+                                                ng-model="user.password" placeholder="Enter password">
+                                            <span class="input-group-text" id="basic-addon2">
+                                                <a href=""><i class="fa fa-eye-slash" style="color: #333"
+                                                        aria-hidden="true"></i></a></span>
+                                        </div>
+                                        <p id="passwordValidate"></p>
                                     </div>
+                                    <br>
+                                    <div class="float-end">
+                                        <button type="button" class="btn btn-secondary btn-sm"
+                                            ng-click="closeModal()">Close</button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Submit</button>
+                                    </div>
+
+
                                 </form>
-                            </div><br>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary btn-sm"
-                                    ng-click="updateUserType()">Update</button>
-                                <button type="button" class="btn btn-secondary btn-sm"
-                                    ng-click="closeModal()">Close</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this Employee?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                ng-click="closeModal()">Close</button>
+                            <button type="button" class="btn btn-danger btn-sm" ng-click="deleteUser()">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Edit user type modal -->
+            <div class="modal fade" id="editUserTypeModal" tabindex="-1" role="dialog"
+                aria-labelledby="editUserTypeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editUserTypeModalLabel">Edit Employee Type and Hourly Rate
+                            </h5>
+                            <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="userName">Name:</label>
+                                    <input type="text" class="form-control" id="userName" ng-model="editedUser.name"
+                                        readonly>
+                                </div><br>
+                                <div class="form-group">
+                                    <label for="userType">Employee Type:</label>
+                                    <select class="form-control" id="userType" ng-model="editedUser.user_type">
+                                        <option value="developer" ng-selected="editedUser.user_type === 'developer'">
+                                            Developer</option>
+                                        <option value="engineer" ng-selected="editedUser.user_type === 'engineer'">
+                                            Engineer</option>
+                                    </select>
+                                </div><br>
+                                <div class="form-group">
+                                    <label for="hourlyRate">Hourly Rate:</label>
+                                    <input type="number" class="form-control" id="hourlyRate"
+                                        ng-model="editedUser.hourly_rate" placeholder="Enter hourly rate">
+                                </div>
+                            </form>
+                        </div><br>
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                ng-click="closeModal()">Close</button>
+                            <button type="button" class="btn btn-danger btn-sm"
+                                ng-click="updateUserType()">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
     </div>
 @endsection
