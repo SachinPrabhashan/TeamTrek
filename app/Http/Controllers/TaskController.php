@@ -1,15 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
-use App\Models\SupportContractInstance;
 use App\Models\Task;
-use App\Models\SupportContract;
+use App\Models\User;
 use App\Models\TaskAccess;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Models\SupportContract;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Models\SupportContractInstance;
+use Illuminate\Support\Facades\Session;
 
 
 class TaskController extends Controller
@@ -22,6 +23,25 @@ class TaskController extends Controller
         $supportcontracts=SupportContract::All();
 
         return view('admin.SCtaskmonitor', compact('tasks','scInstances','supportcontracts'));
+    }
+
+    public function subtaskindex(Request $request){
+        $id = $request->input('id');
+        $name = $request->input('name');
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+        $description = $request->input('description');
+
+        // dd($id, $name, $start_date, $end_date, $description);
+
+        Session::put('id', $id);
+        Session::put('name', $name);
+        Session::put('start_date', $start_date);
+        Session::put('end_date', $end_date);
+        Session::put('description', $description);
+
+
+        return view('employee.scsubtask', compact('id', 'name', 'start_date', 'end_date', 'description'));
     }
 
     public function AllTaskIndex(Task $task)

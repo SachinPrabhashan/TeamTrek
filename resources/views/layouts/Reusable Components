@@ -1,4 +1,104 @@
 1. Required Star mark
 <span id="Required" style="color:crimson; font-size:12pt; ">*</span>
 
+2. How to put data into SESSION (Example)
+Controller (Store in SESSION)
 
+public function handleFormSubmission(Request $request)
+{
+// Assuming you have retrieved the values from the form
+$date = $request->input('date');
+$start_time = $request->input('start_time');
+$end_time = $request->input('end_time');
+
+// Store data in session
+Session::put('date', $date);
+Session::put('start_time', $start_time);
+Session::put('end_time', $end_time);
+
+// Redirect to another Blade file and pass the values
+return redirect()->route('user.newbooking2nd')/*
+->with('date', $date)
+->with('start_time', $start_time)
+->with('end_time', $end_time) */;
+}
+
+--------------------
+
+Blade view (Fetch from SESSION)
+
+<form method="POST" action="{{ route('user.bookingcreate') }}" id="bookingform">
+    @csrf
+    <div class="date-time-select-2 form-group">
+        <div>
+            <h5>Date: {{ session('date') }}</h5>
+            <input type="text" name="date" id="date" value="{{ session('date') }}" placeholder="{{ session('date') }}"
+                hidden required>
+        </div>
+        <div>
+            <h5>From: {{ session('start_time') }}</h5>
+            <input type="text" name="start_time" id="start_time" value="{{ session('start_time') }}"
+                placeholder="{{ session('start_time') }}" hidden required>
+        </div>
+        <div>
+            <h5>To: {{ session('end_time') }}</h5>
+            <input type="text" name="end_time" id="end_time" value="{{ session('end_time') }}"
+                placeholder="{{ session('end_time') }}" hidden required>
+        </div>
+    </div>
+
+    3. Title Tooltip
+
+    data-toggle="tooltip" data-bs-placement="bottom"
+    title="Create SC Tasks"
+
+
+    @foreach ($scInstances as $scInstance)
+    @foreach ($tasks as $task)
+    @if ($scInstance->id == $task->support_contract_instance_id)
+    <div class="col-lg-4">
+        <div class="card card-margin">
+            <div class="card-header no-border">
+                <h5 class="card-title">Task :- {{ $task->name }}</h5>
+                <hr>
+            </div>
+            <div class="card-body pt-0">
+                <div class="widget-49">
+                    <div class="widget-49-title-wrapper">
+                        <div class="widget-49-date-primary">
+                            <span class="widget-49-date-day">{{ $task->id }}</span>
+
+                        </div>
+                        <div class="widget-49-meeting-info">
+                            <span class="widget-49-pro-title">{{ $task->start_date }}</span>
+                            <span class="widget-49-meeting-time">
+
+                                @if ($task->end_date)
+                                End Date: {{ $task->end_date }}
+                                @else
+                                <span style="color: red;">Ongoing</span>
+                                @endif
+                            </span>
+                        </div>
+                    </div>
+                    <ol class="widget-49-meeting-points">
+                        <li class="widget-49-meeting-item"><span>{{ $task->Description }}</span>
+                        </li>
+                    </ol>
+                    <div class="widget-49-meeting-action">
+                        <span style="margin-right: 5px;"> <a href="{{ route('scsubtaskhandle') }}">
+                                <img width="18" height="18" src="https://img.icons8.com/material/24/task.png"
+                                    alt="task" /></a></span>
+                        <span style="margin-right: 5px;"><i class="fa-solid fa-users" style="color: green;"></i></span>
+                        <span style="margin-right: 5px;"><i class="fa-solid fa-trash delete-task" style="color: red;"
+                                data-task-id="{{ $task->id }}"></i></span>
+                        <span class="view-task" data-task-id="{{ $task->id }}"><i class="fa-solid fa-eye"
+                                style="color: blue;"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+    @endforeach
+    @endforeach

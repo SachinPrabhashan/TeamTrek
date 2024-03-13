@@ -1,16 +1,18 @@
 <?php
 
-use App\Http\Controllers\RootPermissionController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserManagementController;
-use App\Http\Controllers\RoleViewController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\SupportContractController;
-use App\Http\Controllers\SupportContractInstanceController;
-use App\Models\SupportContractInstance;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\SupportContractInstance;
+use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleViewController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RootPermissionController;
+use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\SupportContractController;
+use App\Http\Controllers\SupportContractInstanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,9 +94,11 @@ Route::get('/get-support-contract-instances/{contractId}', [SupportContractInsta
 
     //SC task monitor
 Route::get('/support-contract/sc-task-monitor', [TaskController::class, 'TaskIndex'])->name('scTaskMonitor');
+Route::get('/support-contract/sc-task-monitor/sub-task-handle', [TaskController::class, 'subtaskindex']);
+Route::post('/sub-task-handle', [TaskController::class, 'subtaskindex'])->name('scsubtaskhandle');
 Route::post('/support-contract/tasks', [TaskController::class, 'addTask'])->name('tasks.add');
 Route::get('/fetch-support-contract/tasks', [TaskController::class, 'fetchTasks']);
-Route::get('/support-contract/sc-All-task-monitor', [TaskController::class, 'AllTaskIndex'])->name('scAllTaskMonitor');
+Route::get('/support-contract/sc-all-task-monitor', [TaskController::class, 'AllTaskIndex'])->name('scAllTaskMonitor');
 Route::delete('/delete-task/{id}', [TaskController::class,'deleteTask'])->name('delete.Task');
 Route::get('/emp-for-tasks', [TaskController::class,'getUEmpForTasks']);
 Route::post('/grant-access-tasks', [TaskController::class, 'grantAccess'])->name('grant.access');
