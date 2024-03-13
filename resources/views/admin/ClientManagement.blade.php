@@ -2,7 +2,159 @@
 
 @section('content')
     <style>
+        body {
+            background: #eee;
+            margin-top: 20px;
+        }
 
+
+        .team {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .team .team-content {
+            position: absolute;
+            bottom: 25px;
+            margin: 0 20px;
+            left: 0;
+            right: 0;
+        }
+
+        .team .team-content-inner {
+            background-color: #ffffff;
+            padding: 20px 20px;
+            width: 100%;
+            -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .team .team-content-inner .team-social {
+            margin-left: auto;
+        }
+
+        .team .team-content-inner .team-social .nav .nav-link {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .team .team-content-inner .team-contact {
+            opacity: 0;
+            position: absolute;
+            bottom: 0px;
+            left: 20px;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .team:hover .team-content-inner {
+            background-color: #009CFF;
+            color: #ffffff;
+            padding: 20px 20px 90px;
+        }
+
+        .team:hover .team-content-inner .team-info .team-position {
+            color: #ffffff;
+        }
+
+        .team:hover .team-content-inner .team-contact {
+            opacity: 1;
+            bottom: 20px;
+        }
+
+        .team:hover .team-content-inner .team-contact .nav .nav-link {
+            color: #ffffff;
+        }
+
+        .team:hover .team-content-inner .team-contact .nav .nav-link:hover {
+            color: #000000;
+        }
+
+        .team:hover .team-content-inner .team-social .nav .nav-link {
+            color: #ffffff;
+        }
+
+        .team:hover .team-content-inner .team-social .nav .nav-link:hover {
+            color: #000000;
+        }
+
+        .team:hover .team-info .avatar-name {
+            color: #ffffff;
+        }
+
+        .team-content-inner .team-info .avatar-name {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
+
+        .team-content-inner .team-info .team-position {
+            color: #009CFF;
+        }
+
+        .team-02 {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+        }
+
+        .team-02 .team-avatar {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 50%;
+            flex: 0 50%;
+        }
+
+        .team-02 .team-content {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 50%;
+            flex: 0 50%;
+        }
+
+        .team-02 .team-content-inner {
+            padding: 0px;
+        }
+
+        .team-02 .team-content-inner .team-contact {
+            margin-top: 20px;
+        }
+
+        .team-02 .team-content-inner .team-contact .nav .nav-link {
+            color: #2d3037;
+            padding: 5px;
+        }
+
+        .team-02 .team-content-inner .team-contact .nav .nav-link:hover {
+            color: #009b72;
+        }
+
+        .team-02 .team-content-inner .team-desc {
+            color: #2d3037;
+        }
+
+        .social a.text-muted:hover {
+            color: #009b72 !important;
+        }
+
+        @media (max-width: 575.98px) {
+            .team .team-content {
+                margin: 0 15px;
+            }
+        }
+
+        .nav {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            padding-left: 0;
+            margin-bottom: 0;
+            list-style: none;
+        }
     </style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
@@ -14,8 +166,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link href="{{ asset('css/modal.css') }}" rel="stylesheet">
 
     <script>
         $(document).ready(function() {
@@ -24,6 +176,7 @@
                 selector: '[data-toggle=tooltip]'
             });
         });
+
 
         var app = angular.module('clientApp', []);
         //Handling modals-------------------------------------------------
@@ -109,9 +262,8 @@
                 });
             }
 
-            //Adding Client-------------------------------------------------------------------------------
+
             $scope.submitClient = function() {
-                // Check if the entered email already exists
                 var enteredEmail = $scope.client.email;
                 var existingEmails = $('#example tbody td:nth-child(3)').map(function() {
                     return $(this).text();
@@ -126,14 +278,11 @@
                     });
                     return;
                 }
-
                 $http.post('/add-Client', $scope.client)
                     .then(function(response) {
                         $scope.client = {};
-
                         ModalService.closeModal();
-                        fetchUsers();
-
+                        location.reload();
                         Swal.fire({
                             position: "center",
                             icon: "success",
@@ -148,29 +297,19 @@
             };
 
 
-            //Delete Client functions------------------------------------------------------------------
-            $scope.openDeleteModal = function(clientId) {
-                $scope.clientToDeleteId = clientId;
 
-                $scope.openModal('#deleteClientModal');
-            };
-            //delete client
-            $scope.deleteClient = function() {
-                $http.delete('/delete-Client/' + $scope.clientToDeleteId)
+            $scope.deleteClient = function(clientId) {
+                $http.delete('/delete-Client/' + clientId)
                     .then(function(response) {
                         console.log("User deleted successfully");
-
-                        //location.reload();
-
-                        ModalService.closeModal();
-                        fetchUsers();
-
                         Swal.fire({
                             position: "center",
                             icon: "success",
-                            title: "A client deleted Successfully!",
+                            title: "A Client deleted Successfully!",
                             showConfirmButton: false,
                             timer: 1500
+                        }).then(() => {
+                            location.reload();
                         });
                     })
                     .catch(function(error) {
@@ -178,31 +317,25 @@
                     });
             };
 
-            //Edit Client functions---------------------------------------------------------------------
-            // Function to open the edit modal
-            $scope.openEditClientModal = function(clientId) {
-                $http.get('/get-Client/' + clientId)
-                    .then(function(response) {
-                        $scope.editedClient = response.data;
-                        ModalService.openModal('#editClientModal');
-                    })
-                    .catch(function(error) {
-                        console.error('Error fetching user details:', error);
-                    });
+            $scope.confirmDelete = function(clientId) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $scope.deleteClient(clientId);
+                    }
+                });
             };
 
-            // Function to submit edited user details
-            $scope.submitEditClient = function() {
-                $http.put('/update-Client/' + $scope.editedClient.id, $scope.editedClient)
-                    .then(function(response) {
-                        console.log('User details updated successfully');
-                        ModalService.closeModal();
-                        fetchUsers();
-                    })
-                    .catch(function(error) {
-                        console.error('Error updating user details:', error);
-                    });
-            };
+
+
+
 
 
         });
@@ -214,8 +347,8 @@
                 <hr>
                 <div class="d-inline-block mx-1 float-end">
                     <a href="#" ng-click="openModal('#addClientModal')"><button
-                            class="btn btn-primary"data-toggle="tooltip" data-bs-placement="bottom" title="Add Client"><i
-                                class="fa-solid fa-user-plus"></i></button>
+                            class="btn btn-primary"data-toggle="tooltip" data-bs-placement="bottom" title="Create Client">
+                            <i class="fa-solid fa-user-plus"></i></button>
                     </a>
                 </div>
                 <br>
@@ -245,23 +378,23 @@
                                     <td class="text-center">
                                         <div class="d-inline-block mx-1">
                                             <a href="#"
-                                                ng-click="openEditClientModal('{{ $client->id }}')" data-toggle="tooltip"
-                                                data-bs-placement="bottom" title="Edit Client" data-bs-toggle="modal" data-bs-target="#editClientModal">
+                                                ng-click="openEditClientModal('{{ $client->id }}')"data-toggle="tooltip"
+                                                data-bs-placement="bottom" title="Edit Client">
                                                 <i class="fa-solid fa-pen-to-square" style="color: green;"></i>
                                             </a>
                                         </div>
+
                                         <div class="d-inline-block mx-1">
-                                            <a href="#"
-                                                ng-click="openDeleteModal('{{ $client->id }}')"data-toggle="tooltip"
-                                                data-bs-placement="bottom" title="Delete Client">
+                                            <a href="#" ng-click="confirmDelete('{{ $client->id }}')"
+                                                data-toggle="tooltip" data-bs-placement="bottom" title="Delete Client">
                                                 <i class="fa-solid fa-trash" style="color: red;"></i>
                                             </a>
                                         </div>
+
                                         <div class="d-inline-block mx-1">
-                                            <a href="#">
-                                                <i class="fa-solid fa-circle-info"
-                                                    style="color: black;"data-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Disable Client"></i>
+                                            <a href="#"data-toggle="tooltip" data-bs-placement="bottom"
+                                                title="Disable Client">
+                                                <i class="fa-solid fa-circle-info" style="color: black;"></i>
                                             </a>
                                         </div>
                                     </td>
@@ -271,157 +404,89 @@
                     </table>
                 </div>
 
-                <!--Add Modal -->
-                <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel"aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="card text-dark bg-light">
-                                <div class="modal-header">
-                                    <h5 class="modal-title text-dark" id="exampleModalLabel">Add Clients</h5>
-                                    <button type="button" class="btn-close" aria-label="Close" ng-click="closeModal()">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-
-                                <div class="modal-body">
-                                    <form ng-submit="submitClient()">
-                                        <div class="form-group">
-                                            <label for="name">Name</label> <span id="Required" style="color:crimson; font-size:12pt; ">*</span>
-                                            <input type="text" class="form-control" id="name" ng-model="client.name"
-                                                placeholder="Enter name">
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="email">Email address</label> <span id="Required" style="color:crimson; font-size:12pt; ">*</span>
-                                            <input type="email" class="form-control" id="email"
-                                                ng-model="client.email" placeholder="Enter email">
-                                            <small id="emailHelp text-white" class="form-text text-muted">We'll never share
-                                                your
-                                                email with anyone else.</small>
-                                                <p id="emailHelp"></p>
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="address">Address</label>
-                                            <input type="text" class="form-control" id="address"
-                                                ng-model="client.address" placeholder="Enter address">
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="phone">Phone</label>
-                                            <input type="text" class="form-control" id="phone"
-                                                ng-model="client.phone" placeholder="Enter phone number" oninput="validateNumberLength(this)">
-                                        </div><br>
-                                        <div class="form-group">
-                                            <label for="role">Role ID</label>
-                                            <input type="text" class="form-control" id="role"
-                                                ng-model="client.role_id" value="4" readonly>
-                                        </div><br>
-
-                                        <div class="form-group">
-                                            {{-- <label for="password">Password</label>
-                                            <div class="input-group" id="show_hide_password">
-                                                <input type="password" class="form-control" id="password"
-                                                    ng-model="client.password" placeholder="Enter password">
-                                                <div class="input-group-addon">
-                                                    <a href="">
-                                                        <span class="input-group-text"><i class="fa fa-eye-slash"
-                                                                style="color: #333" aria-hidden="true"></i></span></a>
-                                                </div>
-                                            </div> --}}
-
-                                            <label for="password">Password</label> <span id="Required" style="color:crimson; font-size:12pt; ">*</span>
-                                            <div class="input-group mb-3" id="show_hide_password">
-                                                <input type="password" class="form-control"
-                                                    aria-label="Recipient's username" aria-describedby="basic-addon2"
-                                                    id="password" ng-model="client.password"
-                                                    placeholder="Enter password">
-                                                <span class="input-group-text" id="basic-addon2">
-                                                    <a href=""><i class="fa fa-eye-slash" style="color: #333"
-                                                            aria-hidden="true"></i></a></span>
-                                            </div>
-                                            <p id="passwordValidate"></p>
-
-                                            <br>
-                                            <div class="float-end">
-                                                <button type="button" class="btn btn-secondary btn-sm"
-                                                    ng-click="closeModal()">Close</button>
-                                                <button type="submit" class="btn btn-danger btn-sm">Submit</button>
-                                            </div>
-
-                                    </form>
-                                </div>
-                            </div>
+            <!--Add Modal -->
+            <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel"aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="card text-dark bg-light">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="exampleModalLabel">Add Clients</h5>
+                            <button type="button" class="btn-close" aria-label="Close" ng-click="closeModal()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </div>
-                </div>
 
-                <!--Delete Confirmation Modal-->
-                <div class="modal fade" id="deleteClientModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
-                                <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to delete this Client?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary btn-sm"
-                                    ng-click="closeModal()">Close</button>
-                                <button type="button" class="btn btn-danger btn-sm"
-                                    ng-click="deleteClient()">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        <div class="modal-body">
+                            <form ng-submit="submitClient()">
+                                <div class="form-group">
+                                    <label for="name">Name</label> <span id="Required" style="color:crimson; font-size:12pt; ">*</span>
+                                    <input type="text" class="form-control" id="name" ng-model="client.name"
+                                        placeholder="Enter name">
+                                </div><br>
+                                <div class="form-group">
+                                    <label for="email">Email address</label> <span id="Required" style="color:crimson; font-size:12pt; ">*</span>
+                                    <input type="email" class="form-control" id="email"
+                                        ng-model="client.email" placeholder="Enter email">
+                                    <small id="emailHelp text-white" class="form-text text-muted">We'll never share
+                                        your
+                                        email with anyone else.</small>
+                                        <p id="emailHelp"></p>
+                                </div><br>
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" class="form-control" id="address"
+                                        ng-model="client.address" placeholder="Enter address">
+                                </div><br>
+                                <div class="form-group">
+                                    <label for="phone">Phone</label>
+                                    <input type="text" class="form-control" id="phone"
+                                        ng-model="client.phone" placeholder="Enter phone number" oninput="validateNumberLength(this)">
+                                </div><br>
+                                <div class="form-group">
+                                    <label for="role">Role ID</label>
+                                    <input type="text" class="form-control" id="role"
+                                        ng-model="client.role_id" value="4" readonly>
+                                </div><br>
 
-                <!-- Edit Modal -->
-                <div class="modal fade" id="editClientModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Edit Client</h5>
-                                <button type="button" class="btn-close" ng-click="closeModal()" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form ng-submit="submitEditClient()">
-                                    <div class="form-group">
-                                        <label for="editName">Name</label>
-                                        <input type="text" class="form-control" id="editName"
-                                            ng-model="editedClient.name" placeholder="Enter name">
-                                    </div><br>
-                                    <div class="form-group">
-                                        <label for="editEmail">Email</label>
-                                        <input type="email" class="form-control" id="editEmail"
-                                            ng-model="editedClient.email" placeholder="Enter email">
-                                    </div><span id="emailHelpedit"></span><br>
-                                    <div class="form-group">
-                                        <label for="editEmail">Phone</label>
-                                        <input type="phone" class="form-control" id="editPhone"
-                                            ng-model="editedClient.phone" placeholder="Enter Phone">
-                                    </div><br>
-                                    <div class="form-group">
-                                        <label for="editEmail">Address</label>
-                                        <input type="address" class="form-control" id="editAddress"
-                                            ng-model="editedClient.address" placeholder="Enter Address">
-                                    </div><br>
+                                <div class="form-group">
+                                    {{-- <label for="password">Password</label>
+                                    <div class="input-group" id="show_hide_password">
+                                        <input type="password" class="form-control" id="password"
+                                            ng-model="client.password" placeholder="Enter password">
+                                        <div class="input-group-addon">
+                                            <a href="">
+                                                <span class="input-group-text"><i class="fa fa-eye-slash"
+                                                        style="color: #333" aria-hidden="true"></i></span></a>
+                                        </div>
+                                    </div> --}}
+
+                                    <label for="password">Password</label> <span id="Required" style="color:crimson; font-size:12pt; ">*</span>
+                                    <div class="input-group mb-3" id="show_hide_password">
+                                        <input type="password" class="form-control"
+                                            aria-label="Recipient's username" aria-describedby="basic-addon2"
+                                            id="password" ng-model="client.password"
+                                            placeholder="Enter password">
+                                        <span class="input-group-text" id="basic-addon2">
+                                            <a href=""><i class="fa fa-eye-slash" style="color: #333"
+                                                    aria-hidden="true"></i></a></span>
+                                    </div>
+                                    <p id="passwordValidate"></p>
+
                                     <br>
-                                    <button type="button" class="btn btn-secondary btn-sm"
-                                        ng-click="closeModal()">Close</button>
-                                    <button type="submit" class="btn btn-danger btn-sm">Save Changes</button>
+                                    <div class="float-end">
+                                        <button type="button" class="btn btn-secondary btn-sm"
+                                            ng-click="closeModal()">Close</button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Submit</button>
+                                    </div>
 
-                                </form>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         </div>
-    @endsection
+    </div>
+</div>
+@endsection
