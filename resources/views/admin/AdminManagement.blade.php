@@ -438,18 +438,20 @@
                                 <div class="modal-body">
                                     <form ng-submit="submitAdmin()">
                                         <div class="form-group">
-                                            <label for="name">Name</label>
+                                            <label for="name">Name</label> <span id="Required"
+                                                style="color:crimson; font-size:12pt; ">*</span>
                                             <input type="text" class="form-control" id="name" ng-model="admin.name"
                                                 placeholder="Enter name">
                                         </div><br>
                                         <div class="form-group">
-                                            <label for="email">Email address</label>
+                                            <label for="email">Email address</label> <span id="Required"
+                                                style="color:crimson; font-size:12pt; ">*</span>
                                             <input type="email" class="form-control" id="email" ng-model="admin.email"
                                                 placeholder="Enter email">
                                             <small id="emailHelp text-white" class="form-text text-muted">We'll never share
                                                 your
                                                 email with anyone else.</small>
-                                                <p id="emailHelp"></p>
+                                            <p id="emailHelp"></p>
                                         </div><br>
                                         <div class="form-group">
                                             <label for="role">Role ID</label>
@@ -457,7 +459,8 @@
                                                 ng-model="admin.role_id" value="2" readonly>
                                         </div><br>
                                         <div class="form-group">
-                                            <label for="password">Password</label>
+                                            <label for="password">Password</label> <span id="Required"
+                                                style="color:crimson; font-size:12pt; ">*</span>
                                             <div class="input-group mb-3" id="show_hide_password">
                                                 <input type="password" class="form-control" id="password"
                                                     ng-model="admin.password" placeholder="Enter password">
@@ -465,13 +468,14 @@
                                                     <a href=""><i class="fa fa-eye-slash" style="color: #333"
                                                             aria-hidden="true"></i></a></span>
                                             </div>
+                                            <p id="passwordValidate"></p>
 
                                         </div>
                                         <br>
                                         <div class="float-end">
-                                            <button type="button" class="btn btn-danger btn-sm"
+                                            <button type="button" class="btn btn-secondary btn-sm"
                                                 ng-click="closeModal()">Close</button>
-                                            <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                                            <button type="submit" class="btn btn-danger btn-sm">Submit</button>
                                         </div>
 
                                     </form>
@@ -532,11 +536,12 @@
                                         <label for="editPassword">Password:</label>
                                         <input type="password" class="form-control" id="editPassword"
                                             ng-model="editedAdmin.password" placeholder="Enter password">
-                                    </div><br>
+                                    </div>
+                                    <p id="passwordValidate"></p><br>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary btn-sm"
                                             ng-click="closeModal()">Close</button>
-                                        <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Save changes</button>
                                     </div><br>
                                 </form>
                             </div>
@@ -546,6 +551,4 @@
             </div>
         </div>
     </div>
-
-
 @endsection

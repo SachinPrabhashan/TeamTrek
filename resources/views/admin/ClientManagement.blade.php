@@ -287,12 +287,12 @@
                                 <div class="modal-body">
                                     <form ng-submit="submitClient()">
                                         <div class="form-group">
-                                            <label for="name">Name</label>
+                                            <label for="name">Name</label> <span id="Required" style="color:crimson; font-size:12pt; ">*</span>
                                             <input type="text" class="form-control" id="name" ng-model="client.name"
                                                 placeholder="Enter name">
                                         </div><br>
                                         <div class="form-group">
-                                            <label for="email">Email address</label>
+                                            <label for="email">Email address</label> <span id="Required" style="color:crimson; font-size:12pt; ">*</span>
                                             <input type="email" class="form-control" id="email"
                                                 ng-model="client.email" placeholder="Enter email">
                                             <small id="emailHelp text-white" class="form-text text-muted">We'll never share
@@ -308,7 +308,7 @@
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
                                             <input type="text" class="form-control" id="phone"
-                                                ng-model="client.phone" placeholder="Enter phone number">
+                                                ng-model="client.phone" placeholder="Enter phone number" oninput="validateNumberLength(this)">
                                         </div><br>
                                         <div class="form-group">
                                             <label for="role">Role ID</label>
@@ -328,7 +328,7 @@
                                                 </div>
                                             </div> --}}
 
-                                            <label for="password">Password</label>
+                                            <label for="password">Password</label> <span id="Required" style="color:crimson; font-size:12pt; ">*</span>
                                             <div class="input-group mb-3" id="show_hide_password">
                                                 <input type="password" class="form-control"
                                                     aria-label="Recipient's username" aria-describedby="basic-addon2"
@@ -338,12 +338,13 @@
                                                     <a href=""><i class="fa fa-eye-slash" style="color: #333"
                                                             aria-hidden="true"></i></a></span>
                                             </div>
+                                            <p id="passwordValidate"></p>
 
                                             <br>
                                             <div class="float-end">
-                                                <button type="button" class="btn btn-danger btn-sm"
+                                                <button type="button" class="btn btn-secondary btn-sm"
                                                     ng-click="closeModal()">Close</button>
-                                                <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                                                <button type="submit" class="btn btn-danger btn-sm">Submit</button>
                                             </div>
 
                                     </form>
@@ -411,9 +412,10 @@
                                             ng-model="editedClient.address" placeholder="Enter Address">
                                     </div><br>
                                     <br>
-                                    <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
                                     <button type="button" class="btn btn-secondary btn-sm"
                                         ng-click="closeModal()">Close</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Save Changes</button>
+
                                 </form>
                             </div>
                         </div>
