@@ -461,9 +461,11 @@
         taskHtml += '<li class="widget-49-meeting-item"><span>' + task.Description + '</span></li>';
         taskHtml += '</ol>';
         taskHtml += '<div class="widget-49-meeting-action">';
+        taskHtml += '<span style="margin-right: 5px;"><img width="18" height="18" src="https://img.icons8.com/material/24/task.png" alt="task"/></span>';
         taskHtml += '<span style="margin-right: 5px;"><i class="fa-solid fa-users" style="color: green;"></i></span>'; // Add the users icon // Add the users icon
         taskHtml += '<span style="margin-right: 5px;"><i class="fa-solid fa-trash delete-task" style="color: red;" data-task-id="' + task.id + '"></i></span>';
         taskHtml += '<span class="view-task" data-task-id="' + task.id + '"><i class="fa-solid fa-eye" style="color: blue;"></i></span>';
+
         taskHtml += '</div></div></div></div></div>';
     });
 
@@ -621,45 +623,46 @@ $.ajaxSetup({
     }
 
 // Function to display task details with employee names
-    function showTaskDetails(taskId) {
-        $.ajax({
-            url: '/get-task-details/' + taskId,
-            type: 'GET',
-            success: function(response) {
-                // Prepare HTML content for displaying task details
-                var htmlContent = '<div style="text-align: left;">';
-                htmlContent += '<p>Support Contract Year: ' + response.support_contract_year + '</p>';
-                htmlContent += '<p>Support Contract Name: ' + response.support_contract_name + '</p>';
-                htmlContent += '<p>Task Name: ' + response.task_name + '</p>';
-                htmlContent += '<p>Start Date: ' + response.start_date + '</p>';
+function showTaskDetails(taskId) {
+    $.ajax({
+        url: '/get-task-details/' + taskId,
+        type: 'GET',
+        success: function(response) {
+            // Prepare HTML content for displaying task details
+            var htmlContent = '<div style="text-align: left;">';
+            htmlContent += '<p><b>Support Contract Year:</b> ' + response.support_contract_year + '</p>';
+            htmlContent += '<p><b>Support Contract Name:</b> ' + response.support_contract_name + '</p>';
+            htmlContent += '<p><b>Task Name:</b> ' + response.task_name + '</p>';
+            htmlContent += '<p><b>Start Date:</b> ' + response.start_date + '</p>';
 
-                if (response.end_date) {
-                    htmlContent += '<p>End Date: ' + response.end_date + '</p>';
-                }else {
-                    htmlContent += '<p>End Date:</p><span style="color: red;">Ongoing</span>';
-                }
-                htmlContent += '<p>Is Completed: ' + (response.is_completed ? 'Yes' : 'No') + '</p>';
-                htmlContent += '<p>Description: ' + response.description + '</p>';
-                htmlContent += '<p>Assigned Employees:</p>';
-                htmlContent += '<ul>';
-                response.emp_names.forEach(function(empName) {
-                    htmlContent += '<li>' + empName + '</li>';
-                });
-                htmlContent += '</ul>';
-                htmlContent += '</div>';
-
-                // Display task details in a modal
-                Swal.fire({
-                    title: 'Task Details',
-                    html: htmlContent,
-                    showCloseButton: true
-                });
-            },
-            error: function(error) {
-                console.error('Error fetching task details:', error);
+            if (response.end_date) {
+                htmlContent += '<p><b>End Date:</b> ' + response.end_date + '</p>';
+            } else {
+                htmlContent += '<p style="display: inline;"><b>End Date:</b></p><span style="color: red;"> Ongoing</span>';
             }
-        });
-    }
+            htmlContent += '<p><b>Is Completed:</b> ' + (response.is_completed ? 'Yes' : 'No') + '</p>';
+            htmlContent += '<p><b>Description:</b> ' + response.description + '</p>';
+            htmlContent += '<p><b>Assigned Employees:</b></p>';
+            htmlContent += '<ul>';
+            response.emp_names.forEach(function(empName) {
+                htmlContent += '<li>' + empName + '</li>';
+            });
+            htmlContent += '</ul>';
+            htmlContent += '</div>';
+
+            // Display task details in a modal
+            Swal.fire({
+                title: 'Task Details',
+                html: htmlContent,
+                showCloseButton: true
+            });
+        },
+        error: function(error) {
+            console.error('Error fetching task details:', error);
+        }
+    });
+}
+
 
     // Event listener for clicking the eye icon to view task details
     $(document).on('click', '.view-task', function() {
