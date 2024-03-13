@@ -98,6 +98,8 @@ Route::get('/support-contract/sc-All-task-monitor', [TaskController::class, 'All
 Route::delete('/delete-task/{id}', [TaskController::class,'deleteTask'])->name('delete.Task');
 Route::get('/emp-for-tasks', [TaskController::class,'getUEmpForTasks']);
 Route::post('/grant-access-tasks', [TaskController::class, 'grantAccess'])->name('grant.access');
+Route::post('/revoke-access-tasks', [TaskController::class,'revokeAccess'])->name('revoke.access');
+Route::get('/get-task-details/{taskId}', [TaskController::class, 'getTaskDetailsWithEmp']);
 
 //All Users
 Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');
