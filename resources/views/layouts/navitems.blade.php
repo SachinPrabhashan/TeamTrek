@@ -135,12 +135,13 @@
                                 <a href="{{ route('admin.ScInstance') }}"
                                     class="dropdown-item {{ request()->is('support-contract/admin-scinstance') ? ' active' : '' }}">SC
                                     Instance Handling</a>
-                                @Admin
-                                    {{-- <a href="#" class="dropdown-item">SC Access Granting</a> --}}
-                                @endAdmin
+
+
+
                                 <a href="{{ route('scTaskMonitor') }}"
                                     class="dropdown-item {{ request()->is('support-contract/sc-task-monitor') ? ' active' : '' }}">SC
                                     Task Monitor</a>
+                                <a href="#" class="dropdown-item">SC Sub-Task Handling</a>
                                 <a href="#" class="dropdown-item">SC Reports</a>
                             @endAdminOrEmployee
                             @Client
@@ -482,8 +483,9 @@
                         $("#emailHelpedit").text("Email is valid").removeClass("text-danger").addClass("text-success");
                     } else {
                         // Email is invalid
-                        $("#emailHelpedit").text("Please enter a valid email address").removeClass("text-success").addClass(
-                            "text-danger");
+                        $("#emailHelpedit").text("Please enter a valid email address").removeClass("text-success")
+                            .addClass(
+                                "text-danger");
                     }
                 }
             });
