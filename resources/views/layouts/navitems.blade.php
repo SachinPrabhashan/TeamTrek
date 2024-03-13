@@ -138,9 +138,8 @@
                                         Instance Handling</a>
                                 @endAdmin
                                 <a href="{{ route('scTaskMonitor') }}"
-                                    class="dropdown-item {{ request()->is('support-contract/sc-task-monitor') ? ' active' : '' }}">SC
+                                    class="dropdown-item {{ request()->is('support-contract/sc-task-monitor', 'support-contract/sc-task-monitor/sub-task-handle' , 'support-contract/sc-all-task-monitor') ? ' active' : '' }}">SC
                                     Task Monitor</a>
-                                <a href="#" class="dropdown-item">SC Sub-Task Handling</a>
                                 @Admin
                                     <a href="#" class="dropdown-item">SC Reports</a>
                                 @endAdmin
