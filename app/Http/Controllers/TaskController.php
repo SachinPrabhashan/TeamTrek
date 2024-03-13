@@ -65,7 +65,6 @@ class TaskController extends Controller
 
             $task->save();
 
-
             return response()->json(['message' => 'Task created successfully'], 201);
         }
         catch (\Exception $e)
@@ -172,7 +171,6 @@ class TaskController extends Controller
         $userId = $request->input('user_id');
 
         try {
-
             TaskAccess::where('task_id', $taskId)->where('user_id', $userId)->delete();
             return response()->json(['message' => 'Access revoked successfully']);
         }
@@ -183,22 +181,14 @@ class TaskController extends Controller
 
     public function getTaskDetailsWithEmp($taskId)
     {
-        // Log that the method is being called
-        Log::info('Fetching task details for Task ID: ' . $taskId);
-
         // Retrieve task details along with support contract information
         $taskDetails = Task::with('supportContractInstance.supportContract')
             ->where('id', $taskId)
             ->first();
 
         if (!$taskDetails) {
-            // Task not found
-            Log::warning('Task not found for Task ID: ' . $taskId);
             return response()->json(['error' => 'Task not found'], 404);
         }
-
-        // Log retrieved task details
-        Log::info('Retrieved task details: ' . json_encode($taskDetails));
 
         // Extracting necessary data
         $supportContractYear = $taskDetails->supportContractInstance->year;
