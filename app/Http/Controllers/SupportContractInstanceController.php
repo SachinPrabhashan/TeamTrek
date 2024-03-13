@@ -63,6 +63,7 @@ class SupportContractInstanceController extends Controller
         $supportPayment->support_contract_instance_id = $supportContractInstance->id;
         $supportPayment->dev_rate_per_hour = $request->dev_rate;
         $supportPayment->eng_rate_per_hour = $request->eng_rate;
+        $supportPayment->year = $supportContractInstance->year;
 
         try {
             $supportPayment->save();

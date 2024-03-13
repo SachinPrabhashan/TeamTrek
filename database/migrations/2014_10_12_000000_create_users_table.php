@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('user_type')->nullable();
+            $table->boolean('isDelete')->nullable()->default(false);
+            $table->boolean('isUpdate')->nullable()->default(false);
 
             $table->rememberToken();
             $table->timestamps();

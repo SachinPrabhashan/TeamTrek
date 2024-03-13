@@ -18,6 +18,9 @@ return new class extends Migration
             $table->integer('year');
             $table->double('hourly_rate');
 
+            $table->boolean('isDelete')->nullable()->default(false);
+            $table->boolean('isUpdate')->nullable()->default(false);
+
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

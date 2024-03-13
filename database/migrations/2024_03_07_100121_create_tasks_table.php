@@ -21,6 +21,9 @@ return new class extends Migration
             $table->text('Description');
             $table->timestamps();
 
+            $table->boolean('isDelete')->nullable()->default(false);
+            $table->boolean('isUpdate')->nullable()->default(false);
+
             $table->foreign('support_contract_instance_id')->references('id')->on('support_contract_instances');
         });
     }
