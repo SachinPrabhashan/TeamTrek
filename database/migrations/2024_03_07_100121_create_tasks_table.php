@@ -19,6 +19,8 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->boolean('isCompleted')->nullable()->default(false);
             $table->text('Description');
+            $table->integer('dev_hours')->nullable();
+            $table->integer('eng_hours')->nullable();
             $table->timestamps();
 
             $table->boolean('isDelete')->nullable()->default(false);
@@ -35,4 +37,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('tasks');
     }
-};
+}

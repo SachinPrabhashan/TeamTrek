@@ -10,7 +10,7 @@ class Task extends Model
     use HasFactory;
 
     protected $fillable = [
-        'support_contract_instance_id',
+        'task_id',
         'name',
         'start_date',
         'end_date',
