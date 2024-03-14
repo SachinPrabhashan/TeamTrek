@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\SupportContractInstance;
 use Illuminate\Support\Facades\Session;
+use App\Models\SubTask;
 
 
 class TaskController extends Controller
@@ -42,6 +43,24 @@ class TaskController extends Controller
 
 
         return view('employee.scsubtask', compact('id', 'name', 'start_date', 'end_date', 'description'));
+    }
+    public function subtaskindex1(Request $request){
+        /*$id = $request->input('id');
+        $name = $request->input('name');
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+        $description = $request->input('description');
+
+        // dd($id, $name, $start_date, $end_date, $description);
+
+        Session::put('id', $id);
+        Session::put('name', $name);
+        Session::put('start_date', $start_date);
+        Session::put('end_date', $end_date);
+        Session::put('description', $description);*/
+
+        return view('employee.scsubtask');
+        //return view('employee.scsubtask', compact('id', 'name', 'start_date', 'end_date', 'description'));
     }
 
     public function AllTaskIndex(Task $task)
@@ -251,5 +270,78 @@ class TaskController extends Controller
 
         return response()->json($responseData);
     }
+
+
+    public function createSubTask(Request $request)
+    {
+        $validatedData = $request->validate([
+            'taskName' => 'required|string|max:255',
+            'taskDate' => 'required|date',
+            'developerHours' => 'required|integer',
+            'engineerHours' => 'required|integer',
+        ]);
+
+        // Get the ID from the session
+        $taskId = session('id');
+
+        $subTask = new SubTask();
+        $subTask->task_id = $taskId;
+        $subTask->name = $validatedData['taskName'];
+        $subTask->date = $validatedData['taskDate'];
+        $subTask->dev_hours = $validatedData['developerHours'];
+        $subTask->eng_hours = $validatedData['engineerHours'];
+        $subTask->save();
+
+        // Optionally, you can store a success message in the session
+        Session::flash('success', 'SubTask created successfully!');
+
+        // Return success response
+        return response()->json(['success' => true]);
+    }
+
+    public function finishTask(Request $request)
+{
+    try {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'finishDate' => 'required|date',
+            'developerHoursFinish' => 'required|integer',
+            'engineerHoursFinish' => 'required|integer',
+        ]);
+
+        // Get the ID from the session
+        $taskId = session('id');
+
+        // Find the task by ID
+        $task = Task::find($taskId);
+
+        // Check if task exists
+        if (!$task) {
+            return response()->json(['error' => 'Task not found.'], 404);
+        }
+
+        // Update task fields
+        $task->end_date = $validatedData['finishDate'];
+        $task->dev_hours = $validatedData['developerHoursFinish'];
+        $task->eng_hours = $validatedData['engineerHoursFinish'];
+        $task->isCompleted = true;
+
+        // Save changes to the database
+        $task->save();
+
+        // Optionally, you can store a success message in the session
+        Session::flash('success', 'Task finished successfully!');
+
+        // Return success response
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        // Log the error
+        Log::error('Error in finishTask method: ' . $e->getMessage());
+
+        // Return error response
+        return response()->json(['error' => 'An error occurred. Please try again.'], 500);
+    }
+}
+
 
 }
