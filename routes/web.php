@@ -95,7 +95,9 @@ Route::get('/get-support-contract-instances/{contractId}', [SupportContractInsta
     //SC task monitor
 Route::get('/support-contract/sc-task-monitor', [TaskController::class, 'TaskIndex'])->name('scTaskMonitor');
 Route::get('/support-contract/sc-task-monitor/sub-task-handle', [TaskController::class, 'subtaskindex']);
+
 Route::post('/sub-task-handle', [TaskController::class, 'subtaskindex'])->name('scsubtaskhandle');
+
 Route::post('/support-contract/tasks', [TaskController::class, 'addTask'])->name('tasks.add');
 Route::get('/fetch-support-contract/tasks', [TaskController::class, 'fetchTasks']);
 Route::get('/support-contract/sc-all-task-monitor', [TaskController::class, 'AllTaskIndex'])->name('scAllTaskMonitor');
@@ -104,6 +106,13 @@ Route::get('/emp-for-tasks', [TaskController::class,'getUEmpForTasks']);
 Route::post('/grant-access-tasks', [TaskController::class, 'grantAccess'])->name('grant.access');
 Route::post('/revoke-access-tasks', [TaskController::class,'revokeAccess'])->name('revoke.access');
 Route::get('/get-task-details/{taskId}', [TaskController::class, 'getTaskDetailsWithEmp']);
+
+    //Sub Task
+
+Route::post('/create-sub-task',  [TaskController::class, 'createSubTask'])->name('create.subtask');
+Route::post('/finish-task', [TaskController::class, 'finishTask'])->name('finish.task');
+//Route::get('/sub-task-handle', [TaskController::class, 'subtaskindex'])->name('scsubtaskhandle');
+
 
 //All Users
 Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');
