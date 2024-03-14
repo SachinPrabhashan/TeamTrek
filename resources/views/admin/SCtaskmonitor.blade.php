@@ -320,89 +320,7 @@
 </style>
 
 <script>
-    $(document).ready(function(){
-//Adding Tasks using swal---------------------------------------------
-        /*$(document).on('click', '#openCreateTaskModalBtn', function() {
-            Swal.fire({
-                title: 'Create Task',
-                html: `
-                    <div class="form-group">
-                        <label for="SupportContractDropInModal">Support Contract:</label><br>
-                        <select class="form-control" id="SupportContractDropInModal">
-                            @foreach ($supportcontracts as $contract)
-                                <option value="{{ $contract->id }}">{{ $contract->name }}</option>
-                            @endforeach
-                        </select>
-                    </div><br>
-                    <div class="form-group">
-                        <label for="SupportContractYearDropInModal">Year:</label><br>
-                        <select class="form-control" id="SupportContractYearDropInModal">
-                            @foreach ($scInstances->unique('year') as $instance)
-                                <option value="{{ $instance->year }}">{{ $instance->year }}</option>
-                            @endforeach
-                        </select>
-                    </div><br>
-                    <div class="form-group">
-                        <label for="taskName">Name:</label><br>
-                        <input type="text" class="form-control" id="taskName">
-                    </div><br>
-                    <div class="form-group">
-                        <label for="taskDescription">Description:</label><br>
-                        <textarea class="form-control" id="taskDescription"></textarea>
-                    </div><br>
-                    <div class="form-group">
-                        <label for="startDate">Start Date:</label><br>
-                        <input type="date" class="form-control" id="startDate">
-                    </div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'Submit',
-                cancelButtonText: 'Close',
-                focusConfirm: false,
-                preConfirm: () => {
-                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
-                    var taskName = $("#taskName").val();
-                    var taskDescription = $("#taskDescription").val();
-                    var startDate = $("#startDate").val();
-                    var supportContractId = $("#SupportContractDropInModal").val();
-                    var supportContractInstance = $("#SupportContractYearDropInModal").val();
-
-                    var formData = {
-                        taskName: taskName,
-                        taskDescription: taskDescription,
-                        startDate: startDate,
-                        supportContractId: supportContractId,
-                        supportContractInstance: supportContractInstance
-                    };
-
-                    return $.ajax({
-                        type: "POST",
-                        url: "/support-contract/tasks",
-                        data: formData,
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken
-                        }
-                    }).then(response => {
-                        if (response && response.message) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success',
-                                text: response.message
-                            }).then(() => {
-                                location.reload();
-                            });
-                        }
-                    }).catch(error => {
-                        var errorMessage = error.responseJSON.error;
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: errorMessage
-                        });
-                    });
-                }
-            });
-        });*/
+$(document).ready(function(){
 
 //creating tasks using bootstrap modal
     $(document).on('click', '#openCreateTaskModalBtn', function() {
@@ -495,49 +413,62 @@
 
 // Function to render tasks in the HTML-----------------------------------------------------
     function renderTasks(tasks) {
-    var taskHtml = '';
-    tasks.forEach(function(task) {
-        taskHtml += '<div class="col-lg-4">';
-        taskHtml += '<div class="card card-margin">';
-        taskHtml += '<div class="card-header no-border">';
-        taskHtml += '<h5 class="card-title">Task :- ' + task.name + '</h5>';
-        taskHtml += '<hr></div>';
-        taskHtml += '<div class="card-body pt-0">';
-        taskHtml += '<div class="widget-49">';
-        taskHtml += '<div class="widget-49-title-wrapper">';
-        taskHtml += '<div class="widget-49-date-primary">';
-        taskHtml += '<span class="widget-49-date-day">' + task.id + '</span>';
-        taskHtml += '</div>';
-        taskHtml += '<div class="widget-49-meeting-info">';
-        taskHtml += '<span class="widget-49-pro-title">' + task.start_date + '</span>';
-        taskHtml += '<span class="widget-49-meeting-time">';
-        if (task.end_date) {
-            taskHtml += 'End Date: ' + task.end_date;
-        } else {
-            taskHtml += '<span style="color: red;">Ongoing</span>';
-        }
-        taskHtml += '</span></div></div>';
-        taskHtml += '<ol class="widget-49-meeting-points">';
-        taskHtml += '<li class="widget-49-meeting-item"><span>' + task.Description + '</span></li>';
-        taskHtml += '</ol>';
-        taskHtml += '<div class="widget-49-meeting-action">';
-        taskHtml += '<span style="margin-right: 5px;"><img width="18" height="18" src="https://img.icons8.com/material/24/task.png" alt="task"/></span>';
-        taskHtml += '<span style="margin-right: 5px;"><i class="fa-solid fa-users" style="color: green;"></i></span>'; // Add the users icon // Add the users icon
-        taskHtml += '<span style="margin-right: 5px;"><i class="fa-solid fa-trash delete-task" style="color: red;" data-task-id="' + task.id + '"></i></span>';
-        taskHtml += '<span class="view-task" data-task-id="' + task.id + '"><i class="fa-solid fa-eye" style="color: blue;"></i></span>';
+                var taskHtml = '';
+                tasks.forEach(function(task) {
+                    taskHtml += '<div class="col-lg-4">';
+                    taskHtml += '<form method="post" action="{{ route('scsubtaskhandle', ['id' => '+ task.id +']) }}">';
+                    taskHtml += '@csrf';
+                    taskHtml += '<div class="card card-margin">';
+                    taskHtml += '<div class="card-header no-border">';
+                    taskHtml += '<h5 class="card-title">Task :- ' + task.name + '</h5>';
+                    taskHtml += '<input type="hidden" id="name" name="name" value="'+ task.name +'">';
+                    taskHtml += '<hr></div>';
+                    taskHtml += '<div class="card-body pt-0">';
+                    taskHtml += '<div class="widget-49">';
+                    taskHtml += '<div class="widget-49-title-wrapper">';
+                    taskHtml += '<div class="widget-49-date-primary">';
+                    taskHtml += '<span class="widget-49-date-day">' + task.id + '</span>';
+                    taskHtml += '<input type="hidden" id="id" name="id" value="'+ task.id +'">';
+                    taskHtml += '</div>';
+                    taskHtml += '<div class="widget-49-meeting-info">';
+                    taskHtml += '<span class="widget-49-pro-title">' + task.start_date + '</span>';
+                    taskHtml += '<input type="hidden" id="start_date" name="start_date" value="'+ task.start_date +'">';
+                    taskHtml += '<input type="hidden" id="end_date" name="end_date" value="'+ task.end_date +'">';
+                    taskHtml += '<span class="widget-49-meeting-time">';
+                    if (task.end_date) {
+                        taskHtml += 'End Date: ' + task.end_date;
+                    } else {
+                        taskHtml += '<span style="color: red;">Ongoing</span>';
+                    }
+                    taskHtml += '</span></div></div>';
+                    taskHtml += '<ol class="widget-49-meeting-points">';
+                    taskHtml += '<li class="widget-49-meeting-item"><span>' + task.Description +
+                        '</span></li>';
+                    taskHtml += '<input type="hidden" id="description" name="description" value="'+ task.Description +'">';
+                    taskHtml += '</ol>';
+                    taskHtml += '<div class="widget-49-meeting-action">';
+                    taskHtml +=
+                        '<span><button type="submit" class="btn"><img width="18" height="18" src="https://img.icons8.com/material/24/task.png" alt="task"/></button></span>';
+                    taskHtml +=
+                        '<span style="margin-right: 5px;"><i class="fa-solid fa-users" style="color: green;"></i></span>'; // Add the users icon // Add the users icon
+                    taskHtml +=
+                        '<span style="margin-right: 5px;"><i class="fa-solid fa-trash delete-task" style="color: red;" data-task-id="' +
+                        task.id + '"></i></span>';
+                    taskHtml += '<span class="view-task" data-task-id="' + task.id +
+                        '"><i class="fa-solid fa-eye" style="color: blue;"></i></span>';
 
-        taskHtml += '</div></div></div></div></div>';
-    });
+                    taskHtml += '</div></div></div></div></form></div>';
+                });
 
-    $(".row").html(taskHtml);
+                $(".row").html(taskHtml);
 
-    // Event listener for showing access granting modal
-    $(document).on('click', '.fa-users', function() {
-        var taskId = $(this).closest('.card').find('.widget-49-date-day').text().trim();
-        showAccessGrantingModal(taskId);
-    });
+                // Event listener for showing access granting modal
+                $(document).on('click', '.fa-users', function() {
+                    var taskId = $(this).closest('.card').find('.widget-49-date-day').text().trim();
+                    showAccessGrantingModal(taskId);
+                });
 
-}
+            }
 
 
 // Function to delete task-------------------------------------------------------------------------
