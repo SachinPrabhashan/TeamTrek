@@ -13,6 +13,7 @@ use App\Models\SupportContractInstance;
 use Illuminate\Support\Facades\Session;
 use App\Models\SubTask;
 use App\Models\RemainingHour;
+use Illuminate\Support\Facades\Auth;
 
 
 class TaskController extends Controller
@@ -291,6 +292,7 @@ class TaskController extends Controller
         $subTask->date = $validatedData['taskDate'];
         $subTask->dev_hours = $validatedData['developerHours'];
         $subTask->eng_hours = $validatedData['engineerHours'];
+        $subTask->user_id = Auth::id();
         $subTask->save();
 
         $task = Task::findOrFail($taskId);
@@ -356,6 +358,7 @@ class TaskController extends Controller
 
             $task->end_date = $validatedData['finishDate'];
             $task->isCompleted = true;
+            $task->user_id = Auth::id();
 
             $task->save();
 
