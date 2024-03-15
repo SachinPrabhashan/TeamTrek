@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('sub_tasks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('task_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->string('name');
             $table->date('date');
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->integer('eng_hours');
 
             $table->foreign('task_id')->references('id')->on('tasks');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
