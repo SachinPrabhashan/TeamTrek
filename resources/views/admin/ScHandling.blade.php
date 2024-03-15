@@ -95,9 +95,6 @@ $(document).ready(function() {
                         '<a href="#"><i class="fa-solid fa-pen-to-square" style="color: green;"></i></a>' +
                         '</div>' +
                         '<div class="d-inline-block mx-1">' +
-                        '<a href="#"><i class="fa-solid fa-trash" style="color: red;"></i></a>' +
-                        '</div>' +
-                        '<div class="d-inline-block mx-1">' +
                         '<a href="#"><i class="fa-solid fa-circle-info" style="color: black;"></i></a>' +
                         '</div>' +
                         '</td>' +
