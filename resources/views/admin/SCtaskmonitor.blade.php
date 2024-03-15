@@ -448,13 +448,13 @@ $(document).ready(function(){
                     taskHtml += '</ol>';
                     taskHtml += '<div class="widget-49-meeting-action">';
                     taskHtml +=
-                        '<span><button type="submit" class="btn"><img width="18" height="18" src="https://img.icons8.com/material/24/task.png" alt="task"/></button></span>';
+                        '<span><button type="submit" class="btn p-1"><img width="18" height="18" src="https://img.icons8.com/material/24/task.png" alt="task"/></button></span>';
                     taskHtml +=
-                        '<span style="margin-right: 5px;"><i class="fa-solid fa-users" style="color: green;"></i></span>'; // Add the users icon // Add the users icon
+                        '<span class="btn p-1" ><i class="fa-solid fa-users" style="color: green;"></i></span>'; // Add the users icon // Add the users icon
                     taskHtml +=
-                        '<span style="margin-right: 5px;"><i class="fa-solid fa-trash delete-task" style="color: red;" data-task-id="' +
+                        '<span class="btn p-1" ><i class="fa-solid fa-trash delete-task" style="color: red;" data-task-id="' +
                         task.id + '"></i></span>';
-                    taskHtml += '<span class="view-task" data-task-id="' + task.id +
+                    taskHtml += '<span class="view-task btn p-1" data-task-id="' + task.id +
                         '"><i class="fa-solid fa-eye" style="color: blue;"></i></span>';
 
                     taskHtml += '</div></div></div></div></form></div>';
@@ -621,22 +621,42 @@ function showTaskDetails(taskId) {
         success: function(response) {
             // Prepare HTML content for displaying task details
             var htmlContent = '<div style="text-align: left;">';
-            htmlContent += '<p><b>Support Contract Year:</b> ' + response.support_contract_year + '</p>';
-            htmlContent += '<p><b>Support Contract Name:</b> ' + response.support_contract_name + '</p>';
-            htmlContent += '<p><b>Task Name:</b> ' + response.task_name + '</p>';
-            htmlContent += '<p><b>Start Date:</b> ' + response.start_date + '</p>';
+            htmlContent += '<p class="mb-0" style="Font-size:26pt; font-weight:bolder;"> ' + response.support_contract_name + '</p>';
+            htmlContent += '<p class="mb-0" style="Font-size:26pt; font-weight:bolder;"> ' + response.support_contract_year + '</p>';
+            htmlContent += '<hr><p> <img width="30" height="30" src="https://img.icons8.com/fluency/48/task-completed.png" alt="task-completed"/> <b>Tasks:</b> <br> ' + response.task_name + '</p>';
+            htmlContent += '<div class="bg-light rounded 100 p-3 mb-2">';
+            htmlContent += '<p class="mb-1"><b>Description:</b><br> ' + response.description + '</p>';
+            htmlContent += '</div>';
 
-            if (response.end_date) {
-                htmlContent += '<p><b>End Date:</b> ' + response.end_date + '</p>';
+            htmlContent += '<div class="d-flex"><div class="p-3">';
+            htmlContent += '<p class="mb-0"><b>Start Date:</b></p>';
+            htmlContent += '<p>' + response.start_date + '</p>';
+            htmlContent += '</div> <div class="p-3" style="margin-left:auto; margin-right:0px;">';
+                if (response.end_date) {
+                htmlContent += '<p><b>End Date:</b></p><p>' + response.end_date + '</p>';
             } else {
-                htmlContent += '<p style="display: inline;"><b>End Date:</b></p><span style="color: red;"> Ongoing</span>';
+                htmlContent += '<p class="mb-0"><b>End Date:</b></p><span style="color: crimson;"> Ongoing <i class="fa-solid fa-spinner fa-spin" style="color:crimson ;"></i></span>';
             }
-            htmlContent += '<p><b>Is Completed:</b> ' + (response.is_completed ? 'Yes' : 'No') + '</p>';
-            htmlContent += '<p><b>Description:</b> ' + response.description + '</p>';
-            htmlContent += '<p><b>Assigned Employees:</b></p>';
+            htmlContent += '</div></div>';
+
+
+            // htmlContent += '<p><b>Support Contract Year:</b> ' + response.support_contract_year + '</p>';
+            // htmlContent += '<p><b>Support Contract Name:</b> ' + response.support_contract_name + '</p>';
+            // htmlContent += '<p><b>Task Name:</b> ' + response.task_name + '</p>';
+            // htmlContent += '<p><b>Start Date:</b> ' + response.start_date + '</p>';
+
+            // if (response.end_date) {
+            //     htmlContent += '<p><b>End Date:</b> ' + response.end_date + '</p>';
+            // } else {
+            //     htmlContent += '<p style="display: inline;"><b>End Date:</b></p><span style="color: red;"> Ongoing</span>';
+            // }
+
+            // htmlContent += '<p><b>Is Completed:</b> ' + (response.is_completed ? 'Yes' : 'No') + '</p>';
+            // htmlContent += '<p><b>Description:</b> ' + response.description + '</p>';
+            htmlContent += '<p class="mt-2"><img width="30" height="30" src="https://img.icons8.com/fluency/48/coder-in-hoodie.png" alt="coder-in-hoodie"/><b> Assigned By:</b></p>';
             htmlContent += '<ul>';
             response.emp_names.forEach(function(empName) {
-                htmlContent += '<li>' + empName + '</li>';
+                htmlContent += '<li class="p-0">' + empName + '</li>';
             });
             htmlContent += '</ul>';
             htmlContent += '</div>';
