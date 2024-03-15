@@ -60,17 +60,19 @@
                             <form method="POST" action="{{ route('login') }}">
                                 @csrf
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="floatingInput"
-                                        placeholder="name@example.com" id="email" @error('email') is-invalid @enderror name="email"
-                                        value="{{ old('email') }}" required autocomplete="email">
+                                    <input id="email" type="email"
+                                    class="form-control @error('email') is-invalid @enderror" id="floatingInput"
+                                        placeholder="name@example.com" name="email"
+                                        value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                     <label for="floatingInput">Email address</label>
                                     @error('email')
-                                        <span class="invalid-feedback" role="alert">
+                                        <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
+                                
 
                                 <div class="form-floating mb-4">
                                     <input type="password" class="form-control" id="floatingPassword"
@@ -78,7 +80,7 @@
                                         required autocomplete="current-password">
                                     <label for="floatingPassword">Password</label>
                                     @error('password')
-                                        <span class="invalid-feedback" role="alert">
+                                        <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
