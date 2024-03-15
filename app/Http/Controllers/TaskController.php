@@ -46,24 +46,6 @@ class TaskController extends Controller
 
         return view('employee.scsubtask', compact('id', 'name', 'start_date', 'end_date', 'description'));
     }
-    public function subtaskindex1(Request $request){
-        /*$id = $request->input('id');
-        $name = $request->input('name');
-        $start_date = $request->input('start_date');
-        $end_date = $request->input('end_date');
-        $description = $request->input('description');
-
-        // dd($id, $name, $start_date, $end_date, $description);
-
-        Session::put('id', $id);
-        Session::put('name', $name);
-        Session::put('start_date', $start_date);
-        Session::put('end_date', $end_date);
-        Session::put('description', $description);*/
-
-        return view('employee.scsubtask');
-        //return view('employee.scsubtask', compact('id', 'name', 'start_date', 'end_date', 'description'));
-    }
 
     public function AllTaskIndex(Task $task)
     {
@@ -156,7 +138,6 @@ class TaskController extends Controller
 
     public function getUEmpForTasks(Request $request)
     {
-
         $taskId = $request->input('taskId');
 
         $users = User::where('role_id', 3)->get();
@@ -215,7 +196,8 @@ class TaskController extends Controller
             TaskAccess::where('task_id', $taskId)->where('user_id', $userId)->delete();
             return response()->json(['message' => 'Access revoked successfully']);
         }
-        catch (\Exception $e) {
+        catch (\Exception $e)
+        {
             return response()->json(['error' => 'Failed to revoke access'], 500);
         }
     }
