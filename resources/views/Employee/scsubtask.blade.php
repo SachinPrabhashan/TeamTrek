@@ -176,10 +176,15 @@
                         <label for="engineerHours" class="form-label">Engineer Hours</label>
                         <input type="number" class="form-control" id="engineerHours" name="engineerHours">
                     </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="isLastTask" name="isLastTask">
+                        <label class="form-check-label" for="isLastTask">Is this the last daily task under this task?</label>
+                    </div>
                     <button type="button" class="btn btn-danger btn-sm" id="closeFormBtn">Close</button>
                     <button type="submit" class="btn btn-success btn-sm" id="submitFormBtn">Submit</button>
                 </form>
             </div>
+
 
             <div id="finishTaskForm" style="display: none;">
                 <form action="{{ route('finish.task') }}" method="POST">
@@ -200,11 +205,6 @@
                     <button type="submit" class="btn btn-success btn-sm" id="submitFinishFormBtn">Submit</button>
                 </form>
             </div>
-
-
-
-
-
         </div>
     </div>
 @endsection
