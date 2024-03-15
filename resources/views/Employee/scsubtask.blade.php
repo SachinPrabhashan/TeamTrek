@@ -121,15 +121,8 @@
                     class="fa-solid fa-circle-arrow-left fa-xl mb-4"></i></a>
             <br>
             <div class="row mb-3">
-                <!-- <div class="col-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">ID</h5>
-                                <p class="card-text">{{ session('id') }}</p>
-                            </div>
-                        </div>
-                    </div> -->
-                <div class="col-3">
+
+                <div class="col-6 mb-2">
                     <div class="card" id="taskNameCard">
                         <div class="card-body">
                             <h5 class="card-title">Task Name</h5>
@@ -137,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3 mb-2">
                     <div class="card" id="startDateCard">
                         <div class="card-body">
                             <h5 class="card-title">Start Date</h5>
@@ -145,7 +138,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3 mb-2">
                     <div class="card" id="endDateCard">
                         <div class="card-body">
                             <h5 class="card-title">End Date</h5>
@@ -153,8 +146,7 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="col-3">
+                <div class="col-12 mb-2">
                     <div class="card" id="descriptionCard">
                         <div class="card-body">
                             <h5 class="card-title">Description</h5>
@@ -180,12 +172,12 @@
                 <form action="{{ route('create.subtask') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="taskName" class="form-label">Task Name</label>
+                        <label for="taskName" class="form-label">What part you complete today?</label>
                         <input type="text" class="form-control" id="taskName" name="taskName">
                     </div>
                     <div class="mb-3">
-                        <label for="taskDate" class="form-label">Task Date</label>
-                        <input type="date" class="form-control" id="taskDate" name="taskDate">
+                        <label for="taskDate" class="form-label ">Task Date</label>
+                        <input type="date" class="form-control w-25" id="taskDate" name="taskDate">
                     </div>
                     <div class="mb-3">
                         <label for="developerHours" class="form-label">Developer Hours</label>
@@ -214,7 +206,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="finishDate" class="form-label">Finish Date</label>
-                        <input type="date" class="form-control" id="finishDate" name="finishDate">
+                        <input type="date" class="form-control w-25" id="finishDate" name="finishDate">
                     </div>
                     <div class="mb-3">
                         <label for="developerHoursFinish" class="form-label">Developer Hours</label>
@@ -234,4 +226,5 @@
             </div>
         </div>
     </div>
+
 @endsection
