@@ -12,6 +12,13 @@
     <link href="{{ asset('css/modal.css') }}" rel="stylesheet">
 
     <style>
+        div #createSupportContractInstanceForm {
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            justify-items: center;
+        }
+
         .card {
             border: 0;
             box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
@@ -36,7 +43,7 @@
             $('#instancewidgets').show();
 
             $('#addSupportContractInstanceBtn').click(function() {
-                $('#createSupportContractInstanceForm').toggle();
+                $('#createSupportContractInstanceForm').toggle(100);
                 $('#supportContractInstanceTable').toggle();
                 $('#instancewidgets').toggle();
                 $('#supportContractInstanceForm')[0].reset();
@@ -211,8 +218,10 @@
                             <input type="number" step="100" class="form-control" id="eng_rate" name="eng_rate"
                                 value="2000">
                         </div>
-                        <button type="button" class="btn btn-secondary btn-sm" id="closeFormBtn">Close</button>
-                        <button type="submit" class="btn btn-danger btn-sm">Create</button>
+                        <div class="float-end">
+                            <button type="button" class="btn btn-secondary btn-sm" id="closeFormBtn">Close</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Create</button>
+                        </div>
                     </form>
                 </div>
             </div>

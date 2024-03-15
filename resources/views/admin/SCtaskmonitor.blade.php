@@ -725,9 +725,6 @@ function showTaskDetails(taskId) {
             <div class="row">
 
             </div>
-
-
-
     </div>
 
     <!-- Modal -->
@@ -736,7 +733,7 @@ function showTaskDetails(taskId) {
             <div class="modal-content">
                 <div class="modal-header">
                 <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
-                <button type="button" id="modalCloseheadBtn" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" id="modalCloseheadBtn" class="btn-close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>

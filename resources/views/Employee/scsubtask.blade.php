@@ -10,35 +10,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
 
-    <script>
-        $(document).ready(function () {
-            $('input[type=radio][name=taskType]').change(function () {
-            if (this.value === 'create') {
-                $('#createTaskForm').show();
-                $('#finishTaskForm').hide();
-            } else if (this.value === 'finish') {
-                $('#createTaskForm').hide();
-                $('#finishTaskForm').show();
-            }
-        });
+    <style>
+        .card {
+            border: none;
+        }
 
-            $('#closeFormBtn').click(function () {
+        div.tasksel {
+            margin-left: 100px;
+
+        }
+
+        div #createTaskForm,
+        #finishTaskForm {
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            justify-items: center;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $('input[type=radio][name=taskType]').change(function() {
+                if (this.value === 'create') {
+                    $('#createTaskForm').fadeIn(1000);
+                    $('#finishTaskForm').hide();
+                } else if (this.value === 'finish') {
+                    $('#createTaskForm').hide();
+                    $('#finishTaskForm').fadeIn(1000);
+                }
+            });
+
+            $('#closeFormBtn').click(function() {
                 $('#createTaskForm').hide();
             });
 
-            $('#closeFinishFormBtn').click(function () {
-            $('#finishTaskForm').hide();
-        });
+            $('#closeFinishFormBtn').click(function() {
+                $('#finishTaskForm').hide();
+            });
 
             // Submit form via AJAX
-            $('#submitFormBtn').click(function (e) {
+            $('#submitFormBtn').click(function(e) {
                 e.preventDefault();
                 var form = $(this).closest('form');
                 $.ajax({
                     type: form.attr('method'),
                     url: form.attr('action'),
                     data: form.serialize(),
-                    success: function (response) {
+                    success: function(response) {
                         // Display SweetAlert
                         Swal.fire({
                             icon: 'success',
@@ -47,11 +66,11 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 // Redirect to another page
-                                window.location.href = '{{ route("scTaskMonitor") }}';
+                                window.location.href = '{{ route('scTaskMonitor') }}';
                             }
                         });
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         // Handle error
                         console.error(xhr.responseText);
                         Swal.fire({
@@ -64,34 +83,34 @@
             });
 
             // Submit finishTaskForm via AJAX
-        $('#submitFinishFormBtn').click(function (e) {
-            e.preventDefault();
-            var form = $(this).closest('form');
-            $.ajax({
-                type: form.attr('method'),
-                url: form.attr('action'),
-                data: form.serialize(),
-                success: function (response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Task Finished successfully!',
-                        showConfirmButton: true,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '{{ route("scTaskMonitor") }}';
-                        }
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'An error occurred! Please try again.',
-                    });
-                }
+            $('#submitFinishFormBtn').click(function(e) {
+                e.preventDefault();
+                var form = $(this).closest('form');
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Task Finished successfully!',
+                            showConfirmButton: true,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '{{ route('scTaskMonitor') }}';
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'An error occurred! Please try again.',
+                        });
+                    }
+                });
             });
-        });
         });
     </script>
 
@@ -99,17 +118,17 @@
         <div class="bg-light rounded h-100 p-4">
             <h1>Sub Task Handle</h1>
             <a href="{{ route('scTaskMonitor') }}" data-toggle="tooltip" data-bs-placement="left" title="Go Back"><i
-                    class="fa-solid fa-circle-arrow-left fa-xl"></i></a>
+                    class="fa-solid fa-circle-arrow-left fa-xl mb-4"></i></a>
             <br>
-            <div class="row">
+            <div class="row mb-3">
                 <!-- <div class="col-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">ID</h5>
-                            <p class="card-text">{{ session('id') }}</p>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">ID</h5>
+                                <p class="card-text">{{ session('id') }}</p>
+                            </div>
                         </div>
-                    </div>
-                </div> -->
+                    </div> -->
                 <div class="col-3">
                     <div class="card" id="taskNameCard">
                         <div class="card-body">
@@ -148,16 +167,16 @@
 
             <!-- Radio buttons -->
             <div class="row">
-                <div class="col-12">
-                    <label for="taskType">Select Task Type:</label><br>
-                    <input type="radio" id="createTaskRadio" name="taskType" value="create">
-                    <label for="createTaskRadio">Create A Daily Task:</label><br>
+                <div class="col-12 tasksel">
+                    <label class="mb-2" for="taskType"><b>Select Task Type:</b></label><br>
+                    <input class="mb-2" type="radio" id="createTaskRadio" name="taskType" value="create">
+                    <label class="mb-2" for="createTaskRadio">Create A Daily Task:</label><br>
                     <input type="radio" id="finishTaskRadio" name="taskType" value="finish">
                     <label for="finishTaskRadio">Finish Task:</label><br><br>
                 </div>
             </div>
 
-            <div id="createTaskForm" style="display: none;">
+            <div class="pb-5" id="createTaskForm" style="display: none;">
                 <form action="{{ route('create.subtask') }}" method="POST">
                     @csrf
                     <div class="mb-3">
@@ -178,15 +197,19 @@
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="isLastTask" name="isLastTask">
-                        <label class="form-check-label" for="isLastTask">Is this the last daily task under this task?</label>
+                        <label class="form-check-label" for="isLastTask">Is this the last daily task under this
+                            task?</label>
                     </div>
-                    <button type="button" class="btn btn-danger btn-sm" id="closeFormBtn">Close</button>
-                    <button type="submit" class="btn btn-success btn-sm" id="submitFormBtn">Submit</button>
+                    <div class="mt-0 float-end">
+                        <button type="button" class="btn btn-secondary btn-sm" id="closeFormBtn">Close</button>
+                        <button type="submit" class="btn btn-danger btn-sm" id="submitFormBtn">Submit</button>
+                    </div>
+
                 </form>
             </div>
 
 
-            <div id="finishTaskForm" style="display: none;">
+            <div class="pb-5" id="finishTaskForm" style="display: none;">
                 <form action="{{ route('finish.task') }}" method="POST">
                     @csrf
                     <div class="mb-3">
@@ -195,14 +218,18 @@
                     </div>
                     <div class="mb-3">
                         <label for="developerHoursFinish" class="form-label">Developer Hours</label>
-                        <input type="number" class="form-control" id="developerHoursFinish" name="developerHoursFinish">
+                        <input type="number" class="form-control" id="developerHoursFinish"
+                            name="developerHoursFinish">
                     </div>
                     <div class="mb-3">
                         <label for="engineerHoursFinish" class="form-label">Engineer Hours</label>
                         <input type="number" class="form-control" id="engineerHoursFinish" name="engineerHoursFinish">
                     </div>
-                    <button type="button" class="btn btn-danger btn-sm" id="closeFinishFormBtn">Close</button>
-                    <button type="submit" class="btn btn-success btn-sm" id="submitFinishFormBtn">Submit</button>
+                    <div class="float-end">
+                        <button type="button" class="btn btn-secondary btn-sm" id="closeFinishFormBtn">Close</button>
+                        <button type="submit" class="btn btn-danger btn-sm" id="submitFinishFormBtn">Submit</button>
+                    </div>
+
                 </form>
             </div>
         </div>
