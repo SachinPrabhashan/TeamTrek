@@ -1,12 +1,12 @@
 @extends('layouts.navitems')
 @section('content')
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         .card-margin {
             margin-bottom: 1.875rem;
@@ -317,123 +317,137 @@
         .widget-49 .widget-49-meeting-action a {
             text-transform: uppercase;
         }
-</style>
 
-<script>
-$(document).ready(function(){
-
-//creating tasks using bootstrap modal
-    $(document).on('click', '#openCreateTaskModalBtn', function() {
-      $('#createTaskModal').modal('show');
-    });
-    $(document).on('click', '#modalCloseheadBtn', function() {
-      $('#createTaskModal').modal('hide');
-    });
-    $(document).on('click', '#modalCloseBtn', function() {
-      $('#createTaskModal').modal('hide');
-    });
-
-
-    $(document).on('click', '#submitTaskBtn', function() {
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        var taskName = $("#taskName").val();
-        var taskDescription = $("#taskDescription").val();
-        var startDate = $("#startDate").val();
-        var supportContractId = $("#SupportContractDropInModal").val();
-        var supportContractInstance = $("#SupportContractYearDropInModal").val();
-
-        var formData = {
-        taskName: taskName,
-        taskDescription: taskDescription,
-        startDate: startDate,
-        supportContractId: supportContractId,
-        supportContractInstance: supportContractInstance
-        };
-
-        $.ajax({
-        type: "POST",
-        url: "/support-contract/tasks",
-        data: formData,
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        },
-        success: function(response) {
-            if (response && response.message) {
-            $('#createTaskModal').modal('hide');
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: response.message
-            }).then(() => {
-                location.reload();
-            });
-            }
-        },
-        error: function(xhr, status, error) {
-            var errorMessage = xhr.responseJSON.error;
-            Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMessage
-            });
+        .truncate {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 250px;
         }
-        });
-  });
+
+        .custom-swal-container div{
+            width: 700px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+
+            //creating tasks using bootstrap modal
+            $(document).on('click', '#openCreateTaskModalBtn', function() {
+                $('#createTaskModal').modal('show');
+            });
+            $(document).on('click', '#modalCloseheadBtn', function() {
+                $('#createTaskModal').modal('hide');
+            });
+            $(document).on('click', '#modalCloseBtn', function() {
+                $('#createTaskModal').modal('hide');
+            });
+
+
+            $(document).on('click', '#submitTaskBtn', function() {
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                var taskName = $("#taskName").val();
+                var taskDescription = $("#taskDescription").val();
+                var startDate = $("#startDate").val();
+                var supportContractId = $("#SupportContractDropInModal").val();
+                var supportContractInstance = $("#SupportContractYearDropInModal").val();
+
+                var formData = {
+                    taskName: taskName,
+                    taskDescription: taskDescription,
+                    startDate: startDate,
+                    supportContractId: supportContractId,
+                    supportContractInstance: supportContractInstance
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/support-contract/tasks",
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    success: function(response) {
+                        if (response && response.message) {
+                            $('#createTaskModal').modal('hide');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: response.message
+                            }).then(() => {
+                                location.reload();
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = xhr.responseJSON.error;
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: errorMessage
+                        });
+                    }
+                });
+            });
 
 
 
-// Function to handle searchTasks button click---------------------------------------------------------
-    $("#taskSearchBtn").click(function(){
+            // Function to handle searchTasks button click---------------------------------------------------------
+            $("#taskSearchBtn").click(function() {
 
-        var supportContractId = $("#selectSupportContract").val();
-        var year = $("#selectSupportContractYear").val();
+                var supportContractId = $("#selectSupportContract").val();
+                var year = $("#selectSupportContractYear").val();
 
-        $.ajax({
-            type: "GET",
-            url: "/fetch-support-contract/tasks",
-            data: {
-                supportContractId: supportContractId,
-                year: year
-            },
-            success: function(response) {
-                renderTasks(response);
-            },
-            error: function(xhr, status, error) {
-                //console.error("Error fetching tasks:", error);
-                var errorMessage = xhr.responseJSON.error;
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: errorMessage
-                    });
-                    $(".row").empty();
-            }
-        });
-    });
+                $.ajax({
+                    type: "GET",
+                    url: "/fetch-support-contract/tasks",
+                    data: {
+                        supportContractId: supportContractId,
+                        year: year
+                    },
+                    success: function(response) {
+                        renderTasks(response);
+                    },
+                    error: function(xhr, status, error) {
+                        //console.error("Error fetching tasks:", error);
+                        var errorMessage = xhr.responseJSON.error;
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: errorMessage
+                        });
+                        $(".row").empty();
+                    }
+                });
+            });
 
-// Function to render tasks in the HTML-----------------------------------------------------
-    function renderTasks(tasks) {
+            // Function to render tasks in the HTML-----------------------------------------------------
+            function renderTasks(tasks) {
                 var taskHtml = '';
                 tasks.forEach(function(task) {
-                    taskHtml += '<div class="col-lg-4">';
-                    taskHtml += '<form method="post" action="{{ route('scsubtaskhandle', ['id' => '+ task.id +']) }}">';
+                    taskHtml += '<div class="col-lg-4" >';
+                    taskHtml +=
+                        '<form method="post" action="{{ route('scsubtaskhandle', ['id' => '+ task.id +']) }}">';
                     taskHtml += '@csrf';
                     taskHtml += '<div class="card card-margin">';
                     taskHtml += '<div class="card-header no-border">';
                     taskHtml += '<h5 class="card-title">Task :- ' + task.name + '</h5>';
-                    taskHtml += '<input type="hidden" id="name" name="name" value="'+ task.name +'">';
+                    taskHtml += '<input type="hidden" id="name" name="name" value="' + task.name + '">';
                     taskHtml += '<hr></div>';
                     taskHtml += '<div class="card-body pt-0">';
                     taskHtml += '<div class="widget-49">';
                     taskHtml += '<div class="widget-49-title-wrapper">';
                     taskHtml += '<div class="widget-49-date-primary">';
                     taskHtml += '<span class="widget-49-date-day">' + task.id + '</span>';
-                    taskHtml += '<input type="hidden" id="id" name="id" value="'+ task.id +'">';
+                    taskHtml += '<input type="hidden" id="id" name="id" value="' + task.id + '">';
                     taskHtml += '</div>';
                     taskHtml += '<div class="widget-49-meeting-info">';
                     taskHtml += '<span class="widget-49-pro-title">' + task.start_date + '</span>';
-                    taskHtml += '<input type="hidden" id="start_date" name="start_date" value="'+ task.start_date +'">';
-                    taskHtml += '<input type="hidden" id="end_date" name="end_date" value="'+ task.end_date +'">';
+                    taskHtml += '<input type="hidden" id="start_date" name="start_date" value="' + task
+                        .start_date + '">';
+                    taskHtml += '<input type="hidden" id="end_date" name="end_date" value="' + task
+                        .end_date + '">';
                     taskHtml += '<span class="widget-49-meeting-time">';
                     if (task.end_date) {
                         taskHtml += 'End Date: ' + task.end_date;
@@ -441,19 +455,22 @@ $(document).ready(function(){
                         taskHtml += '<span style="color: red;">Ongoing</span>';
                     }
                     taskHtml += '</span></div></div>';
-                    taskHtml += '<ol class="widget-49-meeting-points">';
-                    taskHtml += '<li class="widget-49-meeting-item"><span>' + task.Description +
+                    taskHtml += '<ul class="widget-49-meeting-points" >';
+                    taskHtml += '<li class="widget-49-meeting-item truncate"><span class="">' + task
+                        .Description +
                         '</span></li>';
-                    taskHtml += '<input type="hidden" id="description" name="description" value="'+ task.Description +'">';
-                    taskHtml += '</ol>';
+                    taskHtml +=
+                        '<input type="hidden" id="description" name="description" value="' + task
+                        .Description + '">';
+                    taskHtml += '</ul>';
                     taskHtml += '<div class="widget-49-meeting-action">';
                     taskHtml +=
-                        '<span><button type="submit" class="btn p-1"><img width="18" height="18" src="https://img.icons8.com/material/24/task.png" alt="task"/></button></span>';
+                        '@Employee<span><button type="submit" class="btn p-1"><img width="18" height="18" src="https://img.icons8.com/plumpy/24/task-completed.png" alt="task-completed"/></button></span>@endEmployee';
                     taskHtml +=
-                        '<span class="btn p-1" ><i class="fa-solid fa-users" style="color: green;"></i></span>'; // Add the users icon // Add the users icon
+                        '@Admin<span class="btn p-1" ><i class="fa-solid fa-users" style="color: green;"></i></span>'; // Add the users icon // Add the users icon
                     taskHtml +=
                         '<span class="btn p-1" ><i class="fa-solid fa-trash delete-task" style="color: red;" data-task-id="' +
-                        task.id + '"></i></span>';
+                        task.id + '"></i></span>@endAdmin';
                     taskHtml += '<span class="view-task btn p-1" data-task-id="' + task.id +
                         '"><i class="fa-solid fa-eye" style="color: blue;"></i></span>';
 
@@ -471,307 +488,331 @@ $(document).ready(function(){
             }
 
 
-// Function to delete task-------------------------------------------------------------------------
-function deleteTask(taskId) {
-    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            // Function to delete task-------------------------------------------------------------------------
+            function deleteTask(taskId) {
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-    $.ajax({
-        url: '/delete-task/' + taskId,
-        type: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        },
-        success: function(response) {
-            console.log("Task deleted successfully");
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Task deleted Successfully!",
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                location.reload();
-            });
-        },
-        error: function(error) {
-            console.error("Error deleting task:", error);
-        }
-    });
-}
-
-
-// Function to confirm delete---------------------------------------------------------------------
-    function confirmDelete(taskId) {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                deleteTask(taskId);
-            }
-        });
-    }
-
-    // Event listener for confirming delete---------------------------------------------------------
-        $(document).on('click', '.delete-task', function() {
-            var taskId = $(this).data('task-id');
-            confirmDelete(taskId);
-        });
-
-// Set up global AJAX setup to include CSRF token in all requests
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-
-//Granting Access and revoking them---------------------------
-    function showAccessGrantingModal(taskId) {
-        //console.log('Task ID:', taskId);
-        $.ajax({
-            url: '/emp-for-tasks',
-            type: 'GET',
-            data: {
-            taskId: taskId // Include taskId in the data object
-        },
-            success: function(users) {
-                var optionsHtml = '';
-                users.forEach(function(user) {
-                    var isChecked = user.isGranted ? 'checked' : ''; // Check if user is granted access
-                    optionsHtml += '<label><input type="checkbox" class="user-checkbox" name="user" value="' + user.id + '" ' + isChecked + '> ' + user.name + '</label><br>';
+                $.ajax({
+                    url: '/delete-task/' + taskId,
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    success: function(response) {
+                        console.log("Task deleted successfully");
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "Task deleted Successfully!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function(error) {
+                        console.error("Error deleting task:", error);
+                    }
                 });
+            }
 
+
+            // Function to confirm delete---------------------------------------------------------------------
+            function confirmDelete(taskId) {
                 Swal.fire({
-                    title: 'Grant Access To Users',
-                    html: optionsHtml,
-                    showCloseButton: true,
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
                     showCancelButton: true,
-                    confirmButtonText: 'Submit',
-                    cancelButtonText: 'Close'
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        var selectedUsers = [];
-                        $('input[name="user"]:checked').each(function() {
-                            selectedUsers.push($(this).val());
+                        deleteTask(taskId);
+                    }
+                });
+            }
+
+            // Event listener for confirming delete---------------------------------------------------------
+            $(document).on('click', '.delete-task', function() {
+                var taskId = $(this).data('task-id');
+                confirmDelete(taskId);
+            });
+
+            // Set up global AJAX setup to include CSRF token in all requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            //Granting Access and revoking them---------------------------
+            function showAccessGrantingModal(taskId) {
+                //console.log('Task ID:', taskId);
+                $.ajax({
+                    url: '/emp-for-tasks',
+                    type: 'GET',
+                    data: {
+                        taskId: taskId // Include taskId in the data object
+                    },
+                    success: function(users) {
+                        var optionsHtml = '';
+                        users.forEach(function(user) {
+                            var isChecked = user.isGranted ? 'checked' :
+                                ''; // Check if user is granted access
+                            optionsHtml +=
+                                '<label><input type="checkbox" class="user-checkbox" name="user" value="' +
+                                user.id + '" ' + isChecked + '> ' + user.name + '</label><br>';
                         });
 
-                        // Send selected users and task ID to backend
-                        $.ajax({
-                            url: '/grant-access-tasks',
-                            type: 'POST',
-                            data: {
-                                task_id: taskId,
-                                selected_users: selectedUsers
-                            },
-                            success: function(response) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success',
-                                    text: response.message
-                                }).then(() => {
-                                    location.reload();
+                        Swal.fire({
+                            title: 'Grant Access To Users',
+                            html: optionsHtml,
+                            showCloseButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: 'Submit',
+                            cancelButtonText: 'Close'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                var selectedUsers = [];
+                                $('input[name="user"]:checked').each(function() {
+                                    selectedUsers.push($(this).val());
                                 });
-                            },
-                            error: function(error) {
-                                console.error('Error granting access:', error);
+
+                                // Send selected users and task ID to backend
+                                $.ajax({
+                                    url: '/grant-access-tasks',
+                                    type: 'POST',
+                                    data: {
+                                        task_id: taskId,
+                                        selected_users: selectedUsers
+                                    },
+                                    success: function(response) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: response.message
+                                        }).then(() => {
+                                            location.reload();
+                                        });
+                                    },
+                                    error: function(error) {
+                                        console.error('Error granting access:',
+                                            error);
+                                    }
+                                });
                             }
                         });
-                    }
-                });
 
-                // Add click event listener to checkboxes
-                $('.user-checkbox').on('click', function() {
-                    var userId = $(this).val();
-                    var isChecked = $(this).prop('checked');
+                        // Add click event listener to checkboxes
+                        $('.user-checkbox').on('click', function() {
+                            var userId = $(this).val();
+                            var isChecked = $(this).prop('checked');
 
-                    if (!isChecked) {
-                        $.ajax({
-                            url: '/revoke-access-tasks',
-                            type: 'POST',
-                            data: {
-                                task_id: taskId,
-                                user_id: userId
-                            },
-                            success: function(response) {
-                                console.log('Access revoked for user ' + userId);
-                            },
-                            error: function(error) {
-                                console.error('Error revoking access:', error);
+                            if (!isChecked) {
+                                $.ajax({
+                                    url: '/revoke-access-tasks',
+                                    type: 'POST',
+                                    data: {
+                                        task_id: taskId,
+                                        user_id: userId
+                                    },
+                                    success: function(response) {
+                                        console.log('Access revoked for user ' +
+                                            userId);
+                                    },
+                                    error: function(error) {
+                                        console.error('Error revoking access:',
+                                            error);
+                                    }
+                                });
                             }
                         });
+                    },
+                    error: function(error) {
+                        console.error("Error fetching users:", error);
                     }
                 });
-            },
-            error: function(error) {
-                console.error("Error fetching users:", error);
             }
+
+            // Function to display task details with employee names
+            function showTaskDetails(taskId) {
+                $.ajax({
+                    url: '/get-task-details/' + taskId,
+                    type: 'GET',
+                    success: function(response) {
+                        // Prepare HTML content for displaying task details
+
+                        var htmlContent = '<div>';
+                        htmlContent = '<div style="text-align: left;">';
+                        htmlContent += '<p class="mb-0" style="Font-size:26pt; font-weight:bolder;"> ' +
+                            response.support_contract_name + '</p>';
+                        htmlContent += '<p class="mb-0" style="Font-size:26pt; font-weight:bolder;"> ' +
+                            response.support_contract_year + '</p>';
+                        htmlContent +=
+                            '<hr><p> <img width="30" height="30" src="https://img.icons8.com/fluency/48/task-completed.png" alt="task-completed"/> <b>Tasks:</b> <br> ' +
+                            response.task_name + '</p>';
+                        htmlContent += '<div class="bg-light rounded p-3 mb-2" style="width:87%">';
+                        htmlContent += '<p class="mb-1"><b>Description:</b><br> ' + response
+                            .description + '</p>';
+                        htmlContent += '</div>';
+
+                        htmlContent += '<div class="d-flex"><div class="p-3">';
+                        htmlContent += '<p class="mb-0"><b>Start Date:</b></p>';
+                        htmlContent += '<p>' + response.start_date + '</p>';
+                        htmlContent +=
+                            '</div> <div class="p-3" style="margin-left:auto; margin-right:0px;">';
+                        if (response.end_date) {
+                            htmlContent += '<p><b>End Date:</b></p><p>' + response.end_date + '</p>';
+                        } else {
+                            htmlContent +=
+                                '<p class="mb-0"><b>End Date:</b></p><span style="color: crimson;"> Ongoing <i class="fa-solid fa-spinner fa-spin" style="color:crimson ;"></i></span>';
+                        }
+                        htmlContent += '</div></div>';
+
+
+                        // htmlContent += '<p><b>Support Contract Year:</b> ' + response.support_contract_year + '</p>';
+                        // htmlContent += '<p><b>Support Contract Name:</b> ' + response.support_contract_name + '</p>';
+                        // htmlContent += '<p><b>Task Name:</b> ' + response.task_name + '</p>';
+                        // htmlContent += '<p><b>Start Date:</b> ' + response.start_date + '</p>';
+
+                        // if (response.end_date) {
+                        //     htmlContent += '<p><b>End Date:</b> ' + response.end_date + '</p>';
+                        // } else {
+                        //     htmlContent += '<p style="display: inline;"><b>End Date:</b></p><span style="color: red;"> Ongoing</span>';
+                        // }
+
+                        // htmlContent += '<p><b>Is Completed:</b> ' + (response.is_completed ? 'Yes' : 'No') + '</p>';
+                        // htmlContent += '<p><b>Description:</b> ' + response.description + '</p>';
+                        htmlContent +=
+                            '<p class="mt-2"><img width="30" height="30" src="https://img.icons8.com/fluency/48/coder-in-hoodie.png" alt="coder-in-hoodie"/><b> Assigned By:</b></p>';
+                        htmlContent += '<ul>';
+                        response.emp_names.forEach(function(empName) {
+                            htmlContent += '<li class="p-0">' + empName + '</li>';
+                        });
+                        htmlContent += '</ul>';
+                        htmlContent += '</div>';
+
+                        // Display task details in a modal
+                        Swal.fire({
+                            title: 'Task Details',
+                            html: htmlContent,
+                            showCloseButton: true,
+                            customClass: {
+                                container: 'custom-swal-container'
+                            }
+                        });
+                    },
+                    error: function(error) {
+                        console.error('Error fetching task details:', error);
+                    }
+                });
+            }
+
+
+            // Event listener for clicking the eye icon to view task details
+            $(document).on('click', '.view-task', function() {
+                var taskId = $(this).data('task-id');
+                showTaskDetails(taskId);
+            });
+
         });
-    }
-
-// Function to display task details with employee names
-function showTaskDetails(taskId) {
-    $.ajax({
-        url: '/get-task-details/' + taskId,
-        type: 'GET',
-        success: function(response) {
-            // Prepare HTML content for displaying task details
-            var htmlContent = '<div style="text-align: left;">';
-            htmlContent += '<p class="mb-0" style="Font-size:26pt; font-weight:bolder;"> ' + response.support_contract_name + '</p>';
-            htmlContent += '<p class="mb-0" style="Font-size:26pt; font-weight:bolder;"> ' + response.support_contract_year + '</p>';
-            htmlContent += '<hr><p> <img width="30" height="30" src="https://img.icons8.com/fluency/48/task-completed.png" alt="task-completed"/> <b>Tasks:</b> <br> ' + response.task_name + '</p>';
-            htmlContent += '<div class="bg-light rounded 100 p-3 mb-2">';
-            htmlContent += '<p class="mb-1"><b>Description:</b><br> ' + response.description + '</p>';
-            htmlContent += '</div>';
-
-            htmlContent += '<div class="d-flex"><div class="p-3">';
-            htmlContent += '<p class="mb-0"><b>Start Date:</b></p>';
-            htmlContent += '<p>' + response.start_date + '</p>';
-            htmlContent += '</div> <div class="p-3" style="margin-left:auto; margin-right:0px;">';
-                if (response.end_date) {
-                htmlContent += '<p><b>End Date:</b></p><p>' + response.end_date + '</p>';
-            } else {
-                htmlContent += '<p class="mb-0"><b>End Date:</b></p><span style="color: crimson;"> Ongoing <i class="fa-solid fa-spinner fa-spin" style="color:crimson ;"></i></span>';
-            }
-            htmlContent += '</div></div>';
-
-
-            // htmlContent += '<p><b>Support Contract Year:</b> ' + response.support_contract_year + '</p>';
-            // htmlContent += '<p><b>Support Contract Name:</b> ' + response.support_contract_name + '</p>';
-            // htmlContent += '<p><b>Task Name:</b> ' + response.task_name + '</p>';
-            // htmlContent += '<p><b>Start Date:</b> ' + response.start_date + '</p>';
-
-            // if (response.end_date) {
-            //     htmlContent += '<p><b>End Date:</b> ' + response.end_date + '</p>';
-            // } else {
-            //     htmlContent += '<p style="display: inline;"><b>End Date:</b></p><span style="color: red;"> Ongoing</span>';
-            // }
-
-            // htmlContent += '<p><b>Is Completed:</b> ' + (response.is_completed ? 'Yes' : 'No') + '</p>';
-            // htmlContent += '<p><b>Description:</b> ' + response.description + '</p>';
-            htmlContent += '<p class="mt-2"><img width="30" height="30" src="https://img.icons8.com/fluency/48/coder-in-hoodie.png" alt="coder-in-hoodie"/><b> Assigned By:</b></p>';
-            htmlContent += '<ul>';
-            response.emp_names.forEach(function(empName) {
-                htmlContent += '<li class="p-0">' + empName + '</li>';
-            });
-            htmlContent += '</ul>';
-            htmlContent += '</div>';
-
-            // Display task details in a modal
-            Swal.fire({
-                title: 'Task Details',
-                html: htmlContent,
-                showCloseButton: true
-            });
-        },
-        error: function(error) {
-            console.error('Error fetching task details:', error);
-        }
-    });
-}
-
-
-    // Event listener for clicking the eye icon to view task details
-    $(document).on('click', '.view-task', function() {
-        var taskId = $(this).data('task-id');
-        showTaskDetails(taskId);
-    });
-
-});
-</script>
+    </script>
 
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4">
             <h1>On Going Tasks</h1>
             <div class="float-end">
                 @RootOrAdmin
-                <!--button class="btn btn-primary" id="openCreateTaskModalBtn" data-toggle="tooltip" data-bs-placement="bottom" title="Create SC Tasks">
-                    <i class="fa-solid fa-folder-plus"></i>
-                </button-->
-                <button class="btn btn-primary"  id="openCreateTaskModalBtn" data-toggle="tooltip" data-bs-placement="bottom" title="Create SC Tasks">
-                    <i class="fa-solid fa-folder-plus"></i>
-                  </button>
-                <a href="{{ route('scAllTaskMonitor') }}">
-                    <button class="btn btn-info" id="seeAllTaskBtn" data-toggle="tooltip" data-bs-placement="bottom" title="See All Tasks">
-                        <i class="fa-solid fa-folder-open"></i>
+                    <!--button class="btn btn-primary" id="openCreateTaskModalBtn" data-toggle="tooltip" data-bs-placement="bottom" title="Create SC Tasks">
+                                            <i class="fa-solid fa-folder-plus"></i>
+                                        </button-->
+                    <button class="btn btn-primary" id="openCreateTaskModalBtn" data-toggle="tooltip" data-bs-placement="bottom"
+                        title="Create SC Tasks">
+                        <i class="fa-solid fa-folder-plus"></i>
                     </button>
-                </a>
+                    <a href="{{ route('scAllTaskMonitor') }}">
+                        <button class="btn btn-info" id="seeAllTaskBtn" data-toggle="tooltip" data-bs-placement="bottom"
+                            title="See All Tasks">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </button>
+                    </a>
                 @endRootOrAdmin
             </div>
 
             <div class="rolebtn bg-light rounded h-100 p-4">
                 <label for="">Support Contract</label>
-                    <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContract">
-                        @foreach ($supportcontracts as $contract)
-                            <option value="{{ $contract->id }}">{{ $contract->name }}</option>
-                        @endforeach
-                    </select>
-                    <label for="">Year</label>
-                    <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContractYear">
-                        @foreach ($scInstances->unique('year') as $instance)
-                            <option value="{{ $instance->year }}">{{ $instance->year }}</option>
-                        @endforeach
-                    </select>
-                    <button class="btn btn-primary m-2" id="taskSearchBtn" data-toggle="tooltip" title="Search SC Tasks">Search
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
+                <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContract">
+                    @foreach ($supportcontracts as $contract)
+                        <option value="{{ $contract->id }}">{{ $contract->name }}</option>
+                    @endforeach
+                </select>
+                <label for="">Year</label>
+                <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContractYear">
+                    @foreach ($scInstances->unique('year') as $instance)
+                        <option value="{{ $instance->year }}">{{ $instance->year }}</option>
+                    @endforeach
+                </select>
+                <button class="btn btn-primary m-2" id="taskSearchBtn" data-toggle="tooltip" title="Search SC Tasks">Search
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
             </div>
 
             <!--div id="TaskView">Available Tasks Will Display Here</div-->
             <div class="row">
 
             </div>
-    </div>
+        </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
-                <button type="button" id="modalCloseheadBtn" class="btn-close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <!-- Modal -->
+        <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
+                        <button type="button" id="modalCloseheadBtn" class="btn-close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="SupportContractDropInModal">Support Contract:</label><br>
+                            <select class="form-control" id="SupportContractDropInModal">
+                                @foreach ($supportcontracts as $contract)
+                                    <option value="{{ $contract->id }}">{{ $contract->name }}</option>
+                                @endforeach
+                            </select>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="SupportContractYearDropInModal">Year:</label><br>
+                            <select class="form-control" id="SupportContractYearDropInModal">
+                                @foreach ($scInstances->unique('year') as $instance)
+                                    <option value="{{ $instance->year }}">{{ $instance->year }}</option>
+                                @endforeach
+                            </select>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="taskName">Name:</label><br>
+                            <input type="text" class="form-control" id="taskName">
+                        </div><br>
+                        <div class="form-group">
+                            <label for="taskDescription">Description:</label><br>
+                            <textarea class="form-control" id="taskDescription"></textarea>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="startDate">Start Date:</label><br>
+                            <input type="date" class="form-control" id="startDate">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm"
+                            id="modalCloseBtn"data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger btn-sm" id="submitTaskBtn">Submit</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                <div class="form-group">
-                    <label for="SupportContractDropInModal">Support Contract:</label><br>
-                    <select class="form-control" id="SupportContractDropInModal">
-                    @foreach ($supportcontracts as $contract)
-                    <option value="{{ $contract->id }}">{{ $contract->name }}</option>
-                    @endforeach
-                    </select>
-                </div><br>
-                <div class="form-group">
-                    <label for="SupportContractYearDropInModal">Year:</label><br>
-                    <select class="form-control" id="SupportContractYearDropInModal">
-                    @foreach ($scInstances->unique('year') as $instance)
-                    <option value="{{ $instance->year }}">{{ $instance->year }}</option>
-                    @endforeach
-                    </select>
-                </div><br>
-                <div class="form-group">
-                    <label for="taskName">Name:</label><br>
-                    <input type="text" class="form-control" id="taskName">
-                </div><br>
-                <div class="form-group">
-                    <label for="taskDescription">Description:</label><br>
-                    <textarea class="form-control" id="taskDescription"></textarea>
-                </div><br>
-                <div class="form-group">
-                    <label for="startDate">Start Date:</label><br>
-                    <input type="date" class="form-control" id="startDate">
-                </div>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" id="modalCloseBtn"data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success btn-sm" id="submitTaskBtn">Submit</button>
-                </div>
-            </div>
             </div>
         </div>
     </div>

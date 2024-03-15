@@ -4,6 +4,11 @@
 2. How to put data into SESSION (Example)
 Controller (Store in SESSION)
 
+3. Back Button
+<a href="{{ route('scTaskMonitor') }}" data-toggle="tooltip" data-bs-placement="left" title="Go Back"><i
+                    class="fa-solid fa-circle-arrow-left fa-xl mb-4"></i></a>
+            <br>
+
 public function handleFormSubmission(Request $request)
 {
 // Assuming you have retrieved the values from the form
