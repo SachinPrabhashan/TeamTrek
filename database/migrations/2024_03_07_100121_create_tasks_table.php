@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('support_contract_instance_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('name');
             $table->date('start_date');
             $table->date('end_date')->nullable();
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->boolean('isUpdate')->nullable()->default(false);
 
             $table->foreign('support_contract_instance_id')->references('id')->on('support_contract_instances');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -37,4 +39,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('tasks');
     }
-}
+};
