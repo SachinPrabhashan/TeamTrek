@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SubTask extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'support_contract_instance_id',
         'name',
@@ -16,4 +16,13 @@ class SubTask extends Model
         'dev_hours',
         'eng_hours',
     ];
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
+
+    public function remainingHours()
+    {
+        return $this->hasOne(RemainingHours::class);
+    }
 }

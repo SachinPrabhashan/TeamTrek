@@ -29,4 +29,14 @@ class Task extends Model
     {
         return $this->hasOneThrough(SupportContract::class, SupportContractInstance::class);
     }
+
+    public function subTasks()
+    {
+        return $this->hasMany(SubTask::class);
+    }
+
+    public function remainingHours()
+    {
+        return $this->hasMany(RemainingHours::class);
+    }
 }

@@ -25,4 +25,8 @@ class SupportContractInstance extends Model
     {
         return $this->belongsTo(SupportContract::class, 'support_contract_id');
     }
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }
