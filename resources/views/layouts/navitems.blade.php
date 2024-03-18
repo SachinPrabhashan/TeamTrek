@@ -145,7 +145,7 @@
                                 @endAdmin
                             @endAdminOrEmployee
                             @Client
-                                <a href="#" class="dropdown-item">Support Contract View</a>
+                                <a href="{{ route('scView') }}" class="dropdown-item">Support Contract View</a>
                             @endClient
                         </div>
                     </div>
