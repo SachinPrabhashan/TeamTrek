@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dashboard;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 
@@ -20,7 +21,12 @@ class DashboardController extends Controller
 
     public function show(Dashboard $dashboard)
     {
-        return view('dashboard');
+
+        $todotasks = DB::table('tasks')
+        ->where('isCompleted', 0)
+         ->get();
+         
+        return view('dashboard', compact('todotasks'));
     }
 
 

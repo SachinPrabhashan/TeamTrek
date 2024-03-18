@@ -39,12 +39,26 @@
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.semanticui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.2/semantic.min.js"></script>
+    <script src="{{ asset('lib/chart/chart.min.js') }}"></script>
+
+    <!-- JavaScript Libraries -->
+    <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('lib/chart/chart.min.js') }}"></script>
+    <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
+    <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('lib/tempusdominus/js/moment.min.js') }}"></script>
+    <script src="{{ asset('lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
+    <script src="{{ asset('lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+
+    <script src="{{ asset('js/smain.js') }}"></script>
+
+
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.2/semantic.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.semanticui.min.css">
-
-
 
 </head>
 
@@ -138,7 +152,7 @@
                                         Instance Handling</a>
                                 @endAdmin
                                 <a href="{{ route('scTaskMonitor') }}"
-                                    class="dropdown-item {{ request()->is('support-contract/sc-task-monitor', 'support-contract/sc-task-monitor/sub-task-handle' , 'support-contract/sc-all-task-monitor') ? ' active' : '' }}">SC
+                                    class="dropdown-item {{ request()->is('support-contract/sc-task-monitor', 'support-contract/sc-task-monitor/sub-task-handle', 'support-contract/sc-all-task-monitor') ? ' active' : '' }}">SC
                                     Task Monitor</a>
                                 @Admin
                                     <a href="#" class="dropdown-item">SC Reports</a>

@@ -237,51 +237,7 @@
         </form>
     </div>
 
-    {{-- <script>
-        $(document).ready(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
-            $('#openProfileEditModal').on('click', function() {
-                $('#profileeditmodal').modal('show');
-            });
-
-            $('#saveProfileEdit').on('click', function() {
-                //get input field data
-                var newName = $('#name').val();
-                var newEmail = $('#email').val();
-                var newPhone = $('#phone').val();
-                var newDob = $('#dob').val();
-                var newAddress = $('#address').val();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/myprofile/save-profile-details',
-                    data: {
-                        name: newName,
-                        email: newEmail,
-                        phone: newPhone,
-                        dob: newDob,
-                        address: newAddress
-                    },
-                    success: function(response) {
-                        // Display a success message or handle as needed
-                        console.log(response.message);
-                        // Close the modal
-                        $('#profileeditmodal').modal('hide');
-                    },
-                    error: function(xhr, status, error) {
-                        var errors = xhr.responseJSON.errors;
-                        // Handle validation errors, e.g., display them to the user
-                        console.log(errors);
-                    }
-                });
-            });
-        });
-    </script> --}}
 
     <script>
         $(document).ready(function() {
