@@ -314,6 +314,8 @@ class TaskController extends Controller
         return response()->json(['success' => true]);
     }*/
 
+
+
     public function createSubTask(Request $request)
     {
         $validatedData = $request->validate([
@@ -357,70 +359,33 @@ class TaskController extends Controller
         $remainingDevHours = $supportContractInstance->dev_hours - $totalDevHoursSpent;
         $remainingEngHours = $supportContractInstance->eng_hours - $totalEngHoursSpent;
 
-        // Check if any remaining hours are zero or less
-        if ($remainingDevHours <= 0 || $remainingEngHours <= 0) {
-            // Check if dev_hours becomes zero
-            if ($remainingDevHours <= 0) {
-                // Save dev_hours to extra_chargers table
-                $extraChargers = new ExtraCharger();
-                $extraChargers->task_id = $taskId;
-                $extraChargers->sub_task_id = $subTask->id;
-                $extraChargers->charging_dev_hours = $task->dev_hours;
-                $extraChargers->charging_eng_hours = 0;
-                $extraChargers->save();
+        // Check if any of the remaining hours are zero or less
+        $chargingDevHours = $remainingDevHours <= 0 ? abs($remainingDevHours) : 0;
+        $chargingEngHours = $remainingEngHours <= 0 ? abs($remainingEngHours) : 0;
 
-                // Set dev_hours to 0 in remaining hours table
-                $remainingDevHours = 0;
+        // Ensure remaining hours are not negative
+        $remainingDevHours = max(0, $remainingDevHours);
+        $remainingEngHours = max(0, $remainingEngHours);
 
-                // Save the remaining eng_hours in remaining_hours table
-                $remainingHours = new RemainingHour();
-                $remainingHours->task_id = $taskId;
-                $remainingHours->sub_task_id = $subTask->id;
-                $remainingHours->rem_dev_hours = 0;
-                $remainingHours->rem_eng_hours = $remainingEngHours;
-                $remainingHours->save();
-            }
-
-            // Check if eng_hours becomes zero
-            if ($remainingEngHours <= 0) {
-                // Save eng_hours to extra_chargers table
-                $extraChargers = new ExtraCharger();
-                $extraChargers->task_id = $taskId;
-                $extraChargers->sub_task_id = $subTask->id;
-                $extraChargers->charging_dev_hours = 0;
-                $extraChargers->charging_eng_hours = $task->eng_hours;
-                $extraChargers->save();
-
-                // Set eng_hours to 0 in remaining hours table
-                $remainingEngHours = 0;
-
-                // Save the remaining dev_hours in remaining_hours table
-                $remainingHours = new RemainingHour();
-                $remainingHours->task_id = $taskId;
-                $remainingHours->sub_task_id = $subTask->id;
-                $remainingHours->rem_dev_hours = $remainingDevHours;
-                $remainingHours->rem_eng_hours = $remainingEngHours;
-                $remainingHours->save();
-            }
-        }
+        // Save the charging hours in the extra_chargers table
+        $extraChargers = new ExtraCharger();
+        $extraChargers->task_id = $taskId;
+        $extraChargers->charging_dev_hours = $chargingDevHours;
+        $extraChargers->charging_eng_hours = $chargingEngHours;
+        $extraChargers->save();
 
         // Save the remaining hours in the remaining_hours table
-        if ($remainingDevHours > 0 || $remainingEngHours > 0) {
-            $remainingHours = new RemainingHour();
-            $remainingHours->task_id = $taskId;
-            $remainingHours->sub_task_id = $subTask->id;
-            $remainingHours->rem_dev_hours = $remainingDevHours;
-            $remainingHours->rem_eng_hours = $remainingEngHours;
-            $remainingHours->save();
-        }
+        $remainingHours = new RemainingHour();
+        $remainingHours->task_id = $taskId;
+        $remainingHours->sub_task_id = $subTask->id;
+        $remainingHours->rem_dev_hours = $remainingDevHours;
+        $remainingHours->rem_eng_hours = $remainingEngHours;
+        $remainingHours->save();
 
         Session::flash('success', 'SubTask created successfully!');
 
-
         return response()->json(['success' => true]);
     }
-
-
 
 
     /*public function finishTask(Request $request)
@@ -529,65 +494,30 @@ class TaskController extends Controller
         $remainingDevHours = $supportContractInstance->dev_hours - $totalDevHoursSpent;
         $remainingEngHours = $supportContractInstance->eng_hours - $totalEngHoursSpent;
 
-        // Check if any remaining hours are zero or less
-        if ($remainingDevHours <= 0 || $remainingEngHours <= 0) {
-            // Check if dev_hours becomes zero
-            if ($remainingDevHours <= 0) {
-                // Save dev_hours to extra_chargers table
-                $extraChargers = new ExtraCharger();
-                $extraChargers->task_id = $taskId;
-                //$extraChargers->sub_task_id = $subTask->id;
-                $extraChargers->charging_dev_hours = $task->dev_hours;
-                $extraChargers->charging_eng_hours = 0;
-                $extraChargers->save();
+        // Check if any of the remaining hours are zero or less
+        $chargingDevHours = $remainingDevHours <= 0 ? abs($remainingDevHours) : 0;
+        $chargingEngHours = $remainingEngHours <= 0 ? abs($remainingEngHours) : 0;
 
-                // Set dev_hours to 0 in remaining hours table
-                $remainingDevHours = 0;
+        // Ensure remaining hours are not negative
+        $remainingDevHours = max(0, $remainingDevHours);
+        $remainingEngHours = max(0, $remainingEngHours);
 
-                // Save the remaining eng_hours in remaining_hours table
-                $remainingHours = new RemainingHour();
-                $remainingHours->task_id = $taskId;
-                //$remainingHours->sub_task_id = $subTask->id;
-                $remainingHours->rem_dev_hours = 0;
-                $remainingHours->rem_eng_hours = $remainingEngHours;
-                $remainingHours->save();
-            }
-
-            // Check if eng_hours becomes zero
-            if ($remainingEngHours <= 0) {
-                // Save eng_hours to extra_chargers table
-                $extraChargers = new ExtraCharger();
-                $extraChargers->task_id = $taskId;
-                //$extraChargers->sub_task_id = $subTask->id;
-                $extraChargers->charging_dev_hours = 0;
-                $extraChargers->charging_eng_hours = $task->eng_hours;
-                $extraChargers->save();
-
-                // Set eng_hours to 0 in remaining hours table
-                $remainingEngHours = 0;
-
-                // Save the remaining dev_hours in remaining_hours table
-                $remainingHours = new RemainingHour();
-                $remainingHours->task_id = $taskId;
-                //$remainingHours->sub_task_id = $subTask->id;
-                $remainingHours->rem_dev_hours = $remainingDevHours;
-                $remainingHours->rem_eng_hours = $remainingEngHours;
-                $remainingHours->save();
-            }
-        }
+        // Save the charging hours in the extra_chargers table
+        $extraChargers = new ExtraCharger();
+        $extraChargers->task_id = $taskId;
+        $extraChargers->charging_dev_hours = $chargingDevHours;
+        $extraChargers->charging_eng_hours = $chargingEngHours;
+        $extraChargers->save();
 
         // Save the remaining hours in the remaining_hours table
-        if ($remainingDevHours > 0 || $remainingEngHours > 0) {
-            $remainingHours = new RemainingHour();
-            $remainingHours->task_id = $taskId;
-            //$remainingHours->sub_task_id = $subTask->id;
-            $remainingHours->rem_dev_hours = $remainingDevHours;
-            $remainingHours->rem_eng_hours = $remainingEngHours;
-            $remainingHours->save();
-        }
+        $remainingHours = new RemainingHour();
+        $remainingHours->task_id = $taskId;
+        //$remainingHours->sub_task_id = $subTask->id;
+        $remainingHours->rem_dev_hours = $remainingDevHours;
+        $remainingHours->rem_eng_hours = $remainingEngHours;
+        $remainingHours->save();
 
-
-            Session::flash('success', 'Task finished successfully!');
+        Session::flash('success', 'SubTask created successfully!');
 
             return response()->json(['success' => true]);
         }
