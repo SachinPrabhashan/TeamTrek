@@ -13,6 +13,7 @@ use App\Http\Controllers\RootPermissionController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\SupportContractController;
 use App\Http\Controllers\SupportContractInstanceController;
+use App\Http\Controllers\ScReportsViewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,12 +107,14 @@ Route::get('/emp-for-tasks', [TaskController::class,'getUEmpForTasks']);
 Route::post('/grant-access-tasks', [TaskController::class, 'grantAccess'])->name('grant.access');
 Route::post('/revoke-access-tasks', [TaskController::class,'revokeAccess'])->name('revoke.access');
 Route::get('/get-task-details/{taskId}', [TaskController::class, 'getTaskDetailsWithEmp']);
-
     //Sub Task
-
 Route::post('/create-sub-task',  [TaskController::class, 'createSubTask'])->name('create.subtask');
 Route::post('/finish-task', [TaskController::class, 'finishTask'])->name('finish.task');
 //Route::get('/sub-task-handle', [TaskController::class, 'subtaskindex'])->name('scsubtaskhandle');
+
+    //SC Reports and Views
+Route::get('/support-contract/view', [ScReportsViewController::class, 'ScView'])->name('scView');
+Route::get('/getSupportContract-ChartData', [ScReportsViewController::class,'getSupportContractChartData']);
 
 
 //All Users
