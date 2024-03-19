@@ -168,10 +168,15 @@
                         <a href="#"
                             class="nav-link dropdown-toggle   {{ request()->is('performance/*') ? ' active' : '' }}"
                             data-bs-toggle="dropdown"><i class="fa-solid fa-chart-simple me-2"></i>Performance</a>
-                        <div class="dropdown-menu bg-transparent border-0">
+                        <div class="dropdown-menu  {{ request()->is('performance/*') ? ' show' : '' }} bg-transparent border-0">
                             <a href="#" class="dropdown-item">SC Analysis View</a>
                             @AdminOrEmployee
-                                <a href="#" class="dropdown-item">Employee Performance</a>
+                                @Admin
+                                <a href="{{ route('employee.performanceemployee') }}" class="dropdown-item  {{ request()->is('performance/employee-performance') ? ' active' : '' }}">Employee Performance</a>
+                                @endAdmin
+                                @Employee
+                                <a href="{{ route('employee.performanceemployee') }}" class="dropdown-item  {{ request()->is('performance/employee-performance') ? ' active' : '' }}">My Performance</a>
+                                @endEmployee
                                 <a href="#" class="dropdown-item">Financial Health</a>
                                 <a href="#" class="dropdown-item">Resource Utilization</a>
                             @endAdminOrEmployee

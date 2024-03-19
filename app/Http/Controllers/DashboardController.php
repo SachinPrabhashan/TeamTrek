@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
+use App\Models\User;
 use App\Models\Dashboard;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\Access\AuthorizationException;
 
 
 class DashboardController extends Controller
@@ -25,8 +27,16 @@ class DashboardController extends Controller
         $todotasks = DB::table('tasks')
         ->where('isCompleted', 0)
          ->get();
-         
-        return view('dashboard', compact('todotasks'));
+
+         $individualTasks = DB::table('task_accesses')
+         ->select('user_id', DB::raw('count(*) as task_count'))
+         ->where('user_id', 5) // Replace $userId with the actual user ID you want to filter by
+         ->groupBy('user_id')
+         ->get()
+         ->toArray();
+
+
+        return view('dashboard', compact('todotasks', 'individualTasks'));
     }
 
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleViewController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeePerformanceController;
 use App\Http\Controllers\RootPermissionController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\SupportContractController;
@@ -123,3 +124,6 @@ Route::post('/myprofile/password-change', [ProfileController::class, 'resetPassw
 Route::post('/myprofile/save-profile-details', [ProfileController::class, 'editProfile'])->name('saveeditprofile');
 Route::post('/myprofile/password-change', [ProfileController::class, 'resetPassword'])->name('updatepassword');
 //Route::post('/myprofile/save-profile-details', [ProfileController::class, 'editProfile']);
+
+//performace Employee
+Route::get('/performance/employee-performance', [EmployeePerformanceController::class, 'index'])->name('employee.performanceemployee');
