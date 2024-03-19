@@ -171,12 +171,9 @@
                         <div class="dropdown-menu  {{ request()->is('performance/*') ? ' show' : '' }} bg-transparent border-0">
                             <a href="#" class="dropdown-item">SC Analysis View</a>
                             @AdminOrEmployee
-                                @Admin
+
                                 <a href="{{ route('employee.performanceemployee') }}" class="dropdown-item  {{ request()->is('performance/employee-performance') ? ' active' : '' }}">Employee Performance</a>
-                                @endAdmin
-                                @Employee
-                                <a href="{{ route('employee.performanceemployee') }}" class="dropdown-item  {{ request()->is('performance/employee-performance') ? ' active' : '' }}">My Performance</a>
-                                @endEmployee
+
                                 <a href="#" class="dropdown-item">Financial Health</a>
                                 <a href="#" class="dropdown-item">Resource Utilization</a>
                             @endAdminOrEmployee
