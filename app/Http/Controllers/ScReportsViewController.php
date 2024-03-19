@@ -13,6 +13,7 @@ use App\Models\SupportContractInstance;
 use Illuminate\Support\Facades\Session;
 use App\Models\SubTask;
 use App\Models\RemainingHour;
+use App\Models\SupportPayment;
 use App\Models\ExtraCharger;
 use App\Models\ScView;
 use Illuminate\Support\Facades\Auth;
@@ -37,110 +38,31 @@ class ScReportsViewController extends Controller
         $supportContractId = $request->input('supportContractId');
         $year = $request->input('year');
 
-        // Fetch support contract instance based on support contract ID and year
         $supportContractInstance = SupportContractInstance::where('support_contract_id', $supportContractId)
             ->where('year', $year)
             ->first();
 
         if (!$supportContractInstance) {
-            return response()->json(['error' => 'Support contract instance not found'], 404);
+            // Display SweetAlert if no support contract instance is found
+            return response()->json(['error' => 'Support contract instance not found'], 404)
+                ->header('Content-Type', 'application/json')
+                ->header('X-Message-Type', 'error')
+                ->header('X-Message', 'No support contract instance found for the selected values');
         }
 
-        // Fetch dev_hours and eng_hours from the support contract instance
         $devHours = $supportContractInstance->dev_hours;
         $engHours = $supportContractInstance->eng_hours;
 
-        // Fetch task associated with the support contract instance
         $task = Task::where('support_contract_instance_id', $supportContractInstance->id)->first();
 
-        if (!$task) {
-            return response()->json(['error' => 'Task not found for support contract instance'], 404);
+        // If task is null, set remainingHours and extraChargers to null
+        $remainingHours = $extraChargers = null;
+
+        if ($task) {
+            $remainingHours = RemainingHour::where('task_id', $task->id)->latest()->first();
+
+            $extraChargers = ExtraCharger::where('task_id', $task->id)->latest()->first();
         }
-
-        // Fetch remaining hours from the remaining_hours table based on task ID
-        $remainingHours = RemainingHour::where('task_id', $task->id)->latest()->first();
-
-        // Fetch charging hours from the extra_chargers table based on task ID
-        $extraChargers = ExtraCharger::where('task_id', $task->id)->latest()->first();
-
-        Log::info('Checking for extra chargers...');
-
-        if (!$extraChargers) {
-            // You can return an empty array or handle the absence of extra chargers as needed
-            // For now, let's return an empty array for charging dev_hours and eng_hours
-            $chargingDevHours = 0;
-            $chargingEngHours = 0;
-        } else {
-            Log::info('Extra chargers found for task ID: ' . $task->id);
-            // Extract charging dev_hours and eng_hours from the extra chargers
-            $chargingDevHours = $extraChargers->charging_dev_hours;
-            $chargingEngHours = $extraChargers->charging_eng_hours;
-            Log::info('Charging Dev Hours: ' . $chargingDevHours);
-            Log::info('Charging Eng Hours: ' . $chargingEngHours);
-
-        }
-
-        // Prepare the chart data
-        $chartData = [
-            'labels' => ['Dev Hours', 'Eng Hours', 'Remaining Dev Hours', 'Remaining Eng Hours', 'Charging Dev Hours', 'Charging Eng Hours'],
-            'datasets' => [
-                [
-                    'label' => 'Support Contract Data',
-                    'data' => [$devHours, $engHours, $remainingHours->rem_dev_hours, $remainingHours->rem_eng_hours, $chargingDevHours, $chargingEngHours],
-                    'backgroundColor' => [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    'borderColor' => [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    'borderWidth' => 1
-                ]
-            ]
-        ];
-
-        return response()->json(['chartData' => $chartData]);
-    }*/
-
-    /*public function getSupportContractChartData(Request $request)
-    {
-        $supportContractId = $request->input('supportContractId');
-        $year = $request->input('year');
-
-        // Fetch support contract instance based on support contract ID and year
-        $supportContractInstance = SupportContractInstance::where('support_contract_id', $supportContractId)
-            ->where('year', $year)
-            ->first();
-
-        if (!$supportContractInstance) {
-            return response()->json(['error' => 'Support contract instance not found'], 404);
-        }
-
-        // Fetch dev_hours and eng_hours from the support contract instance
-        $devHours = $supportContractInstance->dev_hours;
-        $engHours = $supportContractInstance->eng_hours;
-
-        // Fetch task associated with the support contract instance
-        $task = Task::where('support_contract_instance_id', $supportContractInstance->id)->first();
-
-        if (!$task) {
-            return response()->json(['error' => 'Task not found for support contract instance'], 404);
-        }
-
-        // Fetch remaining hours from the remaining_hours table based on task ID
-        $remainingHours = RemainingHour::where('task_id', $task->id)->latest()->first();
-
-        // Fetch charging hours from the extra_chargers table based on task ID
-        $extraChargers = ExtraCharger::where('task_id', $task->id)->latest()->first();
 
         // Prepare the chart data
         $chartData = [
@@ -148,14 +70,22 @@ class ScReportsViewController extends Controller
             'datasets' => [
                 [
                     'label' => 'Dev Hours',
-                    'data' => [$devHours, $remainingHours->rem_dev_hours, $extraChargers->charging_dev_hours],
+                    'data' => [
+                        $devHours ?? 0,//converting null values to 0
+                        optional($remainingHours)->rem_dev_hours ?? 0,
+                        optional($extraChargers)->charging_dev_hours ?? 0
+                    ],
                     'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
                     'borderColor' => 'rgba(255, 99, 132, 1)',
                     'borderWidth' => 1
                 ],
                 [
                     'label' => 'Eng Hours',
-                    'data' => [$engHours, $remainingHours->rem_eng_hours, $extraChargers->charging_eng_hours],
+                    'data' => [
+                        $engHours ?? 0,//converting null values to 0
+                        optional($remainingHours)->rem_eng_hours ?? 0,
+                        optional($extraChargers)->charging_eng_hours ?? 0
+                    ],
                     'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
                     'borderColor' => 'rgba(54, 162, 235, 1)',
                     'borderWidth' => 1
@@ -165,70 +95,84 @@ class ScReportsViewController extends Controller
 
         return response()->json(['chartData' => $chartData]);
     }*/
-
     public function getSupportContractChartData(Request $request)
-{
-    $supportContractId = $request->input('supportContractId');
-    $year = $request->input('year');
+    {
+        $supportContractId = $request->input('supportContractId');
+        $year = $request->input('year');
 
-    // Fetch support contract instance based on support contract ID and year
-    $supportContractInstance = SupportContractInstance::where('support_contract_id', $supportContractId)
-        ->where('year', $year)
-        ->first();
+        $supportContractInstance = SupportContractInstance::where('support_contract_id', $supportContractId)
+            ->where('year', $year)
+            ->first();
 
-    if (!$supportContractInstance) {
-        return response()->json(['error' => 'Support contract instance not found'], 404);
-    }
+        if (!$supportContractInstance) {
+            // Display SweetAlert if no support contract instance is found
+            return response()->json(['error' => 'Support contract instance not found'], 404)
+                ->header('Content-Type', 'application/json')
+                ->header('X-Message-Type', 'error')
+                ->header('X-Message', 'No support contract instance found for the selected values');
+        }
 
-    // Fetch dev_hours and eng_hours from the support contract instance
-    $devHours = $supportContractInstance->dev_hours;
-    $engHours = $supportContractInstance->eng_hours;
+        // Fetch dev_rate_per_hour and eng_rate_per_hour from SupportPayment
+        $supportPayment = SupportPayment::where('support_contract_instance_id', $supportContractInstance->id)->first();
+        $devRatePerHour = $supportPayment->dev_rate_per_hour ?? 0;
+        $engRatePerHour = $supportPayment->eng_rate_per_hour ?? 0;
 
-    // Fetch task associated with the support contract instance
-    $task = Task::where('support_contract_instance_id', $supportContractInstance->id)->first();
+        $devHours = $supportContractInstance->dev_hours;
+        $engHours = $supportContractInstance->eng_hours;
 
-    /*if (!$task) {
-        return response()->json(['error' => 'Task not found for support contract instance'], 404);
-    }*/
+        $task = Task::where('support_contract_instance_id', $supportContractInstance->id)->first();
 
-    // Fetch latest remaining hours from the remaining_hours table based on task ID
-    $remainingHours = RemainingHour::where('task_id', $task->id)->latest()->first();
+        // If task is null, set remainingHours and extraChargers to null
+        $remainingHours = $extraChargers = null;
 
-    // Fetch latest charging hours from the extra_chargers table based on task ID
-    $extraChargers = ExtraCharger::where('task_id', $task->id)->latest()->first();
+        if ($task) {
+            $remainingHours = RemainingHour::where('task_id', $task->id)->latest()->first();
+            $extraChargers = ExtraCharger::where('task_id', $task->id)->latest()->first();
+        }
 
-    // Prepare the chart data
-    $chartData = [
-        'labels' => ['Support Contract Hours', 'Remaining Hours', 'Charging Hours'],
-        'datasets' => [
-            [
-                'label' => 'Dev Hours',
-                'data' => [
-                    $devHours ?? 0,
-                    optional($remainingHours)->rem_dev_hours ?? 0,
-                    optional($extraChargers)->charging_dev_hours ?? 0
+        // Calculate dev_chargers and eng_chargers
+        $devChargers = ($extraChargers->charging_dev_hours ?? 0) * $devRatePerHour;
+        $engChargers = ($extraChargers->charging_eng_hours ?? 0) * $engRatePerHour;
+
+        // Prepare the chart data
+        $chartData = [
+            'labels' => ['Support Contract Hours', 'Remaining Hours', 'Charging Hours'],
+            'datasets' => [
+                [
+                    'label' => 'Dev Hours',
+                    'data' => [
+                        $devHours ?? 0,
+                        optional($remainingHours)->rem_dev_hours ?? 0,
+                        optional($extraChargers)->charging_dev_hours ?? 0
+                    ],
+                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
+                    'borderColor' => 'rgba(255, 99, 132, 1)',
+                    'borderWidth' => 1
                 ],
-                'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
-                'borderColor' => 'rgba(255, 99, 132, 1)',
-                'borderWidth' => 1
-            ],
-            [
-                'label' => 'Eng Hours',
-                'data' => [
-                    $engHours ?? 0,
-                    optional($remainingHours)->rem_eng_hours ?? 0,
-                    optional($extraChargers)->charging_eng_hours ?? 0
-                ],
-                'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
-                'borderColor' => 'rgba(54, 162, 235, 1)',
-                'borderWidth' => 1
+                [
+                    'label' => 'Eng Hours',
+                    'data' => [
+                        $engHours ?? 0,
+                        optional($remainingHours)->rem_eng_hours ?? 0,
+                        optional($extraChargers)->charging_eng_hours ?? 0
+                    ],
+                    'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
+                    'borderColor' => 'rgba(54, 162, 235, 1)',
+                    'borderWidth' => 1
+                ]
             ]
-        ]
-    ];
+        ];
 
-    return response()->json(['chartData' => $chartData]);
-}
+        // Pass additional data to the frontend
+        $additionalData = [
+            'dev_rate_per_hour' => $devRatePerHour,
+            'eng_rate_per_hour' => $engRatePerHour,
+            'dev_chargers' => $devChargers,
+            'eng_chargers' => $engChargers
+        ];
 
+        return response()->json(['chartData' => $chartData, 'additionalData' => $additionalData]);
+    }
 
 
 }
