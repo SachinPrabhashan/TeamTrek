@@ -1,134 +1,338 @@
 @extends('layouts.navitems')
 @section('content')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
-    <!--script>
-        $(document).ready(function() {
-            $('#taskViewSearchBtn').click(function() {
-                var supportContractId = $('#selectSupportContract').val();
-                var year = $('#selectSupportContractYear').val();
+<style>
+    .warning {
+        border-top: 5px solid #dc3545; /* Red color for the top accent border */
+    }
 
-                $.ajax({
-                    url: '/getSupportContract-ChartData',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        supportContractId: supportContractId,
-                        year: year
+    .warning .invoice-charge {
+        color: #dc3545; /* Red color for the charge amount */
+        font-weight: bold;
+        position: relative; /* Position relative for absolute positioning of ::after pseudo-element */
+    }
+
+    .warning .invoice-charge::after {
+        content: " (You are getting charged for this)"; /* Message after the charge */
+        color: #dc3545; /* Red color for the message */
+        font-weight: bold;
+        position: absolute; /* Position absolute to place the message relative to its parent */
+        bottom: -1.2em; /* Adjust vertical position as needed */
+        left: 0; /* Align with the start of the charge text */
+    }
+    .chart {
+        display: inline-block;
+        width: 45%; /* Adjust the width as needed */
+        height: auto; /* This will make the height adjust proportionally based on width */
+        margin-right: 5px; /* Add some margin between the charts */
+    }
+    .card {
+        display: inline-block;
+        width: 45%; /* Adjust the width as needed */
+        margin-right: 10px;
+        /* Add some space between the cards */
+    }
+
+    .chart {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+</style>
+
+<script>
+/*$(document).ready(function() {
+    $('#taskViewSearchBtn').click(function() {
+        var supportContractId = $('#selectSupportContract').val();
+        var year = $('#selectSupportContractYear').val();
+
+        $.ajax({
+            url: '/getSupportContract-ChartData',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                supportContractId: supportContractId,
+                year: year
+            },
+            success: function(response) {
+                var chartData = response.chartData;
+                var additionalData = response.additionalData;
+                displayChart(chartData);
+                $('#loadingAnimation').hide();
+                $('#developerHourChargers').text(chartData.datasets[0].data[2]);
+                $('#engineerHourChargers').text(chartData.datasets[1].data[2]);
+                $('#devRatePerHour').text(additionalData.dev_rate_per_hour);
+                $('#engRatePerHour').text(additionalData.eng_rate_per_hour);
+                $('#devChargers').text(additionalData.dev_chargers);
+                $('#engChargers').text(additionalData.eng_chargers);
+                $('#chargersInfo').show();
+
+                // Check if devChargers or engChargers are not equal to 0 and apply warning
+                if (additionalData.dev_chargers !== 0) {
+                    $('#devCard').addClass('warning');
+                } else {
+                    $('#devCard').removeClass('warning');
+                }
+
+                if (additionalData.eng_chargers !== 0) {
+                    $('#engCard').addClass('warning');
+                } else {
+                    $('#engCard').removeClass('warning');
+                }
+
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                if (xhr.status === 404) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Support Contract Instance Not Found',
+                        text: 'There is no support contract instance for the selected values.',
+                        confirmButtonText: 'OK'
+                    });
+
+                    clearChart();
+                    $('#loadingAnimation').show();
+                    $('#chargersInfo').hide();
+                }
+            },
+        });
+    });
+
+    // Initialize myChart variable outside the function
+    var myChart = null;
+
+    function displayChart(chartData) {
+        var ctx = document.getElementById('myChart');
+
+        // If a chart instance exists, destroy it before rendering the new one
+        if (myChart !== null) {
+            myChart.destroy();
+        }
+        // Render the new chart
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartData.labels,
+                datasets: chartData.datasets
+            },
+            options: {
+                scales: {
+                    x: {
+                        stacked: false
                     },
-                    success: function(response) {
-                        var chartData = response.chartData;
-                        displayChart(chartData);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            });
-
-            function displayChart(chartData) {
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: chartData.labels,
-                    datasets: chartData.datasets
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+                    y: {
+                        stacked: false,
+                        beginAtZero: true
                     }
                 }
-            });
-        }
-
-
-        });
-    </script-->
-    
-    <script>
-        $(document).ready(function() {
-            $('#taskViewSearchBtn').click(function() {
-                var supportContractId = $('#selectSupportContract').val();
-                var year = $('#selectSupportContractYear').val();
-
-                $.ajax({
-                    url: '/getSupportContract-ChartData',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        supportContractId: supportContractId,
-                        year: year
-                    },
-                    success: function(response) {
-                        var chartData = response.chartData;
-                        displayChart(chartData);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            });
-
-            function displayChart(chartData) {
-                var ctx = document.getElementById('myChart').getContext('2d');
-                var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: chartData.labels,
-                        datasets: chartData.datasets
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                stacked: false // Not stacking on x-axis
-                            },
-                            y: {
-                                stacked: false, // Not stacking on y-axis
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
             }
         });
-    </script>
+    }
 
-    <div class="container col-12">
-        <div class="bg-light rounded h-100 p-4">
-            <h1>Support Hours View</h1>
+    function clearChart() {
+        if (myChart !== null) {
+            myChart.destroy();
+        }
+    }
+});*/
 
-            <div class="rolebtn bg-light rounded h-100 p-4">
-                <label for="">Support Contract</label>
+$(document).ready(function() {
+    $('#taskViewSearchBtn').click(function() {
+        var supportContractId = $('#selectSupportContract').val();
+        var year = $('#selectSupportContractYear').val();
+
+        $.ajax({
+            url: '/getSupportContract-ChartData',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                supportContractId: supportContractId,
+                year: year
+            },
+            success: function(response) {
+                var chartData = response.chartData;
+                var additionalData = response.additionalData;
+                displayChart(chartData);
+                $('#loadingAnimation').hide();
+                $('#developerHourChargers').text(chartData.datasets[0].data[2]);
+                $('#engineerHourChargers').text(chartData.datasets[1].data[2]);
+                $('#devRatePerHour').text(additionalData.dev_rate_per_hour);
+                $('#engRatePerHour').text(additionalData.eng_rate_per_hour);
+                $('#devChargers').text(additionalData.dev_chargers);
+                $('#engChargers').text(additionalData.eng_chargers);
+                $('#chargersInfo').show();
+                $('.Graphs').show();
+
+                // Check if devChargers or engChargers are not equal to 0 and apply warning
+                if (additionalData.dev_chargers !== 0) {
+                    $('#devCard').addClass('warning');
+                } else {
+                    $('#devCard').removeClass('warning');
+                }
+
+                if (additionalData.eng_chargers !== 0) {
+                    $('#engCard').addClass('warning');
+                } else {
+                    $('#engCard').removeClass('warning');
+                }
+
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                if (xhr.status === 404) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Support Contract Instance Not Found',
+                        text: 'There is no support contract instance for the selected values.',
+                        confirmButtonText: 'OK'
+                    });
+
+                    clearChart();
+                    $('#loadingAnimation').show();
+                    $('#chargersInfo').hide();
+                    $('.Graphs').hide();
+                }
+            },
+        });
+    });
+
+    // Initialize myChart variables for two pie charts
+    var devChart = null;
+    var engChart = null;
+
+    function displayChart(chartData) {
+        var ctxDev = document.getElementById('devChart');
+        var ctxEng = document.getElementById('engChart');
+
+        // If chart instances exist, destroy them before rendering the new ones
+        if (devChart !== null) {
+            devChart.destroy();
+        }
+        if (engChart !== null) {
+            engChart.destroy();
+        }
+
+        // Render the new developer hours chart
+        devChart = new Chart(ctxDev, {
+            type: 'pie',
+            data: {
+                labels: ['Dev Hours', 'Remaining Dev Hours'],
+                datasets: [{
+                    label: 'Developer Hours',
+                    data: [chartData.datasets[0].data[0], chartData.datasets[0].data[1]],
+                    backgroundColor: ['#007bff', '#28a745'], // Blue for Dev Hours, Green for Remaining Dev Hours
+                }]
+            }
+        });
+
+        // Render the new engineer hours chart
+        engChart = new Chart(ctxEng, {
+            type: 'pie',
+            data: {
+                labels: ['Eng Hours', 'Remaining Eng Hours'],
+                datasets: [{
+                    label: 'Engineer Hours',
+                    data: [chartData.datasets[1].data[0], chartData.datasets[1].data[1]],
+                    backgroundColor: ['#ff5733', '#ffc300'], // Red for Eng Hours, Yellow for Remaining Eng Hours
+                }]
+            }
+        });
+    }
+
+    function clearChart() {
+        if (devChart !== null) {
+            devChart.destroy();
+        }
+        if (engChart !== null) {
+            engChart.destroy();
+        }
+    }
+});
+
+
+</script>
+<div class="container col-12">
+    <div class="bg-light rounded h-100 p-4">
+        <h1>Support Hours View</h1>
+        <div class="rolebtn bg-light rounded h-100 p-4">
+            <label for="">Support Contract</label>
                 <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContract">
                     @foreach ($supportcontracts as $contract)
                         <option value="{{ $contract->id }}">{{ $contract->name }}</option>
                     @endforeach
                 </select>
-                <label for="">Year</label>
+            <label for="">Year</label>
                 <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContractYear">
                     @foreach ($scInstances->unique('year') as $instance)
                         <option value="{{ $instance->year }}">{{ $instance->year }}</option>
                     @endforeach
                 </select>
-                <button class="btn btn-primary m-2" id="taskViewSearchBtn" data-toggle="tooltip" title="Search SC View">Search
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+            <button class="btn btn-primary m-2" id="taskViewSearchBtn" data-toggle="tooltip" title="Search SC View">Search
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+
+        <!-- Loading animation -->
+        <div id="loadingAnimation" class="mt-4 text-center">
+            <img src="{{ asset('img/Graph01Animation.gif') }}" alt="Loading Animation" style="width: 150px; height: 150px;">
+        </div>
+
+        <!-- Displaying Graphs -->
+
+        <div class="Graphs"style="display: none;">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="devChart"></canvas>
+                </div>
             </div>
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="engChart"></canvas>
+                </div>
+            </div>
+        </div>
 
 
-            <div class="Graphs">
-                <canvas id="myChart"></canvas>
-            </div>
+
+        <!-- Tiles for developer and engineer hour chargers -->
+        <div id="chargersInfo" class="row mt-4" style="display: none;">
+
+                <div class="card" id="devCard">
+                    <div class="card-body">
+                        <h5 class="card-title">Invoice for Developer Hours</h5>
+                        <div class="invoice-details">
+                            <p>Charging Dev Hours: <span id="developerHourChargers"></span></p>
+                            <p>Dev Rate Per Hour: Rs: <span id="devRatePerHour"></span></p>
+                            <p class="invoice-charge">Charge For Dev Hours: Rs: <span id="devChargers"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card warning" id="engCard">
+                    <div class="card-body">
+                        <h5 class="card-title">Invoice for Engineer Hours</h5>
+                        <div class="invoice-details">
+                            <p>Charging Eng Hours: <span id="engineerHourChargers"></span></p>
+                            <p>Eng Rate Per Hour: Rs: <span id="engRatePerHour"></span></p>
+                            <p class="invoice-charge">Charge For Eng Hours: Rs: <span id="engChargers"></span></p>
+                        </div>
+                    </div>
+                </div>
 
         </div>
+
+
+
+</div>
+
 @endsection
