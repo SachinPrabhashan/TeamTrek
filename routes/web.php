@@ -114,7 +114,7 @@ Route::post('/finish-task', [TaskController::class, 'finishTask'])->name('finish
 //Route::get('/sub-task-handle', [TaskController::class, 'subtaskindex'])->name('scsubtaskhandle');
 
     //SC Reports and Views
-Route::get('/support-contract/view', [ScReportsViewController::class, 'ScView'])->name('scView');
+Route::get('/support-contract/support-contract-view', [ScReportsViewController::class, 'ScView'])->name('scView');
 Route::get('/getSupportContract-ChartData', [ScReportsViewController::class,'getSupportContractChartData']);
 
 

@@ -38,7 +38,7 @@
                     <div class="d-flex">
                         <h3 class="m-2">Tasks Service Level</h3>
                         <div class="p-0 me-1 ms-auto m-2">
-                            <select class="form-control outline-secondary btn-custom rounded-pill" name=""
+                            <select class="btn btn-outline-secondary btn-custom rounded-pill" name=""
                                 id="">
                                 <option value="">Last 7 Days </option>
                                 <option value="">Last 30 Days</option>
@@ -65,7 +65,21 @@
             {{-- task service level widget end --}}
 
             <div class="indworks card col-6 mt-3">
-text
+                <div class="m-3">
+                    <div class="d-flex">
+                        <h3 class="m-2">Support Hours</h3>
+                        <div class="p-0 me-1 ms-auto m-2">
+                            <select class="btn btn-outline-secondary btn-custom rounded-pill" name=""
+                                id="">
+                                <option value="">Last 7 Days </option>
+                                <option value="">Last 30 Days</option>
+                                <option value="">Year</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
         </div>
     </div>

@@ -159,7 +159,9 @@
                                 @endAdmin
                             @endAdminOrEmployee
                             @Client
-                                <a href="{{ route('scView') }}" class="dropdown-item">Support Contract View</a>
+                                <a href="{{ route('scView') }}"
+                                    class="dropdown-item {{ request()->is('support-contract/support-contract-view') ? ' active' : '' }}">Support
+                                    Contract View</a>
                             @endClient
                         </div>
                     </div>
@@ -168,11 +170,13 @@
                         <a href="#"
                             class="nav-link dropdown-toggle   {{ request()->is('performance/*') ? ' active' : '' }}"
                             data-bs-toggle="dropdown"><i class="fa-solid fa-chart-simple me-2"></i>Performance</a>
-                        <div class="dropdown-menu  {{ request()->is('performance/*') ? ' show' : '' }} bg-transparent border-0">
+                        <div
+                            class="dropdown-menu  {{ request()->is('performance/*') ? ' show' : '' }} bg-transparent border-0">
                             <a href="#" class="dropdown-item">SC Analysis View</a>
                             @AdminOrEmployee
-
-                                <a href="{{ route('employee.performanceemployee') }}" class="dropdown-item  {{ request()->is('performance/employee-performance') ? ' active' : '' }}">Employee Performance</a>
+                                <a href="{{ route('employee.performanceemployee') }}"
+                                    class="dropdown-item  {{ request()->is('performance/employee-performance') ? ' active' : '' }}">Employee
+                                    Performance</a>
 
                                 <a href="#" class="dropdown-item">Financial Health</a>
                                 <a href="#" class="dropdown-item">Resource Utilization</a>

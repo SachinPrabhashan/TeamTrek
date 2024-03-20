@@ -119,7 +119,7 @@
                 <div id="supportContractInstanceTable">
                     <div class="rolebtn bg-light rounded h-100 p-4">
                         <!--label for="selectSupportContract" class="form-label">Select Support Contract:</label-->
-                        <select class="btn btn-secondary dropdown-toggle" id="selectSupportContract">
+                        <select class="btn btn-secondary rounded-pill dropdown-toggle" id="selectSupportContract">
                             <!-- Populate dropdown options with existing support contracts -->
                             {{-- <option disabled selected>Select Support Contract</option> --}}
                             @foreach ($supportcontracts as $contract)

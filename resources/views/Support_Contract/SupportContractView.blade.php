@@ -287,13 +287,13 @@ $(document).ready(function() {
         <h1>Support Hours View</h1>
         <div class="rolebtn bg-light rounded h-100 p-4">
             <label for="">Support Contract</label>
-                <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContract">
+                <select class="btn btn-secondary rounded-pill dropdown-toggle m-2" id="selectSupportContract">
                     @foreach ($supportcontracts as $contract)
                         <option value="{{ $contract->id }}">{{ $contract->name }}</option>
                     @endforeach
                 </select>
             <label for="">Year</label>
-                <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContractYear">
+                <select class="btn btn-secondary rounded-pill dropdown-toggle m-2" id="selectSupportContractYear">
                     @foreach ($scInstances->unique('year') as $instance)
                         <option value="{{ $instance->year }}">{{ $instance->year }}</option>
                     @endforeach
@@ -311,12 +311,12 @@ $(document).ready(function() {
         <!-- Displaying Graphs -->
 
         <div class="Graphs"style="display: none;">
-            <div class="card">
+            <div class="card col-6">
                 <div class="card-body">
                     <canvas id="devChart"></canvas>
                 </div>
             </div>
-            <div class="card">
+            <div class="card col-6">
                 <div class="card-body">
                     <canvas id="engChart"></canvas>
                 </div>
@@ -326,9 +326,9 @@ $(document).ready(function() {
 
 
         <!-- Tiles for developer and engineer hour chargers -->
-        <div id="chargersInfo" class="row mt-4" style="display: none;">
+        <div id="chargersInfo" class="row mt-4 col-12" style="display: none;">
 
-                <div class="card" id="devCard">
+                <div class="card col-6 ms-3" id="devCard">
                     <div class="card-body">
                         <h5 class="card-title">Invoice for Developer Hours</h5>
                         <div class="invoice-details">
