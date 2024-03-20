@@ -13,6 +13,7 @@ use App\Models\SupportContractInstance;
 use Illuminate\Support\Facades\Session;
 use App\Models\SubTask;
 use App\Models\RemainingHour;
+use App\Models\SupportPayment;
 use App\Models\ExtraCharger;
 use Illuminate\Support\Facades\Auth;
 
@@ -367,11 +368,20 @@ class TaskController extends Controller
         $remainingDevHours = max(0, $remainingDevHours);
         $remainingEngHours = max(0, $remainingEngHours);
 
+        //Get Support Payment
+        $devHourlyRate = SupportPayment::where('support_contract_instance_id', $supportContractInstanceId)->value('dev_rate_per_hour');
+        $engHourlyRate = SupportPayment::where('support_contract_instance_id', $supportContractInstanceId)->value('eng_rate_per_hour');
+
+        $devExtraChargers=$devHourlyRate*$chargingDevHours;
+        $engExtraChargers=$engHourlyRate*$chargingEngHours;
+
         // Save the charging hours in the extra_chargers table
         $extraChargers = new ExtraCharger();
         $extraChargers->task_id = $taskId;
         $extraChargers->charging_dev_hours = $chargingDevHours;
         $extraChargers->charging_eng_hours = $chargingEngHours;
+        $extraChargers->chargers_for_dev_hours = $devExtraChargers;
+        $extraChargers->chargers_for_eng_hours = $engExtraChargers;
         $extraChargers->save();
 
         // Save the remaining hours in the remaining_hours table
@@ -502,11 +512,21 @@ class TaskController extends Controller
         $remainingDevHours = max(0, $remainingDevHours);
         $remainingEngHours = max(0, $remainingEngHours);
 
+        //Get Support Payment
+        $devHourlyRate = SupportPayment::where('support_contract_instance_id', $supportContractInstanceId)->value('dev_rate_per_hour');
+        $engHourlyRate = SupportPayment::where('support_contract_instance_id', $supportContractInstanceId)->value('eng_rate_per_hour');
+
+
+        $devExtraChargers=$devHourlyRate*$chargingDevHours;
+        $engExtraChargers=$engHourlyRate*$chargingEngHours;
+
         // Save the charging hours in the extra_chargers table
         $extraChargers = new ExtraCharger();
         $extraChargers->task_id = $taskId;
         $extraChargers->charging_dev_hours = $chargingDevHours;
         $extraChargers->charging_eng_hours = $chargingEngHours;
+        $extraChargers->chargers_for_dev_hours = $devExtraChargers;
+        $extraChargers->chargers_for_eng_hours = $engExtraChargers;
         $extraChargers->save();
 
         // Save the remaining hours in the remaining_hours table

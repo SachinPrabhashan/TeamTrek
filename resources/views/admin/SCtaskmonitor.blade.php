@@ -743,13 +743,13 @@
 
             <div class="rolebtn bg-light rounded h-100 p-4">
                 <label for="">Support Contract</label>
-                <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContract">
+                <select class="btn btn-secondary dropdown-toggle rounded-pill m-2" id="selectSupportContract">
                     @foreach ($supportcontracts as $contract)
                         <option value="{{ $contract->id }}">{{ $contract->name }}</option>
                     @endforeach
                 </select>
                 <label for="">Year</label>
-                <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContractYear">
+                <select class="btn btn-secondary dropdown-toggle rounded-pill m-2" id="selectSupportContractYear">
                     @foreach ($scInstances->unique('year') as $instance)
                         <option value="{{ $instance->year }}">{{ $instance->year }}</option>
                     @endforeach
