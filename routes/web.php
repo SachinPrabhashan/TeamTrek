@@ -116,6 +116,7 @@ Route::post('/finish-task', [TaskController::class, 'finishTask'])->name('finish
     //SC Reports and Views
 Route::get('/support-contract/support-contract-view', [ScReportsViewController::class, 'ScView'])->name('scView');
 Route::get('/getSupportContract-ChartData', [ScReportsViewController::class,'getSupportContractChartData']);
+Route::get('/support-contract/Reports', [ScReportsViewController::class, 'ScReportsIndex'])->name('scReports');
 
 
 //All Users
