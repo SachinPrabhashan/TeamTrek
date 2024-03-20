@@ -38,8 +38,7 @@
                     <div class="d-flex">
                         <h3 class="m-2">Tasks Service Level</h3>
                         <div class="p-0 me-1 ms-auto m-2">
-                            <select class="btn btn-outline-secondary btn-custom rounded-pill" name=""
-                                id="">
+                            <select class="btn btn-outline-secondary btn-custom rounded-pill" name="" id="">
                                 <option value="">Last 7 Days </option>
                                 <option value="">Last 30 Days</option>
                                 <option value="">Year</option>
@@ -69,16 +68,42 @@
                     <div class="d-flex">
                         <h3 class="m-2">Support Hours</h3>
                         <div class="p-0 me-1 ms-auto m-2">
-                            <select class="btn btn-outline-secondary btn-custom rounded-pill" name=""
-                                id="">
+                            <select class="btn btn-outline-secondary btn-custom rounded-pill" name="" id="">
                                 <option value="">Last 7 Days </option>
                                 <option value="">Last 30 Days</option>
                                 <option value="">Year</option>
                             </select>
                         </div>
                     </div>
-
-
+                    <div>
+                        <div>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h1>Developer <br>Hours</h1>
+                                    </td>
+                                    <td>
+                                        <h1 class="ms-5">25H</h1>
+                                    </td>
+                                </tr>
+                        </div>
+                        <tr>
+                            <td>
+                                <hr>
+                            </td>
+                        </tr>
+                        <div>
+                            <tr>
+                                <td>
+                                    <h1>Engineer <br>Hours</h1>
+                                </td>
+                                <td>
+                                    <h1 class="ms-5">25H</h1>
+                                </td>
+                            </tr>
+                        </div>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
