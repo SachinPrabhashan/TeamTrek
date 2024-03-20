@@ -11,34 +11,34 @@
 
 <style>
     .warning {
-        border-top: 5px solid #dc3545; /* Red color for the top accent border */
+        border-top: 5px solid #dc3545;
     }
 
     .warning .invoice-charge {
-        color: #dc3545; /* Red color for the charge amount */
+        color: #dc3545;
         font-weight: bold;
-        position: relative; /* Position relative for absolute positioning of ::after pseudo-element */
+        position: relative;
     }
 
     .warning .invoice-charge::after {
-        content: " (You are getting charged for this)"; /* Message after the charge */
-        color: #dc3545; /* Red color for the message */
+        content: " (You are getting charged for this)";
+        color: #dc3545;
         font-weight: bold;
-        position: absolute; /* Position absolute to place the message relative to its parent */
-        bottom: -1.2em; /* Adjust vertical position as needed */
-        left: 0; /* Align with the start of the charge text */
+        position: absolute;
+        bottom: -1.2em;
+        left: 0;
     }
     .chart {
         display: inline-block;
-        width: 45%; /* Adjust the width as needed */
-        height: auto; /* This will make the height adjust proportionally based on width */
-        margin-right: 5px; /* Add some margin between the charts */
+        width: 45%;
+        height: auto;
+        margin-right: 5px;
     }
     .card {
         display: inline-block;
-        width: 45%; /* Adjust the width as needed */
+        width: 45%;
         margin-right: 10px;
-        /* Add some space between the cards */
+
     }
 
     .chart {
@@ -162,9 +162,19 @@ $(document).ready(function() {
                 var chartData = response.chartData;
                 var additionalData = response.additionalData;
                 displayChart(chartData);
+
                 $('#loadingAnimation').hide();
-                $('#developerHourChargers').text(chartData.datasets[0].data[2]);
-                $('#engineerHourChargers').text(chartData.datasets[1].data[2]);
+                if (chartData.datasets[0].data[2] !== null) {
+                    $('#developerHourChargers').text(chartData.datasets[0].data[2]);
+                } else {
+                    $('#developerHourChargers').text('0');
+                }
+                if (chartData.datasets[1].data[2] !== null) {
+                    $('#engineerHourChargers').text(chartData.datasets[1].data[2]);
+                } else {
+                    $('#engineerHourChargers').text('0');
+                }
+
                 $('#devRatePerHour').text(additionalData.dev_rate_per_hour);
                 $('#engRatePerHour').text(additionalData.eng_rate_per_hour);
                 $('#devChargers').text(additionalData.dev_chargers);
@@ -221,15 +231,25 @@ $(document).ready(function() {
             engChart.destroy();
         }
 
+        // Calculate the difference between the two data points for developer hours
+        var SupportdevHours = chartData.datasets[0].data[0];
+        var devHoursRemaining = chartData.datasets[0].data[1];
+        var devHoursDifference = SupportdevHours - devHoursRemaining;
+
+        // Calculate the difference between the two data points for engineer hours
+        var SupportengHours = chartData.datasets[1].data[0];
+        var engHoursRemaining = chartData.datasets[1].data[1];
+        var engHoursDifference = SupportengHours - engHoursRemaining;
+
         // Render the new developer hours chart
         devChart = new Chart(ctxDev, {
             type: 'pie',
             data: {
-                labels: ['Dev Hours', 'Remaining Dev Hours'],
+                labels: [devHoursRemaining !== null ? (devHoursRemaining === SupportdevHours ? 'Dev Hours Used' : 'Remaining Dev Hours') : 'Remaining Dev Hours', 'Used Dev Hours'],
                 datasets: [{
                     label: 'Developer Hours',
-                    data: [chartData.datasets[0].data[0], chartData.datasets[0].data[1]],
-                    backgroundColor: ['#007bff', '#28a745'], // Blue for Dev Hours, Green for Remaining Dev Hours
+                    data: [devHoursRemaining !== null ? devHoursRemaining : SupportdevHours, devHoursRemaining !== null ? devHoursDifference : 0],
+                    backgroundColor: ['#007bff', '#28a745'], // Blue for Used, Green for Remaining
                 }]
             }
         });
@@ -238,15 +258,17 @@ $(document).ready(function() {
         engChart = new Chart(ctxEng, {
             type: 'pie',
             data: {
-                labels: ['Eng Hours', 'Remaining Eng Hours'],
+                labels: [engHoursRemaining !== null ? (engHoursRemaining === SupportengHours ? 'Eng Hours Used' : 'Remaining Eng Hours') : 'Remaining Eng Hours', 'Used Eng Hours'],
                 datasets: [{
                     label: 'Engineer Hours',
-                    data: [chartData.datasets[1].data[0], chartData.datasets[1].data[1]],
-                    backgroundColor: ['#ff5733', '#ffc300'], // Red for Eng Hours, Yellow for Remaining Eng Hours
+                    data: [engHoursRemaining !== null ? engHoursRemaining : SupportengHours, engHoursRemaining !== null ? engHoursDifference : 0],
+                    backgroundColor: ['#ff5733', '#ffc300'], // Red for Used, Yellow for Remaining
                 }]
             }
         });
     }
+
+
 
     function clearChart() {
         if (devChart !== null) {
@@ -328,11 +350,7 @@ $(document).ready(function() {
                         </div>
                     </div>
                 </div>
-
-        </div>
-
-
-
+            </div>
 </div>
 
 @endsection

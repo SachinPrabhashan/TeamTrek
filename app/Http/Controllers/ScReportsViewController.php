@@ -95,7 +95,7 @@ class ScReportsViewController extends Controller
 
         return response()->json(['chartData' => $chartData]);
     }*/
-    public function getSupportContractChartData(Request $request)
+    /*public function getSupportContractChartData(Request $request)
     {
         $supportContractId = $request->input('supportContractId');
         $year = $request->input('year');
@@ -155,6 +155,84 @@ class ScReportsViewController extends Controller
                         $engHours ?? 0,
                         optional($remainingHours)->rem_eng_hours ?? 0,
                         optional($extraChargers)->charging_eng_hours ?? 0
+                    ],
+                    'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
+                    'borderColor' => 'rgba(54, 162, 235, 1)',
+                    'borderWidth' => 1
+                ]
+            ]
+        ];
+
+        // Pass additional data to the frontend
+        $additionalData = [
+            'dev_rate_per_hour' => $devRatePerHour,
+            'eng_rate_per_hour' => $engRatePerHour,
+            'dev_chargers' => $devChargers,
+            'eng_chargers' => $engChargers
+        ];
+
+        return response()->json(['chartData' => $chartData, 'additionalData' => $additionalData]);
+    }*/
+        public function getSupportContractChartData(Request $request)
+    {
+        $supportContractId = $request->input('supportContractId');
+        $year = $request->input('year');
+
+        $supportContractInstance = SupportContractInstance::where('support_contract_id', $supportContractId)
+            ->where('year', $year)
+            ->first();
+
+        if (!$supportContractInstance) {
+            // Display SweetAlert if no support contract instance is found
+            return response()->json(['error' => 'Support contract instance not found'], 404)
+                ->header('Content-Type', 'application/json')
+                ->header('X-Message-Type', 'error')
+                ->header('X-Message', 'No support contract instance found for the selected values');
+        }
+
+        // Fetch dev_rate_per_hour and eng_rate_per_hour from SupportPayment
+        $supportPayment = SupportPayment::where('support_contract_instance_id', $supportContractInstance->id)->first();
+        $devRatePerHour = $supportPayment->dev_rate_per_hour ?? null;
+        $engRatePerHour = $supportPayment->eng_rate_per_hour ?? null;
+
+        $devHours = $supportContractInstance->dev_hours ?? null;
+        $engHours = $supportContractInstance->eng_hours ?? null;
+
+        $task = Task::where('support_contract_instance_id', $supportContractInstance->id)->first();
+
+        // If task is null, set remainingHours and extraChargers to null
+        $remainingHours = $extraChargers = null;
+
+        if ($task) {
+            $remainingHours = RemainingHour::where('task_id', $task->id)->latest()->first();
+            $extraChargers = ExtraCharger::where('task_id', $task->id)->latest()->first();
+        }
+
+         // Calculate dev_chargers and eng_chargers
+         $devChargers = ($extraChargers->charging_dev_hours ?? 0) * $devRatePerHour;
+         $engChargers = ($extraChargers->charging_eng_hours ?? 0) * $engRatePerHour;
+
+        // Prepare the chart data
+        $chartData = [
+            'labels' => ['Support Contract Hours', 'Remaining Hours', 'Charging Hours'],
+            'datasets' => [
+                [
+                    'label' => 'Dev Hours',
+                    'data' => [
+                        $devHours,
+                        optional($remainingHours)->rem_dev_hours,
+                        optional($extraChargers)->charging_dev_hours
+                    ],
+                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
+                    'borderColor' => 'rgba(255, 99, 132, 1)',
+                    'borderWidth' => 1
+                ],
+                [
+                    'label' => 'Eng Hours',
+                    'data' => [
+                        $engHours,
+                        optional($remainingHours)->rem_eng_hours,
+                        optional($extraChargers)->charging_eng_hours
                     ],
                     'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
                     'borderColor' => 'rgba(54, 162, 235, 1)',
