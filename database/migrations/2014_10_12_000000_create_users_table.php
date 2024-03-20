@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->date('dob')->nullable();
-            $table->bigInteger('phone')->nullable()->change();
+            $table->integer('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('user_type')->nullable();
             $table->boolean('isDelete')->nullable()->default(false);

@@ -279,12 +279,10 @@ $(document).ready(function() {
         }
     }
 });
-
-
 </script>
 <div class="container col-12">
     <div class="bg-light rounded h-100 p-4">
-        <h1>Support Hours View</h1>
+        <h1>Support Hours Usage</h1>
         <div class="rolebtn bg-light rounded h-100 p-4">
             <label for="">Support Contract</label>
                 <select class="btn btn-secondary dropdown-toggle m-2" id="selectSupportContract">

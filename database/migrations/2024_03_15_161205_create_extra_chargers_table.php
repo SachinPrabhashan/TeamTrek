@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('task_id');
             $table->integer('charging_dev_hours');
             $table->integer('charging_eng_hours');
+            $table->integer('chargers_for_dev_hours');
+            $table->integer('chargers_for_eng_hours');
             $table->timestamps();
 
             $table->foreign('task_id')->references('id')->on('tasks');

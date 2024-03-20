@@ -252,5 +252,62 @@ class ScReportsViewController extends Controller
         return response()->json(['chartData' => $chartData, 'additionalData' => $additionalData]);
     }
 
+    public function ScReportsIndex(ScView $scview)
+    {
+        //$this->authorize('view', $usermanagement);
+        $tasks = Task::All();
+        $scInstances=SupportContractInstance::All();
+        $supportcontracts=SupportContract::All();
+        $subtasks=SubTask::All();
+        $remainingHours=RemainingHour::All();
+        $extraChargers=ExtraCharger::All();
+
+        return view('Support_Contract.ScReports', compact('tasks','scInstances','supportcontracts','subtasks','remainingHours','extraChargers'));
+    }
+
+    public function getSupportContractReportData(Request $request)
+    {
+        $supportContractId = $request->input('supportContractId');
+        $year = $request->input('year');
+
+        $supportContractInstance = SupportContractInstance::where('support_contract_id', $supportContractId)
+            ->where('year', $year)
+            ->first();
+
+        if (!$supportContractInstance) {
+            // Display SweetAlert if no support contract instance is found
+            return response()->json(['error' => 'Support contract instance not found'], 404)
+                ->header('Content-Type', 'application/json')
+                ->header('X-Message-Type', 'error')
+                ->header('X-Message', 'No support contract instance found for the selected values');
+        }
+
+        $task = Task::where('support_contract_instance_id', $supportContractInstance->id)->first();
+
+        $supportContract = SupportContract::find($supportContractInstance->support_contract_id);
+
+        $taskaccess = TaskAccess::where('task_id', $task->id)->get(); // Assuming you want to fetch multiple task accesses
+
+        $remainingHours = $extraChargers = null;
+
+        if ($task) {
+            $remainingHours = RemainingHour::where('task_id', $task->id)->latest()->first();
+            $extraChargers = ExtraCharger::where('task_id', $task->id)->latest()->first();
+        }
+
+        // Prepare the data to be returned
+        $responseData = [
+            'supportContractInstance' => $supportContractInstance,
+            'supportContract' => $supportContract,
+            'task' => $task,
+            'taskAccess' => $taskaccess,
+            'remainingHours' => $remainingHours,
+            'extraChargers' => $extraChargers,
+        ];
+
+        // Return the data as JSON response
+        return response()->json($responseData);
+    }
 
 }
+
