@@ -284,15 +284,24 @@ class ScReportsViewController extends Controller
 
         $task = Task::where('support_contract_instance_id', $supportContractInstance->id)->first();
 
+        $ongoingTasks = Task::where('support_contract_instance_id', $supportContractInstance->id)
+        ->where('isCompleted', false)
+        ->get();
+
+        $completedTasks = Task::where('support_contract_instance_id', $supportContractInstance->id)
+            ->where('isCompleted', true)
+            ->get();
+
         $supportContract = SupportContract::find($supportContractInstance->support_contract_id);
 
-        $taskaccess = TaskAccess::where('task_id', $task->id)->get(); // Assuming you want to fetch multiple task accesses
 
-        $remainingHours = $extraChargers = null;
+
+        $remainingHours = $extraChargers = $taskaccess = null;
 
         if ($task) {
             $remainingHours = RemainingHour::where('task_id', $task->id)->latest()->first();
             $extraChargers = ExtraCharger::where('task_id', $task->id)->latest()->first();
+            $taskaccess = TaskAccess::where('task_id', $task->id)->get();
         }
 
         // Prepare the data to be returned
@@ -303,9 +312,10 @@ class ScReportsViewController extends Controller
             'taskAccess' => $taskaccess,
             'remainingHours' => $remainingHours,
             'extraChargers' => $extraChargers,
+            'ongoingTasks' => $ongoingTasks,
+            'completedTasks' => $completedTasks,
         ];
-
-        // Return the data as JSON response
+        //\Log::info('Response Data:', $responseData);
         return response()->json($responseData);
     }
 
