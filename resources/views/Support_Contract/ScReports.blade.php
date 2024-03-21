@@ -34,34 +34,41 @@
             <!-- Display SC Report -->
             <div id="scReport" style="display: none;">
                 <h2>Support Contract Report</h2>
+                <h4 id="currentDate">Date : </h4>
+                <hr>
                 <div id="scInfo">
                     <!-- Display SC Name, Year, Owner -->
-                    <h3>Support Contract Information</h3>
+                    <h3><u>Support Contract Information</u></h3>
                     <p id="scName"></p>
                     <p id="scYear"></p>
                     <p id="scOwner"></p>
+                    <p>Task Access:</p>
+                    <ul><p id="scAccess"></p></ul>
                 </div>
 
                 <!-- Display Tasks (ongoing and completed) -->
                 <div id="taskInfo">
-                    <h3>Tasks</h3>
-                    <h4>Ongoing Tasks</h4>
+                    <h3><u>Tasks</u></h3>
+                    <ol><h4>Ongoing Tasks</h4>
                     <ul id="ongoingTasks">
                     </ul>
                     <h4>Completed Tasks</h4>
                     <ul id="completedTasks">
-                    </ul>
+                    </ul></ol>
                 </div>
 
                 <!-- Display Dev and Eng Hours -->
                 <div id="hoursInfo">
-                    <h3>Developer and Engineer Hours</h3>
-                    <p id="devHours"></p>
-                    <p id="engHours"></p>
-                    <p id="remainingDevHours"></p>
-                    <p id="remainingEngHours"></p>
-                    <p id="chargingDevHours"></p>
-                    <p id="chargingEngHours"></p>
+                    <h3><u>Developer and Engineer Hours</u></h3>
+                    <ol><h4>Initial Support Hours</h4>
+                    <ul><p id="devHours"></p>
+                    <p id="engHours"></p></ul>
+                    <h4>Remaining Support Hours</h4>
+                    <ul><p id="remainingDevHours"></p>
+                    <p id="remainingEngHours"></p></ul>
+                    <h4>Charging Support Hours</h4>
+                    <ul><p id="chargingDevHours"></p>
+                    <p id="chargingEngHours"></p></ul></ol>
                 </div>
             </div>
         </div>
@@ -70,61 +77,94 @@
 
 <script>
     $('#scReportSearchBtn').click(function() {
-        var supportContractId = $('#selectSupportContract').val();
-        var year = $('#selectSupportContractYear').val();
+    var supportContractId = $('#selectSupportContract').val();
+    var year = $('#selectSupportContractYear').val();
 
-        $.ajax({
-            url: '/getSupportContract-ReportData',
-            type: 'GET',
-            dataType: 'json',
-            data: {
-                supportContractId: supportContractId,
-                year: year
-            },
-            success: function(response) {
-                // Populate the SC Report section with data from the response
-                $('#scName').text('SC Name: ' + response.supportContract.name);
-                $('#scYear').text('Year: ' + response.supportContract.year);
-                $('#scOwner').text('Owner: ' + response.supportContract.owner);
+    // Hide the scReport div before making the AJAX call
+    $('#scReport').hide();
 
-                // Populate ongoing tasks
-                var ongoingTasksHtml = '';
-                $.each(response.ongoingTasks, function(index, task) {
-                    ongoingTasksHtml += '<li>' + task.name + ' - ' + task.assigned_person + '</li>';
+    $.ajax({
+        url: '/getSupportContract-ReportData',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            supportContractId: supportContractId,
+            year: year
+        },
+        success: function(response) {
+            // Populate the SC Report section with data from the response
+            $('#scName').text('SC Name: ' + response.supportContract.name);
+            $('#scYear').text('Year: ' + response.supportContractInstance.year);
+            $('#scOwner').text('Owner: ' + response.supportContractInstance.owner);
+
+            // Populate task Access
+            var taskAccessHtml='';
+            if(response.taskAccess && response.taskAccess.length > 0){
+                $.each(response.taskAccess,function(index, taskAccess){
+                    taskAccessHtml +='<li>' + taskAccess.emp_name + '</li>';
                 });
-                $('#ongoingTasks').html(ongoingTasksHtml);
-
-                // Populate completed tasks
-                var completedTasksHtml = '';
-                $.each(response.completedTasks, function(index, task) {
-                    completedTasksHtml += '<li>' + task.name + ' - ' + task.assigned_person + '</li>';
-                });
-                $('#completedTasks').html(completedTasksHtml);
-
-                // Populate hours information
-                $('#devHours').text('Dev Hours: ' + response.devHours);
-                $('#engHours').text('Eng Hours: ' + response.engHours);
-                $('#remainingDevHours').text('Remaining Dev Hours: ' + response.remainingDevHours);
-                $('#remainingEngHours').text('Remaining Eng Hours: ' + response.remainingEngHours);
-                $('#chargingDevHours').text('Charging Dev Hours: ' + response.chargingDevHours);
-                $('#chargingEngHours').text('Charging Eng Hours: ' + response.chargingEngHours);
-
-                // Show the SC Report section
-                $('#scReport').show();
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-                if (xhr.status === 404) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Support Contract Instance Not Found',
-                        text: 'There is no support contract instance for the selected values.',
-                        confirmButtonText: 'OK'
-                    });
-                }
+            } else {
+                taskAccessHtml +='<p><b>No Access Granted Yet</b></p>';
             }
-        });
-    });
-</script>
+            $('#scAccess').html(taskAccessHtml);
 
+            // Populate ongoing tasks
+            var ongoingTasksHtml = '';
+            if (response.ongoingTasks && response.ongoingTasks.length > 0) {
+                $.each(response.ongoingTasks, function(index, task) {
+                    ongoingTasksHtml += '<li>' + task.name + '</li>';
+                });
+            } else {
+                ongoingTasksHtml = '<p><b>No ongoing tasks</b></p>';
+            }
+            $('#ongoingTasks').html(ongoingTasksHtml);
+
+            // Populate completed tasks
+            var completedTasksHtml = '';
+            if (response.completedTasks && response.completedTasks.length > 0) {
+                $.each(response.completedTasks, function(index, task) {
+                    completedTasksHtml += '<li>' + task.name + '</li>';
+                });
+            } else {
+                completedTasksHtml = '<p><b>No completed tasks yet</b><p>';
+            }
+            $('#completedTasks').html(completedTasksHtml);
+
+            // Populate hours information
+            var devHours = response.supportContractInstance.dev_hours || 0;
+            var engHours = response.supportContractInstance.eng_hours || 0;
+            var remainingDevHours = response.remainingHours ? response.remainingHours.rem_dev_hours || devHours : devHours;
+            var remainingEngHours = response.remainingHours ? response.remainingHours.rem_eng_hours || engHours : engHours;
+            var chargingDevHours = response.extraChargers ? response.extraChargers.charging_dev_hours || 0 : 0;
+            var chargingEngHours = response.extraChargers ? response.extraChargers.charging_eng_hours || 0 : 0;
+
+            $('#devHours').text('Dev Hours: ' + devHours);
+            $('#engHours').text('Eng Hours: ' + engHours);
+            $('#remainingDevHours').text('Remaining Dev Hours: ' + remainingDevHours);
+            $('#remainingEngHours').text('Remaining Eng Hours: ' + remainingEngHours);
+            $('#chargingDevHours').text('Charging Dev Hours: ' + chargingDevHours);
+            $('#chargingEngHours').text('Charging Eng Hours: ' + chargingEngHours);
+
+            // Show the SC Report section
+            $('#scReport').show();
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+            if (xhr.status === 404) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Support Contract Instance Not Found',
+                    text: 'There is no support contract instance for the selected values.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        }
+    });
+
+    var currentDate = new Date();
+    var formattedDate = currentDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    $('#currentDate').text('Date: ' + formattedDate);
+});
+
+</script>
 @endsection
