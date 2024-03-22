@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sub_task_id')->nullable();
             $table->unsignedBigInteger('task_id');
+            $table->unsignedBigInteger('user_id');
             $table->integer('charging_dev_hours');
             $table->integer('charging_eng_hours');
             $table->integer('chargers_for_dev_hours');
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('task_id')->references('id')->on('tasks');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('sub_task_id')->references('id')->on('sub_tasks');
         });
     }

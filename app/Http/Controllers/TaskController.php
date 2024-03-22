@@ -378,6 +378,7 @@ class TaskController extends Controller
         // Save the charging hours in the extra_chargers table
         $extraChargers = new ExtraCharger();
         $extraChargers->task_id = $taskId;
+        $extraChargers->user_id = Auth::id();
         $extraChargers->charging_dev_hours = $chargingDevHours;
         $extraChargers->charging_eng_hours = $chargingEngHours;
         $extraChargers->chargers_for_dev_hours = $devExtraChargers;
@@ -523,6 +524,7 @@ class TaskController extends Controller
         // Save the charging hours in the extra_chargers table
         $extraChargers = new ExtraCharger();
         $extraChargers->task_id = $taskId;
+        $extraChargers->user_id = Auth::id();
         $extraChargers->charging_dev_hours = $chargingDevHours;
         $extraChargers->charging_eng_hours = $chargingEngHours;
         $extraChargers->chargers_for_dev_hours = $devExtraChargers;
