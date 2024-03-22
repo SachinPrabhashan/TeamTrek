@@ -30,6 +30,9 @@
             <button class="btn btn-primary m-2" id="scReportSearchBtn" data-toggle="tooltip" title="Search SC Report">Search
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
+            <button class="btn btn-success m-2 float-end" id="downloadPdfBtn">Download PDF
+                <i class="fa-solid fa-download"></i>
+            </button>
 
             <!-- Display SC Report -->
             <div id="scReport" style="display: none;">
@@ -164,6 +167,20 @@
     var currentDate = new Date();
     var formattedDate = currentDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     $('#currentDate').text('Date: ' + formattedDate);
+
+    $('#downloadPdfBtn').click(function() {
+        // Get the content of the SC Report div
+        var scReportContent = $('#scReport').html();
+
+        // Create a new window with the SC Report content
+        var pdfWindow = window.open('', '_blank');
+        pdfWindow.document.open();
+        pdfWindow.document.write('<html><head><title>Support Contract Report</title></head><body>' + scReportContent + '</body></html>');
+        pdfWindow.document.close();
+
+        // Call the print() function to trigger the print dialog
+        pdfWindow.print();
+    });
 });
 
 </script>
