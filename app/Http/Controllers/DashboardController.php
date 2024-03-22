@@ -35,8 +35,12 @@ class DashboardController extends Controller
          ->get()
          ->toArray();
 
+        $teams = DB::table('users')
+        ->where('role_id', 3)
+        ->get();
 
-        return view('dashboard', compact('todotasks', 'individualTasks'));
+
+        return view('dashboard', compact('todotasks', 'individualTasks', 'teams'));
     }
 
 

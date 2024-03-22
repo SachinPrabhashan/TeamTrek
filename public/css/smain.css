@@ -220,3 +220,63 @@ div.set03{
     border: none;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+
+
+/* SC Report */
+div #scName , #scYear , #scOwner, #scAccess , p{
+    font-size: large;
+    margin-bottom: 5px;
+}
+
+div.nameyear{
+    display: flex;
+}
+
+div #scInfo h3{
+    color: #009CFF;
+}
+
+div #taskInfo h3 , #hoursInfo h3{
+    color: #009CFF;
+}
+
+div #hoursInfo p{
+    margin-bottom: 0;
+    font-size: medium;
+}
+
+div.scReportarea{
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+/* CSS for print preview */
+@media print {
+
+    @page {
+        size: A4;
+      }
+
+    body * {
+      visibility: hidden;
+    }
+    .scReportarea *, #currentDate {
+      visibility: visible;
+    }
+    .scReportarea{
+      position: absolute;
+      left: 4;
+      top: 5;
+      scale: 150%;
+    }
+
+    #currentDate{
+        position: absolute;
+      left: 1;
+      top:0;
+      scale: 150%;
+      margin-bottom: 300px;
+    }
+  }
+

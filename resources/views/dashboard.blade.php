@@ -45,21 +45,24 @@
                     </a>
                 </div>
                 <div class="col-sm-6 col-xl-3">
-                    <div class="dash-widget bg-light rounded d-flex align-items-center justify-content-between p-4">
-                        <img width="48" height="48"
-                            src="https://img.icons8.com/fluency/48/checked-radio-button--v1.png"
-                            alt="checked-radio-button--v1" />
-                        <div class="ms-3">
-                            <p class="mb-2">Completed Tasks</p>
-                            <h6 class="mb-0">{{ DB::table('tasks')->where('isCompleted', 1)->COUNT() }}</h6>
+                    <a href="{{ route('scAllTaskMonitor') }}">
+                        <div class="dash-widget bg-light rounded d-flex align-items-center justify-content-between p-4">
+                            <img width="48" height="48"
+                                src="https://img.icons8.com/fluency/48/checked-radio-button--v1.png"
+                                alt="checked-radio-button--v1" />
+                            <div class="ms-3">
+                                <p class="mb-2">Completed Tasks</p>
+                                <h6 class="mb-0">{{ DB::table('tasks')->where('isCompleted', 1)->COUNT() }}</h6>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-6 col-xl-4 pt-4 px-4">
-            <div class="dash-widget h-100 bg-light rounded p-4">
+        {{-- To Do Widget --}}
+        <div class="col-12 pt-4 px-4 d-flex">
+            <div class="dash-widget h-100 bg-light rounded p-4 col-4 me-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <h6 class="mb-0">To Do List <a href="" data-toggle="tooltip" data-bs-placement="top"
                             title="Refresh"><i class="mx-3 fa-solid fa-rotate-right"></i></a></h6>
@@ -85,6 +88,36 @@
                     @endif
                 @endforeach
             </div>
-        </div>
+
+            <div class="col-8 pe-4">
+                <div class="dash-widget h-100 bg-light rounded p-4">
+                    <h4>Teams</h4>
+                    <div>
+                        <table class="w-100 table">
+                            <tr>
+                                <th>Name</th>
+                                {{-- <th>Role</th> --}}
+                                <th>Last Activity</th>
+                                <th></th>
+                            </tr>
+                            @foreach ($teams as $team)
+                                <tr>
+                                    <td>{{ $team->name }} <br> <span>{{ $team->email }}</span></td>
+                                    {{-- <td>Not work</td> --}}
+                                    <td>3 May, 2023</td>
+                                    <td><a href="{{ route('new.employee') }}"><img data-toggle="tooltip"
+                                                data-bs-placement="top" title="More" width="24" height="24"
+                                                src="https://img.icons8.com/material-outlined/24/more.png"
+                                                alt="more" /></a></td>
+                                </tr>
+                            @endforeach
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div> {{-- end To Do Widget --}}
+
+
     </div>
 @endsection
