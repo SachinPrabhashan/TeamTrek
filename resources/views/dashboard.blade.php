@@ -46,15 +46,15 @@
                 </div>
                 <div class="col-sm-6 col-xl-3">
                     <a href="{{ route('scAllTaskMonitor') }}">
-                        <div class="dash-widget bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <img width="48" height="48"
-                                src="https://img.icons8.com/fluency/48/checked-radio-button--v1.png"
-                                alt="checked-radio-button--v1" />
-                            <div class="ms-3">
-                                <p class="mb-2">Completed Tasks</p>
-                                <h6 class="mb-0">{{ DB::table('tasks')->where('isCompleted', 1)->COUNT() }}</h6>
-                            </div>
+                    <div class="dash-widget bg-light rounded d-flex align-items-center justify-content-between p-4">
+                        <img width="48" height="48"
+                            src="https://img.icons8.com/fluency/48/checked-radio-button--v1.png"
+                            alt="checked-radio-button--v1" />
+                        <div class="ms-3">
+                            <p class="mb-2">Completed Tasks</p>
+                            <h6 class="mb-0">{{ DB::table('tasks')->where('isCompleted', 1)->COUNT() }}</h6>
                         </div>
+                    </div>
                     </a>
                 </div>
             </div>
