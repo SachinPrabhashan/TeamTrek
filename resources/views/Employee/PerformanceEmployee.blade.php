@@ -61,9 +61,10 @@
                     </div>
                 </div>
             </div>
-            {{-- task service level widget end --}}
+            {{-- end task service level widget --}}
 
-            <div class="indworks card col-6 mt-3">
+            {{-- Support Hours widget --}}
+            <div class="indworks card col-4 mt-3">
                 <div class="m-3">
                     <div class="d-flex">
                         <h3 class="m-2">Support Hours</h3>
@@ -75,7 +76,7 @@
                             </select>
                         </div>
                     </div>
-                    <div>
+                    <div class="ms-2">
                         <div>
                             <table>
                                 <tr>
@@ -84,6 +85,9 @@
                                     </td>
                                     <td>
                                         <h1 class="ms-5">25H</h1>
+                                    </td>
+                                    <td>
+
                                     </td>
                                 </tr>
                         </div>
@@ -100,12 +104,18 @@
                                 <td>
                                     <h1 class="ms-5">25H</h1>
                                 </td>
+                                <td>
+
+                                </td>
                             </tr>
                         </div>
                         </table>
                     </div>
                 </div>
             </div>
+            {{-- end Support Hours widget --}}
+
+
         </div>
     </div>
 @endsection
