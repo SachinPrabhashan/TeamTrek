@@ -15,6 +15,7 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\SupportContractController;
 use App\Http\Controllers\SupportContractInstanceController;
 use App\Http\Controllers\ScReportsViewController;
+use App\Http\Controllers\SupportPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,6 +119,10 @@ Route::get('/support-contract/support-contract-view', [ScReportsViewController::
 Route::get('/getSupportContract-ChartData', [ScReportsViewController::class,'getSupportContractChartData']);
 Route::get('/support-contract/Reports', [ScReportsViewController::class, 'ScReportsIndex'])->name('scReports');
 Route::get('/getSupportContract-ReportData', [ScReportsViewController::class,'getSupportContractReportData']);
+
+
+    //Financial Health
+Route::get('/support-contract/financial-health', [SupportPaymentController::class, 'financialHealthIndex'])->name('financialHealth');
 
 //All Users
 Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');
