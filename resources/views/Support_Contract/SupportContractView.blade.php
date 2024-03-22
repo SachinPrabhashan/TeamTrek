@@ -1,9 +1,13 @@
 @extends('layouts.navitems')
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -278,6 +282,22 @@ $(document).ready(function() {
             engChart.destroy();
         }
     }
+
+    /*$('#downloadPdfBtn').click(function() {
+        // Initialize jsPDF instance
+        var doc = new jsPDF();
+
+        // Define the content to be added to the PDF
+        var content = $('#downloadView').html();
+
+        // Add content to the PDF
+        doc.html(content, {
+            callback: function(doc) {
+                // Save the PDF
+                doc.save('support_contract_report.pdf');
+            }
+        });
+    });*/
 });
 </script>
 <div class="container col-12">
@@ -307,7 +327,7 @@ $(document).ready(function() {
         </div>
 
         <!-- Displaying Graphs -->
-
+        <div id="downloadView">
         <div class="Graphs"style="display: none;">
             <div class="card col-6">
                 <div class="card-body">
@@ -349,6 +369,7 @@ $(document).ready(function() {
                     </div>
                 </div>
             </div>
-</div>
+        </div>
+    </div>
 
 @endsection
