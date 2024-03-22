@@ -155,7 +155,7 @@
                                     class="dropdown-item {{ request()->is('support-contract/sc-task-monitor', 'support-contract/sc-task-monitor/sub-task-handle', 'support-contract/sc-all-task-monitor') ? ' active' : '' }}">SC
                                     Task Monitor</a>
                                 @Admin
-                                    <a href="{{ route('scReports') }}" class="dropdown-item">SC Reports</a>
+                                    <a href="{{ route('scReports') }}" class="dropdown-item {{ request()->is('support-contract/sc-reports') ? ' active' : '' }}">SC Reports</a>
                                 @endAdmin
                             @endAdminOrEmployee
                             @Client
