@@ -342,6 +342,7 @@ class TaskController extends Controller
         $task->eng_hours += $validatedData['engineerHours'];
 
         if ($request->has('isLastTask') && $request->input('isLastTask') == 'on') {
+            $task->user_id = Auth::id();
             $task->end_date = $validatedData['taskDate'];
             $task->isCompleted = true;
         }
@@ -379,6 +380,7 @@ class TaskController extends Controller
         $extraChargers = new ExtraCharger();
         $extraChargers->task_id = $taskId;
         $extraChargers->user_id = Auth::id();
+        $extraChargers->support_contract_instance_id = $supportContractInstanceId;
         $extraChargers->charging_dev_hours = $chargingDevHours;
         $extraChargers->charging_eng_hours = $chargingEngHours;
         $extraChargers->chargers_for_dev_hours = $devExtraChargers;
@@ -525,6 +527,7 @@ class TaskController extends Controller
         $extraChargers = new ExtraCharger();
         $extraChargers->task_id = $taskId;
         $extraChargers->user_id = Auth::id();
+        $extraChargers->support_contract_instance_id = $supportContractInstanceId;
         $extraChargers->charging_dev_hours = $chargingDevHours;
         $extraChargers->charging_eng_hours = $chargingEngHours;
         $extraChargers->chargers_for_dev_hours = $devExtraChargers;
