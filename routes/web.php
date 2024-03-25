@@ -123,6 +123,7 @@ Route::get('/getSupportContract-ReportData', [ScReportsViewController::class,'ge
 
     //Financial Health
 Route::get('/support-contract/financial-health', [SupportPaymentController::class, 'financialHealthIndex'])->name('financialHealth');
+Route::get('/getSupportContract-FinancialData', [SupportPaymentController::class,'getFinancialData']);
 
 //All Users
 Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');
