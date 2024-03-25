@@ -14,7 +14,7 @@
                                 src="https://img.icons8.com/fluency/48/000000/administrator-male.png"
                                 alt="administrator-male" />
                             <div class="ms-3">
-                                <p class="mb-2">Admins</p>
+                                <p class="mb-2  fs-6">Admins</p>
                                 <h6 class="mb-0">{{ DB::table('users')->where('role_id', 2)->COUNT() }}</h6>
                             </div>
                         </div>
@@ -26,7 +26,7 @@
                             <img width="48" height="48" src="https://img.icons8.com/fluency/48/manager.png"
                                 alt="manager" />
                             <div class="ms-3">
-                                <p class="mb-2">Employees</p>
+                                <p class="mb-2  fs-6">Employees</p>
                                 <h6 class="mb-0">{{ DB::table('users')->where('role_id', 3)->COUNT() }}</h6>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                             <img width="48" height="48" src="https://img.icons8.com/fluency/48/customer-support.png"
                                 alt="customer-support" />
                             <div class="ms-3">
-                                <p class="mb-2">Support Contracts</p>
+                                <p class="mb-2 fs-6">Support Contracts</p>
                                 <h6 class="mb-0">{{ DB::table('support_contracts')->COUNT() }}</h6>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                             src="https://img.icons8.com/fluency/48/checked-radio-button--v1.png"
                             alt="checked-radio-button--v1" />
                         <div class="ms-3">
-                            <p class="mb-2">Completed Tasks</p>
+                            <p class="mb-2  fs-6">Completed Tasks</p>
                             <h6 class="mb-0">{{ DB::table('tasks')->where('isCompleted', 1)->COUNT() }}</h6>
                         </div>
                     </div>
