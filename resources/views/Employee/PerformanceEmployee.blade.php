@@ -62,26 +62,86 @@
                 </div>
             </div>
             {{-- end task service level widget --}}
+            <div class="d-flex">
+                <div class="indworks card col-8 mt-3 me-3">
+                    <div class="m-3">
+                        <div class="d-flex">
+                            <h3 class="m-2">SubTask History<a href="" data-toggle="tooltip"
+                                    data-bs-placement="top" title="Refresh"><i
+                                        class="mx-3 fa-solid fa-rotate-right fa-sm"></i></a></h3>
+                            @Admin
+                                <div class="p-0 me-1 ms-auto m-2">
+                                    <select class="btn btn-secondary rounded-pill dropdown-toggle" id="selectEmployeeName">
+                                        @foreach ($employees as $employee)
+                                            <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                        @endforeach
 
-            {{-- Support Hours widget --}}
-            <div class="indworks card col-4 mt-3">
-                <div class="m-3">
-                    <div class="d-flex">
-                        <h3 class="m-2">Support Hours</h3>
-                        <div class="p-0 me-1 ms-auto m-2">
-                            <select class="btn btn-outline-secondary btn-custom rounded-pill" name="" id="">
-                                <option value="">Last 7 Days </option>
-                                <option value="">Last 30 Days</option>
-                                <option value="">Year</option>
-                            </select>
+                                    </select>
+                                </div>
+                            @endAdmin
                         </div>
+
+                        <table class="table" id="subtaskHistoryTable">
+                            <tr>
+                                <th>Date</th>
+                                <th>Client</th>
+                                <th>Subtask</th>
+                                <th>Support Hours</th>
+                            </tr>
+                            @foreach ($subtaskhistorys as $subtaskhistory)
+                             {{-- @foreach ($subtaskhistorys->filter(function ($subtaskhistory) {
+                                return $subtaskhistory->user_id == auth()->id() || auth()->user()->role_id == 2 || auth()->user()->role_id == 1;
+                            }) as $subtaskhistory) --}}
+                                <tr class="subtaskhistoryRow">
+                                    <td>{{ $subtaskhistory->date }}</td>
+                                    <td>NULL</td>
+                                    <td>{{ $subtaskhistory->name }}</td>
+                                    <td>{{ $subtaskhistory->dev_hours + $subtaskhistory->eng_hours }}</td>
+                                </tr>
+                            @endforeach
+
+                        </table>
                     </div>
-                    <div class="ms-2">
-                        <div>
-                            <table>
+                </div>
+                {{-- end Subtask View Table widget --}}
+                {{-- Support Hours widget --}}
+                <div class="indworks card mt-3">
+                    <div class="m-3">
+                        <div class="d-flex">
+                            <h3 class="m-2">Support Hours</h3>
+                            <div class="p-0 me-1 ms-auto m-2">
+                                <select class="btn btn-outline-secondary btn-custom rounded-pill" name=""
+                                    id="">
+                                    <option value="">Last 7 Days </option>
+                                    <option value="">Last 30 Days</option>
+                                    <option value="">Year</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="ms-2">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <h1>Developer <br>Hours</h1>
+                                        </td>
+                                        <td>
+                                            <h1 class="ms-5">25H</h1>
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                    </tr>
+                            </div>
+                            <tr>
+                                <td>
+                                    <hr>
+                                </td>
+                            </tr>
+                            <div>
                                 <tr>
                                     <td>
-                                        <h1>Developer <br>Hours</h1>
+                                        <h1>Engineer <br>Hours</h1>
                                     </td>
                                     <td>
                                         <h1 class="ms-5">25H</h1>
@@ -90,32 +150,49 @@
 
                                     </td>
                                 </tr>
+                            </div>
+                            </table>
                         </div>
-                        <tr>
-                            <td>
-                                <hr>
-                            </td>
-                        </tr>
-                        <div>
-                            <tr>
-                                <td>
-                                    <h1>Engineer <br>Hours</h1>
-                                </td>
-                                <td>
-                                    <h1 class="ms-5">25H</h1>
-                                </td>
-                                <td>
-
-                                </td>
-                            </tr>
-                        </div>
-                        </table>
                     </div>
                 </div>
+                {{-- end Support Hours widget --}}
+
+                {{-- Subtask View Table widget --}}
+
             </div>
-            {{-- end Support Hours widget --}}
-
-
         </div>
+
     </div>
+
+    <script>
+        document.getElementById('selectEmployeeName').addEventListener('change', function() {
+            var userId = this.value;
+            filterTableData(userId);
+            updateTable(response);
+        });
+
+        function filterTableData(userId) {
+            $.ajax({
+                url: '/performance/employee-performance',
+                type: 'GET',
+                data: {
+                    userId: userId
+                },
+                success: function(response) {
+                    updateTable(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function updateTable(data) {
+            var tableBody = $('#subtaskHistoryTable tbody');
+            tableBody.empty();
+            data.forEach(function(row) {
+                tableBody.append('<tr><td>' + row.date + '</td><td>NULL</td><td>' + row.name + '</td><td>' + (row.dev_hours + row.eng_hours) + '</td></tr>');
+            });
+        }
+    </script>
 @endsection
