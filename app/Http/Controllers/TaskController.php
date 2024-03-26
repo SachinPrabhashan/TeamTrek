@@ -345,6 +345,7 @@ class TaskController extends Controller
             $task->user_id = Auth::id();
             $task->end_date = $validatedData['taskDate'];
             $task->isCompleted = true;
+            $task->isLastDay = true;
         }
         $task->save();
 
@@ -491,6 +492,7 @@ class TaskController extends Controller
             $task->end_date = $validatedData['finishDate'];
             $task->isCompleted = true;
             $task->user_id = Auth::id();
+            $task->isOneDay = true;
 
             $task->save();
 
