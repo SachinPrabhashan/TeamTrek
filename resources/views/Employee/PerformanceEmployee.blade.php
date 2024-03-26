@@ -38,7 +38,7 @@
                     <div class="d-flex">
                         <h3 class="m-2">Tasks Service Level</h3>
                         <div class="p-0 me-1 ms-auto m-2">
-                            <select class="btn btn-outline-secondary btn-custom rounded-pill" name="" id="">
+                            <select class="btn btn-outline-primary btn-custom rounded-pill" name="" id="">
                                 <option value="">Last 7 Days </option>
                                 <option value="">Last 30 Days</option>
                                 <option value="">Year</option>
@@ -71,7 +71,7 @@
                                         class="mx-3 fa-solid fa-rotate-right fa-sm"></i></a></h3>
                             @Admin
                                 <div class="p-0 me-1 ms-auto m-2">
-                                    <select class="btn btn-secondary rounded-pill dropdown-toggle" id="selectEmployeeName">
+                                    <select class="btn btn-outline-primary rounded-pill dropdown-toggle" id="selectEmployeeName">
                                         @foreach ($employees as $employee)
                                             <option value="{{ $employee->id }}">{{ $employee->name }}</option>
                                         @endforeach
@@ -90,11 +90,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($subtaskhistorys as $subtaskhistory)
-                                    {{-- @foreach ($subtaskhistorys->filter(function ($subtaskhistory) {
-        return $subtaskhistory->user_id == auth()->id() || auth()->user()->role_id == 2 || auth()->user()->role_id == 1;
-    }) as $subtaskhistory) --}}
-
+                                @foreach ($subtaskhistorys->filter(function ($subtaskhistory) {
+                                    $user = auth()->user();
+                                    if ($user->role_id == 3) {
+                                        return $subtaskhistory->user_id == $user->id;
+                                    } else {
+                                        return true; // Display all data for other roles (role_id 1 and 2)
+                                    }
+                                }) as $subtaskhistory)
                                     <tr class="subtaskhistoryRow">
                                         <td>{{ $subtaskhistory->date }}</td>
                                         <td>NULL</td>
@@ -102,18 +105,19 @@
                                         <td>{{ $subtaskhistory->dev_hours + $subtaskhistory->eng_hours }}</td>
                                     </tr>
                                 @endforeach
+
                             </tbody>
                         </table>
                     </div>
                 </div>
                 {{-- end Subtask View Table widget --}}
                 {{-- Support Hours widget --}}
-                <div class="indworks card mt-3">
+                <div class="indworks card mt-3" style="height: 250px;">
                     <div class="m-3">
                         <div class="d-flex">
                             <h3 class="m-2">Support Hours</h3>
                             <div class="p-0 me-1 ms-auto m-2">
-                                <select class="btn btn-outline-secondary btn-custom rounded-pill" name=""
+                                <select class="btn btn-outline-primary btn-custom rounded-pill" name=""
                                     id="">
                                     <option value="">Last 7 Days </option>
                                     <option value="">Last 30 Days</option>
