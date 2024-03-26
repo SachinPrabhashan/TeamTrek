@@ -133,7 +133,7 @@
                                             <h1>Developer <br>Hours</h1>
                                         </td>
                                         <td>
-                                            <h1 class="ms-5">25H</h1>
+                                            <h1 class="ms-5" id="developerHours"></h1>
                                         </td>
                                         <td>
 
@@ -151,7 +151,7 @@
                                         <h1>Engineer <br>Hours</h1>
                                     </td>
                                     <td>
-                                        <h1 class="ms-5">25H</h1>
+                                        <h1 class="ms-5" id="engineerHours"></h1>
                                     </td>
                                     <td>
 
@@ -186,6 +186,9 @@
                 },
                 success: function(response) {
                     updateTable(response.subtaskhistories);
+                    updateEmpHours(response.EmpDevTotal, response.EmpEngTotal);
+                    $('#developerHours').text(response.EmpDevTotal);
+                    $('#engineerHours').text(response.EmpEngTotal);
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -201,5 +204,11 @@
                     '</td><td>' + (row.dev_hours + row.eng_hours) + '</td></tr>');
             });
         }
+
+        function updateEmpHours(devTotal, engTotal) {
+            $('#developerHours').text(devTotal);
+            $('#engineerHours').text(engTotal);
+        }
     </script>
+
 @endsection
