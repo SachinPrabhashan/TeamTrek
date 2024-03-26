@@ -1,13 +1,13 @@
 @extends('layouts.navitems')
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
 <style>
     .FinancialData {
@@ -39,7 +39,7 @@
 
         <!-- Displaying charges in dual bar chart -->
         <div class="FinancialData">
-            <canvas id="financialChart" width="400" height="200"></canvas>
+            <canvas id="financialChart" width="200" height="100"></canvas>
         </div>
     </div>
 </div>
@@ -60,6 +60,8 @@
                 },
                 success: function(response) {
                     renderDualBarChart(response.devChargers, response.totalDevCharger, response.engChargers, response.totalEngCharger);
+                    $('.FinancialData').show();
+
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -74,39 +76,37 @@
                 },
             });
         });
-    });
-
-    function renderDualBarChart(devChargers, totalDevCharger, engChargers, totalEngCharger) {
-    var ctx = document.getElementById('financialChart').getContext('2d');
-    var financialChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Developer Charges', 'Developer Payments', 'Engineer Charges', 'Engineer Payments'],
-            datasets: [{
-                label: 'Developer Charges and Payments',
-                backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)'],
-                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(255, 99, 132, 1)'],
-                borderWidth: 1,
-                data: [devChargers, totalDevCharger]
-            }, {
-                label: 'Engineer Charges and Payments',
-                backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)'],
-                borderColor: ['rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 1)'],
-                borderWidth: 1,
-                data: [engChargers, totalEngCharger]
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
+        function renderDualBarChart(devChargers, totalDevCharger, engChargers, totalEngCharger) {
+        var ctx = document.getElementById('financialChart').getContext('2d');
+        var financialChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Chargers For Dev Hours', 'Payments For Dev Hours', 'Chargers For Eng Hours', 'Payments For Eng Hours'],
+                datasets: [{
+                    label: 'Developer Charges and Payments',
+                    backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)'],
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(255, 99, 132, 1)'],
+                    borderWidth: 1,
+                    data: [devChargers, totalDevCharger, null, null]
+                }, {
+                    label: 'Engineer Charges and Payments',
+                    backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)'],
+                    borderColor: ['rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 1)'],
+                    borderWidth: 1,
+                    data: [null, null, engChargers, totalEngCharger] 
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
                         beginAtZero: true
                     }
-                }]
+                }
             }
-        }
-    });
-}
+        });
+    }
+});
+
 
 
 </script>
