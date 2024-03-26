@@ -37,28 +37,9 @@
             </button>
         </div>
 
-        <!-- Displaying charges in tiles -->
+        <!-- Displaying charges in dual bar chart -->
         <div class="FinancialData">
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Client Payments</h5>
-                            <p class="card-text">Developer Charges: <span id="devChargers"></span></p>
-                            <p class="card-text">Engineer Charges: <span id="engChargers"></span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Employee Chargers</h5>
-                            <p class="card-text">Developer Charges: <span id="devUserCharge"></span></p>
-                            <p class="card-text">Engineer Charges: <span id="engUserCharge"></span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <canvas id="financialChart" width="400" height="200"></canvas>
         </div>
     </div>
 </div>
@@ -78,20 +59,7 @@
                     year: year
                 },
                 success: function(response) {
-                    // Populate charges without hourly rate
-                    $('#devChargers').text(response.devChargers);
-                    $('#engChargers').text(response.engChargers);
-
-                    // Calculate charges with hourly rate
-                    //var devUserCharge = response.supportContract.dev_rate_per_hour * (response.extraChargers.charging_dev_hours ?? 0) * response.devHourlyRate;
-                    //var engUserCharge = response.supportContract.eng_rate_per_hour * (response.extraChargers.charging_eng_hours ?? 0) * response.engHourlyRate;
-
-                    // Populate charges with hourly rate
-                    $('#devUserCharge').text(response.totalDevCharger);
-                    $('#engUserCharge').text(response.totalEngCharger);
-
-                    // Show the FinancialData div
-                    $('.FinancialData').show();
+                    renderDualBarChart(response.devChargers, response.totalDevCharger, response.engChargers, response.totalEngCharger);
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -107,5 +75,39 @@
             });
         });
     });
+
+    function renderDualBarChart(devChargers, totalDevCharger, engChargers, totalEngCharger) {
+    var ctx = document.getElementById('financialChart').getContext('2d');
+    var financialChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Developer Charges', 'Developer Payments', 'Engineer Charges', 'Engineer Payments'],
+            datasets: [{
+                label: 'Developer Charges and Payments',
+                backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)'],
+                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(255, 99, 132, 1)'],
+                borderWidth: 1,
+                data: [devChargers, totalDevCharger]
+            }, {
+                label: 'Engineer Charges and Payments',
+                backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)'],
+                borderColor: ['rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 1)'],
+                borderWidth: 1,
+                data: [engChargers, totalEngCharger]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+}
+
+
 </script>
 @endsection
