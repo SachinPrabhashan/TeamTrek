@@ -178,7 +178,7 @@
                                     class="dropdown-item  {{ request()->is('performance/employee-performance') ? ' active' : '' }}">Employee
                                     Performance</a>
 
-                                <a href="{{ route('financialHealth') }}" class="dropdown-item">Financial Health</a>
+                                <a href="{{ route('financialHealth') }}" class="dropdown-item   {{ request()->is('performance/financial-health') ? ' active' : '' }}">Financial Health</a>
                                 <a href="#" class="dropdown-item">Resource Utilization</a>
                             @endAdminOrEmployee
                         </div>

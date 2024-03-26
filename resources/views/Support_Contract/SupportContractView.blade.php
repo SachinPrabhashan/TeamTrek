@@ -21,6 +21,7 @@
     .warning .invoice-charge {
         color: #dc3545;
         font-weight: bold;
+        font-size: 12pt;
         position: relative;
     }
 
@@ -28,6 +29,7 @@
         content: " (You are getting charged for this)";
         color: #dc3545;
         font-weight: bold;
+        font-size: 10pt;
         position: absolute;
         bottom: -1.2em;
         left: 0;
@@ -48,6 +50,14 @@
     .chart {
         width: 100% !important;
         height: auto !important;
+    }
+
+    div #devCard p , #engCard p{
+        margin-bottom: 0;
+    }
+
+    div #engCard , #devCard{
+        height: 150px;
     }
 
 </style>

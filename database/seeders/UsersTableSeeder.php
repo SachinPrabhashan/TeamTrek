@@ -21,3 +21,8 @@ class UsersTableSeeder extends Seeder
         ]);
     }
 }
+
+
+// To RUN seeder file
+// 2nd File
+// php artisan db:seed --class=UsersTableSeeder
