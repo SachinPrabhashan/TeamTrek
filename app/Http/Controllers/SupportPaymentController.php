@@ -36,23 +36,14 @@ class SupportPaymentController extends Controller
 
     public function getFinancialData(Request $request)
     {
-        \Log::info('Financial data request received.'); // Log the request received
-
         $supportContractId = $request->input('supportContractId');
         $year = $request->input('year');
-
-        \Log::info('Support Contract ID: ' . $supportContractId); // Log the support contract ID
-        \Log::info('Year: ' . $year); // Log the year
 
         $supportContractInstance = SupportContractInstance::where('support_contract_id', $supportContractId)
             ->where('year', $year)
             ->first();
 
-        \Log::info('Support Contract Instance: ' . $supportContractInstance); // Log the support contract instance
-
         if (!$supportContractInstance) {
-            // Log an error if no support contract instance is found
-            \Log::error('Support contract instance not found');
             return response()->json(['error' => 'Support contract instance not found'], 404);
         }
 
@@ -61,11 +52,8 @@ class SupportPaymentController extends Controller
             ->orderBy('created_at', 'desc')
             ->first();
 
-        \Log::info('Extra chargers: ' . $extraChargers); // Log the extra chargers
 
         if (!$extraChargers) {
-            // Log an error if no extra chargers are found
-            \Log::error('No extra chargers found for the support contract instance');
             return response()->json(['error' => 'No extra chargers found for the support contract instance'], 404);
         }
 
@@ -73,11 +61,7 @@ class SupportPaymentController extends Controller
         $supportPayment = SupportPayment::where('support_contract_instance_id', $supportContractInstance->id)
             ->first();
 
-        \Log::info('Support payment: ' . $supportPayment); // Log the support payment details
-
         if (!$supportPayment) {
-            // Log an error if no support payment details are found
-            \Log::error('No support payment details found for the support contract instance');
             return response()->json(['error' => 'No support payment details found for the support contract instance'], 404);
         }
 
@@ -85,15 +69,11 @@ class SupportPaymentController extends Controller
         $devChargers = $extraChargers->charging_dev_hours * $supportPayment->dev_rate_per_hour;
         $engChargers = $extraChargers->charging_eng_hours * $supportPayment->eng_rate_per_hour;
 
-        \Log::info('Developer charges: ' . $devChargers); // Log developer charges
-        \Log::info('Engineer charges: ' . $engChargers); // Log engineer charges
-
         // Prepare an array to store total charges for each user
         $userCharges = [];
 
         // Ensure $extraChargers is an object
         if (!is_object($extraChargers)) {
-            \Log::error('$extraChargers is not an object.'); // Log this error
             return response()->json(['error' => '$extraChargers is not an object'], 500); // Return an error response
         }
 
@@ -102,8 +82,6 @@ class SupportPaymentController extends Controller
 
         // Check if hourly rate exists
         if (!$hourlyRate) {
-            // Log an error if hourly rate is not found
-            \Log::error('Hourly rate not found for user ' . $extraChargers->user_id);
             return response()->json(['error' => 'Hourly rate not found for user ' . $extraChargers->user_id], 404); // Return an error response
         }
 
