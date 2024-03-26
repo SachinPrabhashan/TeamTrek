@@ -134,3 +134,4 @@ Route::post('/myprofile/password-change', [ProfileController::class, 'resetPassw
 
 //performace Employee
 Route::get('/performance/employee-performance', [EmployeePerformanceController::class, 'index'])->name('employee.performanceemployee');
+Route::get('/performance/employee-performance-ind', [EmployeePerformanceController::class, 'subtaskhis']);
