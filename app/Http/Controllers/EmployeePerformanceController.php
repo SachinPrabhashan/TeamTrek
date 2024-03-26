@@ -7,11 +7,22 @@ use Illuminate\Support\Facades\DB;
 
 class EmployeePerformanceController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
-        $subtaskhistorys = DB::table('sub_tasks')->get();
+
         $employees = DB::table('users')->where('role_id', 3)->get();
+        $subtaskhistorys = DB::table('sub_tasks')->get();
 
-        return view('employee.PerformanceEmployee',compact('subtaskhistorys', 'employees'));
+
+        return view('employee.PerformanceEmployee', compact('employees', 'subtaskhistorys'));
+    }
+
+    public function subtaskhis(Request $request)
+    {
+        $userId = $request->input('userId');
+        $subtaskhistorys = DB::table('sub_tasks')->where('user_id', $userId)->get();
+
+        return response()->json(['subtaskhistories' => $subtaskhistorys]);
     }
 }

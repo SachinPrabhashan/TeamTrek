@@ -75,31 +75,34 @@
                                         @foreach ($employees as $employee)
                                             <option value="{{ $employee->id }}">{{ $employee->name }}</option>
                                         @endforeach
-
                                     </select>
                                 </div>
                             @endAdmin
                         </div>
 
                         <table class="table" id="subtaskHistoryTable">
-                            <tr>
-                                <th>Date</th>
-                                <th>Client</th>
-                                <th>Subtask</th>
-                                <th>Support Hours</th>
-                            </tr>
-                            @foreach ($subtaskhistorys as $subtaskhistory)
-                             {{-- @foreach ($subtaskhistorys->filter(function ($subtaskhistory) {
-                                return $subtaskhistory->user_id == auth()->id() || auth()->user()->role_id == 2 || auth()->user()->role_id == 1;
-                            }) as $subtaskhistory) --}}
-                                <tr class="subtaskhistoryRow">
-                                    <td>{{ $subtaskhistory->date }}</td>
-                                    <td>NULL</td>
-                                    <td>{{ $subtaskhistory->name }}</td>
-                                    <td>{{ $subtaskhistory->dev_hours + $subtaskhistory->eng_hours }}</td>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Client</th>
+                                    <th>Subtask</th>
+                                    <th>Support Hours</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody>
+                                @foreach ($subtaskhistorys as $subtaskhistory)
+                                    {{-- @foreach ($subtaskhistorys->filter(function ($subtaskhistory) {
+        return $subtaskhistory->user_id == auth()->id() || auth()->user()->role_id == 2 || auth()->user()->role_id == 1;
+    }) as $subtaskhistory) --}}
 
+                                    <tr class="subtaskhistoryRow">
+                                        <td>{{ $subtaskhistory->date }}</td>
+                                        <td>NULL</td>
+                                        <td>{{ $subtaskhistory->name }}</td>
+                                        <td>{{ $subtaskhistory->dev_hours + $subtaskhistory->eng_hours }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -168,18 +171,17 @@
         document.getElementById('selectEmployeeName').addEventListener('change', function() {
             var userId = this.value;
             filterTableData(userId);
-            updateTable(response);
         });
 
         function filterTableData(userId) {
             $.ajax({
-                url: '/performance/employee-performance',
+                url: '/performance/employee-performance-ind',
                 type: 'GET',
                 data: {
                     userId: userId
                 },
                 success: function(response) {
-                    updateTable(response);
+                    updateTable(response.subtaskhistories);
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -189,9 +191,10 @@
 
         function updateTable(data) {
             var tableBody = $('#subtaskHistoryTable tbody');
-            tableBody.empty();
+            tableBody.empty(); // Clear existing table rows
             data.forEach(function(row) {
-                tableBody.append('<tr><td>' + row.date + '</td><td>NULL</td><td>' + row.name + '</td><td>' + (row.dev_hours + row.eng_hours) + '</td></tr>');
+                tableBody.append('<tr><td>' + row.date + '</td><td>' + row.client + '</td><td>' + row.name +
+                    '</td><td>' + (row.dev_hours + row.eng_hours) + '</td></tr>');
             });
         }
     </script>
