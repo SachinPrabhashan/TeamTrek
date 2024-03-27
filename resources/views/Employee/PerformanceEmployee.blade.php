@@ -186,7 +186,7 @@
                 },
                 success: function(response) {
                     updateTable(response.subtaskhistories);
-                    updateEmpHours(response.EmpDevTotal, response.EmpEngTotal);
+                    //updateEmpHours(response.EmpDevTotal, response.EmpEngTotal);
                     $('#developerHours').text(response.EmpDevTotal);
                     $('#engineerHours').text(response.EmpEngTotal);
                 },
@@ -205,10 +205,10 @@
             });
         }
 
-        function updateEmpHours(devTotal, engTotal) {
+        /*function updateEmpHours(devTotal, engTotal) {
             $('#developerHours').text(devTotal);
             $('#engineerHours').text(engTotal);
-        }
+        }*/
     </script>
 
 @endsection
