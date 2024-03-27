@@ -51,3 +51,9 @@ class RoleModulePermissionInitialDataInsert extends Seeder
         DB::table('permissions')->insert($permissions);
     }
 }
+
+
+
+// To RUN seeder file
+// 1st File
+// php artisan db:seed --class=RoleModulePermissionInitialDataInsert
