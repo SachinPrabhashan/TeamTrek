@@ -1,6 +1,6 @@
 @extends('layouts.navitems')
 @section('content')
-    <div class="container col-12">
+    <div class="container col-12 ">
         {{-- <div class="bg-light rounded h-100 p-4 d-flex">
             <div class="indworks notstart card col-3 me-4">
                 <div class="d-flex justify-content-center">
@@ -63,7 +63,7 @@
             </div>
             {{-- end task service level widget --}}
             <div class="d-flex">
-                <div class="indworks card col-8 mt-3 me-3">
+                <div class="indworks card col-8 mt-3 me-3"  style="height: 250px;">
                     <div class="m-3">
                         <div class="d-flex">
                             <h3 class="m-2">SubTask History<a href="" data-toggle="tooltip"
@@ -71,7 +71,8 @@
                                         class="mx-3 fa-solid fa-rotate-right fa-sm"></i></a></h3>
                             @Admin
                                 <div class="p-0 me-1 ms-auto m-2">
-                                    <select class="btn btn-outline-primary rounded-pill dropdown-toggle" id="selectEmployeeName">
+                                    <select class="btn btn-outline-primary rounded-pill dropdown-toggle"
+                                        id="selectEmployeeName">
                                         @foreach ($employees as $employee)
                                             <option value="{{ $employee->id }}">{{ $employee->name }}</option>
                                         @endforeach
@@ -79,35 +80,38 @@
                                 </div>
                             @endAdmin
                         </div>
-
-                        <table class="table" id="subtaskHistoryTable">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Client</th>
-                                    <th>Subtask</th>
-                                    <th>Support Hours</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($subtaskhistorys->filter(function ($subtaskhistory) {
-                                    $user = auth()->user();
-                                    if ($user->role_id == 3) {
-                                        return $subtaskhistory->user_id == $user->id;
-                                    } else {
-                                        return true; // Display all data for other roles (role_id 1 and 2)
-                                    }
-                                }) as $subtaskhistory)
-                                    <tr class="subtaskhistoryRow">
-                                        <td>{{ $subtaskhistory->date }}</td>
-                                        <td>NULL</td>
-                                        <td>{{ $subtaskhistory->name }}</td>
-                                        <td>{{ $subtaskhistory->dev_hours + $subtaskhistory->eng_hours }}</td>
+                        <div class="scroll-container mt-2" style="height: 70%; overflow-y: auto;">
+                            <table class="table" id="subtaskHistoryTable">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Client</th>
+                                        <th>Subtask</th>
+                                        <th>Support Hours</th>
                                     </tr>
-                                @endforeach
+                                </thead>
 
-                            </tbody>
-                        </table>
+                                <tbody>
+                                    @foreach ($subtaskhistorys->filter(function ($subtaskhistory) {
+            $user = auth()->user();
+            if ($user->role_id == 3) {
+                return $subtaskhistory->user_id == $user->id;
+            } else {
+                return true; // Display all data for other roles (role_id 1 and 2)
+            }
+        }) as $subtaskhistory)
+                                        <tr class="subtaskhistoryRow">
+                                            <td>{{ $subtaskhistory->date }}</td>
+                                            <td>NULL</td>
+                                            <td>{{ $subtaskhistory->name }}</td>
+                                            <td>{{ $subtaskhistory->dev_hours + $subtaskhistory->eng_hours }}</td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
                 {{-- end Subtask View Table widget --}}
