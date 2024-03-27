@@ -26,6 +26,8 @@ class EmployeePerformanceController extends Controller
         return response()->json(['subtaskhistories' => $subtaskhistorys]);
     }*/
 
+
+
     public function subtaskhis(Request $request)
     {
         $userId = $request->input('userId');
@@ -39,60 +41,98 @@ class EmployeePerformanceController extends Controller
         $totalDevHours = $subtaskhistorys->sum('dev_hours');
         $totalEngHours = $subtaskhistorys->sum('eng_hours');
 
-        // Calculate total dev_hours and eng_hours for all the subtasks
-        $totalSubTaskDevHours = Task::sum('dev_hours');
-        $totalSubTaskEngHours = Task::sum('eng_hours');
+        // Initialize variables to store sum of dev_hours and eng_hours for tasks with isOneDay true
+        $totalOneDayDevHours = 0;
+        $totalOneDayEngHours = 0;
 
-        // Retrieve dev_hours and eng_hours where isOneday is true in the tasks table
-        $taskOnedayDevHours = DB::table('tasks')
-                                ->where('user_id', $userId)
-                                ->where('isOneday', true)
-                                ->sum('dev_hours');
+        // Retrieve all tasks with isOneDay true for this user_id
+        $tasksWithOneDay = DB::table('tasks')
+                            ->where('user_id', $userId)
+                            ->where('isOneDay', true)
+                            ->get();
 
-        $taskOnedayEngHours = DB::table('tasks')
-                                ->where('user_id', $userId)
-                                ->where('isOneday', true)
-                                ->sum('eng_hours');
+        // Calculate sum of dev_hours and eng_hours for tasks with isOneDay true
+        foreach ($tasksWithOneDay as $task) {
+            $totalOneDayDevHours += $task->dev_hours;
+            $totalOneDayEngHours += $task->eng_hours;
+        }
 
-        // Retrieve dev_hours and eng_hours where isLastDay is true in the tasks table
-        $taskLastDayDevHours = DB::table('tasks')
-                                ->where('user_id', $userId)
-                                ->where('isLastDay', true)
-                                ->sum('dev_hours');
+        // Retrieve tasks with isLastDay true for the specified user_id
+        $tasksWithLastDay = DB::table('tasks')
+                            ->where('user_id', $userId)
+                            ->where('isLastDay', true)
+                            ->get();
 
-        $taskLastDayEngHours = DB::table('tasks')
-                                ->where('user_id', $userId)
-                                ->where('isLastDay', true)
-                                ->sum('eng_hours');
+        // Initialize arrays to store the sum of dev_hours and eng_hours for each task
+        $lastDayTaskDevHours = [];
+        $lastDayTaskEngHours = [];
 
-        // Calculate the differences
-        $devHoursDifference = abs($totalDevHours - $taskLastDayDevHours);
-        $engHoursDifference = abs($totalEngHours - $taskLastDayEngHours);
+        // Initialize an array to store differences for each task
+        $devHoursDifferences = [];
+        $engHoursDifferences = [];
 
+        // Iterate over tasks with isLastDay true
+        foreach ($tasksWithLastDay as $task) {
+            // Store dev_hours for the current task
+            $lastDayTaskDevHours[$task->id] = $task->dev_hours;
 
-        // Calculate EmpDevTotal and EmpEngTotal
-        $EmpDevTotal = $totalDevHours + $taskOnedayDevHours + $devHoursDifference;
-        $EmpEngTotal = $totalEngHours + $taskOnedayEngHours + $engHoursDifference;
+            // Store eng_hours for the current task
+            $lastDayTaskEngHours[$task->id] = $task->eng_hours;
 
-        // Prepare the response
+            // Retrieve subtasks for the current task
+            $subtasks = DB::table('sub_tasks')
+                        ->where('task_id', $task->id)
+                        ->get();
+
+            // Initialize variables to store the sum of dev_hours and eng_hours for the current task
+            $sumDevHours = 0;
+            $sumEngHours = 0;
+
+            // Calculate sum of dev_hours and eng_hours for subtasks of the current task
+            foreach ($subtasks as $subtask) {
+                $sumDevHours += $subtask->dev_hours;
+                $sumEngHours += $subtask->eng_hours;
+            }
+
+            // Store the sum of dev_hours and eng_hours for the current task
+            $lastDayTaskDevHours[$task->id] += $sumDevHours;
+            $lastDayTaskEngHours[$task->id] += $sumEngHours;
+
+            // Calculate the difference for the current task
+            $devHoursDifference = $lastDayTaskDevHours[$task->id] - $task->dev_hours;
+            $engHoursDifference = $lastDayTaskEngHours[$task->id] - $task->eng_hours;
+
+            // Store the difference for the current task
+            $devHoursDifferences[$task->id] = $devHoursDifference;
+            $engHoursDifferences[$task->id] = $engHoursDifference;
+        }
+
+        // Calculate the total sum of dev_hours and eng_hours including differences
+        $totalDevHoursDifference = array_sum($devHoursDifferences);
+        $totalEngHoursDifference = array_sum($engHoursDifferences);
+
+        // Calculate the total sum of dev_hours and eng_hours including differences for one-day tasks
+        $EmpDevTotal = $totalDevHours + $totalOneDayDevHours + $totalDevHoursDifference;
+        $EmpEngTotal = $totalEngHours + $totalOneDayEngHours + $totalEngHoursDifference;
+
         $response = [
             'subtaskhistories' => $subtaskhistorys,
             'total_dev_hours' => $totalDevHours,
             'total_eng_hours' => $totalEngHours,
-            'task_oneday_dev_hours' => $taskOnedayDevHours,
-            'task_oneday_eng_hours' => $taskOnedayEngHours,
-            'task_last_day_dev_hours' => $taskLastDayDevHours,
-            'task_last_day_eng_hours' => $taskLastDayEngHours,
-            'dev_hours_difference' => $devHoursDifference,
-            'eng_hours_difference' => $engHoursDifference,
+            'total_one_day_dev_hours' => $totalOneDayDevHours,
+            'total_one_day_eng_hours' => $totalOneDayEngHours,
+            'last_day_task_dev_hours' => $lastDayTaskDevHours,
+            'last_day_task_eng_hours' => $lastDayTaskEngHours,
+            'dev_hours_differences' => $devHoursDifferences,
+            'eng_hours_differences' => $engHoursDifferences,
+            'total_dev_hours_difference' => $totalDevHoursDifference,
+            'total_eng_hours_difference' => $totalEngHoursDifference,
             'EmpDevTotal' => $EmpDevTotal,
             'EmpEngTotal' => $EmpEngTotal,
         ];
 
-        // Return the response as JSON
         return response()->json($response);
     }
-
 
 
 }
