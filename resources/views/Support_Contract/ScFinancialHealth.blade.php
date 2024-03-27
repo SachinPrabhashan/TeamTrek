@@ -14,8 +14,143 @@
             display: none;
             /* Initially hide the FinancialData div */
         }
-    </style>
 
+        .chart-container {
+            width: 45%; /* Adjust width as needed */
+            margin-right: 5px; /* Add margin between charts */
+            display: inline-block; /* Display charts inline */
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            // Define chart variables globally
+            var devHoursChart, engHoursChart;
+
+            $('#scFinancialSearchBtn').click(function() {
+                var supportContractId = $('#selectSupportContract').val();
+                var year = $('#selectSupportContractYear').val();
+
+                $.ajax({
+                    url: '/getSupportContract-FinancialData',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        supportContractId: supportContractId,
+                        year: year
+                    },
+                    success: function(response) {
+                        $('.FinancialData').show();
+
+                        // Destroy previous charts before creating new ones
+                        destroyCharts();
+
+                        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+                        // Initialize arrays to store data for each month
+                        var devChargersData = new Array(12).fill(0);
+                        var totalDevChargerData = new Array(12).fill(0);
+                        var engChargersData = new Array(12).fill(0);
+                        var totalEngChargerData = new Array(12).fill(0);
+
+                        // Loop through response data and update corresponding arrays
+                        for (var monthKey in response) {
+                            var monthData = response[monthKey];
+                            var monthIndex = parseInt(monthKey) - 1; // Convert month key to zero-based index
+                            devChargersData[monthIndex] = monthData.devChargers;
+                            totalDevChargerData[monthIndex] = monthData.totalDevCharger;
+                            engChargersData[monthIndex] = monthData.engChargers;
+                            totalEngChargerData[monthIndex] = monthData.totalEngCharger;
+                        }
+
+                        // Create developer hours chart
+                        var ctxDev = document.getElementById('devHoursChart').getContext('2d');
+                        devHoursChart = new Chart(ctxDev, {
+                            type: 'bar',
+                            data: {
+                                labels: months,
+                                datasets: [{
+                                    label: 'Developer Hours Chargers',
+                                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1,
+                                    data: devChargersData
+                                }, {
+                                    label: 'Total Developer Charger',
+                                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    borderWidth: 1,
+                                    data: totalDevChargerData
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+
+                        // Create engineer hours chart
+                        var ctxEng = document.getElementById('engHoursChart').getContext('2d');
+                        engHoursChart = new Chart(ctxEng, {
+                            type: 'bar',
+                            data: {
+                                labels: months,
+                                datasets: [{
+                                    label: 'Engineer Hours Chargers',
+                                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1,
+                                    data: engChargersData
+                                }, {
+                                    label: 'Total Engineer Charger',
+                                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    borderWidth: 1,
+                                    data: totalEngChargerData
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'An error occurred while fetching data.';
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: errorMessage,
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
+
+            // Hide FinancialData div initially
+            $('.FinancialData').hide();
+
+            // Function to destroy previous charts
+            function destroyCharts() {
+                if (devHoursChart) {
+                    devHoursChart.destroy();
+                }
+                if (engHoursChart) {
+                    engHoursChart.destroy();
+                }
+            }
+        });
+        </script>
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4">
             <h1>Support Contract Financial Report</h1>
@@ -41,80 +176,13 @@
 
             <!-- Displaying charges in dual bar chart -->
             <div class="FinancialData">
-                <canvas id="financialChart" width="200" height="100"></canvas>
+                <div class="chart-container">
+                    <canvas id="devHoursChart" width="400" height="200"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="engHoursChart" width="400" height="200"></canvas>
+                </div>
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function() {
-            $('#scFinancialSearchBtn').click(function() {
-                var supportContractId = $('#selectSupportContract').val();
-                var year = $('#selectSupportContractYear').val();
-
-                $.ajax({
-                    url: '/getSupportContract-FinancialData',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        supportContractId: supportContractId,
-                        year: year
-                    },
-                    success: function(response) {
-                        renderDualBarChart(response.devChargers, response.totalDevCharger,
-                            response.engChargers, response.totalEngCharger);
-                        $('.FinancialData').show();
-
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        if (xhr.status === 404) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Support Contract Instance Not Found',
-                                text: 'There is no support contract instance for the selected values.',
-                                confirmButtonText: 'OK'
-                            });
-                        }
-                    },
-                });
-            });
-
-            function renderDualBarChart(devChargers, totalDevCharger, engChargers, totalEngCharger) {
-                var ctx = document.getElementById('financialChart').getContext('2d');
-                var financialChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Chargers For Dev Hours', 'Payments For Dev Hours',
-                            'Chargers For Eng Hours', 'Payments For Eng Hours'
-                        ],
-                        datasets: [{
-                            label: 'Developer Charges and Payments',
-                            backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)'],
-                            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(255, 99, 132, 1)'],
-                            borderWidth: 1,
-                            data: [devChargers, totalDevCharger, null, null]
-                        }, {
-                            label: 'Engineer Charges and Payments',
-                            backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)'],
-                            borderColor: ['rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 1)'],
-                            borderWidth: 1,
-                            data: [null, null, engChargers, totalEngCharger]
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                barPercentage: 0.4 // Adjust the bar width percentage as needed
-                            },
-                            y: {
-                                beginAtZero: true
-                            }
-
-                        }
-                    }
-                });
-            }
-        });
-    </script>
 @endsection
