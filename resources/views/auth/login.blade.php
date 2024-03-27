@@ -32,10 +32,88 @@
 
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
-    </head>
 
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            section {
+                position: relative;
+                width: 100%;
+                height: 100vh;
+                /* background: #3586ff; */
+                background: #1a75bb;
+                overflow: hidden;
+            }
+
+            section .air {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 100px;
+                background: url(https://1.bp.blogspot.com/-xQUc-TovqDk/XdxogmMqIRI/AAAAAAAACvI/AizpnE509UMGBcTiLJ58BC6iViPYGYQfQCLcBGAsYHQ/s1600/wave.png);
+                background-size: 1000px 100px
+            }
+
+            section .air.air1 {
+                animation: wave 30s linear infinite;
+                z-index: 1000;
+                opacity: 1;
+                animation-delay: 0s;
+                bottom: 0;
+            }
+
+            section .air.air2 {
+                animation: wave2 15s linear infinite;
+                z-index: 999;
+                opacity: 0.5;
+                animation-delay: -5s;
+                bottom: 10px;
+            }
+
+            section .air.air3 {
+                animation: wave 30s linear infinite;
+                z-index: 998;
+                opacity: 0.2;
+                animation-delay: -2s;
+                bottom: 15px;
+            }
+
+            section .air.air4 {
+                animation: wave2 5s linear infinite;
+                z-index: 997;
+                opacity: 0.7;
+                animation-delay: -5s;
+                bottom: 20px;
+            }
+
+            @keyframes wave {
+                0% {
+                    background-position-x: 0px;
+                }
+
+                100% {
+                    background-position-x: 1000px;
+                }
+            }
+
+            @keyframes wave2 {
+                0% {
+                    background-position-x: 0px;
+                }
+
+                100% {
+                    background-position-x: -1000px;
+                }
+            }
+        </style>
+    </head>
+    <section>
     <body>
-        <div class="container-xxl position-relative bg-white d-flex p-0">
+        <div class="container-xxl position-relative d-flex p-0">
             <!-- Spinner Start -->
             <div id="spinner"
                 class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -47,7 +125,9 @@
 
 
             <!-- Sign In Start -->
+
             <div class="container-fluid">
+
                 <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
                     <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                         <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
@@ -61,9 +141,9 @@
                                 @csrf
                                 <div class="form-floating mb-3">
                                     <input id="email" type="email"
-                                    class="form-control @error('email') is-invalid @enderror" id="floatingInput"
-                                        placeholder="name@example.com" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                        class="form-control @error('email') is-invalid @enderror" id="floatingInput"
+                                        placeholder="name@example.com" name="email" value="{{ old('email') }}" required
+                                        autocomplete="email" autofocus>
 
                                     <label for="floatingInput">Email address</label>
                                     @error('email')
@@ -72,12 +152,12 @@
                                         </span>
                                     @enderror
                                 </div>
-                                
+
 
                                 <div class="form-floating mb-4">
-                                    <input type="password" class="form-control" id="floatingPassword"
-                                        placeholder="Password" @error('password') is-invalid @enderror name="password"
-                                        required autocomplete="current-password">
+                                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+                                        @error('password') is-invalid @enderror name="password" required
+                                        autocomplete="current-password">
                                     <label for="floatingPassword">Password</label>
                                     @error('password')
                                         <span class="invalid-feedback">
@@ -98,8 +178,13 @@
                         </div>
                     </div>
                 </div>
+
+
+
             </div>
+
             <!-- Sign In End -->
+
         </div>
 
         <!-- JavaScript Libraries -->
@@ -116,7 +201,11 @@
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
     </body>
-
+    <div class='air air1'></div>
+                    <div class='air air2'></div>
+                    <div class='air air3'></div>
+                    <div class='air air4'></div>
+</section>
     </html>
 
     {{-- <div class="container">

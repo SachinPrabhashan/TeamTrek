@@ -63,7 +63,10 @@
 </head>
 
 <body>
-    <div class="container-xxl position-relative bg-white d-flex p-0">
+    <div class="waveback">
+
+
+    <div class="container-xxl position-relative  d-flex p-0 ">
         <!-- Spinner Start -->
         <div id="spinner"
             class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -364,7 +367,7 @@
 
 
             <!-- Blank Start -->
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4 ">
                 {{-- <div class="row vh-100 bg-light rounded">
                     <div class="col-md-6 text-center"> --}}
 
@@ -537,7 +540,7 @@
             }
         </script>
 
-
+</div>
 </body>
 
 </html>
