@@ -168,14 +168,12 @@
                     // Populate hours information
                     var devHours = response.supportContractInstance.dev_hours || 0;
                     var engHours = response.supportContractInstance.eng_hours || 0;
-                    var remainingDevHours = response.remainingHours ? response.remainingHours
-                        .rem_dev_hours || devHours : devHours;
-                    var remainingEngHours = response.remainingHours ? response.remainingHours
-                        .rem_eng_hours || engHours : engHours;
-                    var chargingDevHours = response.extraChargers ? response.extraChargers
-                        .charging_dev_hours || 0 : 0;
-                    var chargingEngHours = response.extraChargers ? response.extraChargers
-                        .charging_eng_hours || 0 : 0;
+
+                    var remainingDevHours = response.remainingHours ? (response.remainingHours.rem_dev_hours !== null ? response.remainingHours.rem_dev_hours : devHours) : devHours;
+                    var remainingEngHours = response.remainingHours ? (response.remainingHours.rem_eng_hours !== null ? response.remainingHours.rem_eng_hours : engHours) : engHours;
+
+                    var chargingDevHours = response.extraChargers ? (response.extraChargers.charging_dev_hours || 0) : 0;
+                    var chargingEngHours = response.extraChargers ? (response.extraChargers.charging_eng_hours || 0) : 0;
 
                     $('#devHours').text('Dev Hours: ' + devHours);
                     $('#engHours').text('Eng Hours: ' + engHours);
