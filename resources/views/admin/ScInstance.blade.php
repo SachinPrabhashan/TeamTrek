@@ -104,13 +104,13 @@
                                 </div>
                             </div>
                         @endforeach
-                        <div class="container mt-4">
-                            @foreach ($instances as $instance)
-                                <canvas id="chart-{{ $instance->year }}" class="canvas-container"></canvas>
-                            @endforeach
-                        </div>
-
                     </div>
+                </div>
+
+                <div class="container mt-4" id="chartContainer">
+                    @foreach ($instances as $instance)
+                        <canvas id="chart-{{ $instance->year }}" class="canvas-container"></canvas>
+                    @endforeach
                 </div>
 
 
@@ -185,6 +185,7 @@
         $('#supportContractInstanceTable').toggle();
         $('#instancewidgets').toggle();
         $('#supportContractInstanceForm')[0].reset();
+        $('#chartContainer').hide();
     });
 
     $('#closeFormBtn').click(function() {
@@ -192,6 +193,7 @@
         $('#supportContractInstanceTable').show();
         $('#instancewidgets').show();
         $('#supportContractInstanceForm')[0].reset();
+        $('#chartContainer').show();
     });
 
     // Handle form submission
@@ -211,27 +213,40 @@
             data: formData,
             success: function(response) {
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Support Contract Instance created successfully!'
-                });
+                icon: 'success',
+                title: 'Success',
+                text: 'Support Contract Instance created successfully!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                    //fetchAndRenderCharts($("#selectSupportContract").val()); // Refresh charts after creating instance
+                }
+            });
 
-                $('#createSupportContractInstanceForm').hide();
+
+                //$('#createSupportContractInstanceForm').hide();
+                //$('#nstancewidgets').show();
+                //$('#chartContainer').show();
                 $('#supportContractInstanceForm')[0].reset();
-                $('#supportContractInstanceTable').show();
+
+                //location.reload();
                 fetchAndRenderCharts($("#selectSupportContract").val()); // Refresh charts after creating instance
             },
             error: function(xhr, status, error) {
                 $('#createSupportContractInstanceForm').hide();
                 var errorMessage = xhr.responseJSON.error;
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: errorMessage
-                });
-                $('#createSupportContractInstanceForm').hide();
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#supportContractInstanceForm')[0].reset();
+                }
+            });
+                //$('#createSupportContractInstanceForm').hide();
                 $('#supportContractInstanceForm')[0].reset();
-                $('#supportContractInstanceTable').show();
+
             }
         });
     });
@@ -297,6 +312,8 @@
             });
         });
     }
+
+
 
     // Initial load: fetch data and render charts for the default selected support contract instance and display instances related to the first support contract
     var defaultSelectedContractId = $("#selectSupportContract").val();
