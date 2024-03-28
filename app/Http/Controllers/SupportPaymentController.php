@@ -34,162 +34,82 @@ class SupportPaymentController extends Controller
         return view('Support_Contract.ScFinancialHealth', compact('tasks','scInstances','supportcontracts','subtasks','remainingHours','extraChargers'));
     }
 
-    /*public function getFinancialData(Request $request)
+
+    public function getFinancialData(Request $request)
     {
         $supportContractId = $request->input('supportContractId');
         $year = $request->input('year');
 
-        $supportContractInstance = SupportContractInstance::where('support_contract_id', $supportContractId)
-            ->where('year', $year)
-            ->first();
+        // Prepare an array to store monthly details
+        $monthlyDetails = [];
 
-        if (!$supportContractInstance) {
-            return response()->json(['error' => 'Support contract instance not found'], 404);
+        // Retrieve data for the specified year and support contract
+        $supportContractInstances = SupportContractInstance::where('support_contract_id', $supportContractId)
+            ->whereYear('created_at', $year)
+            ->get();
+
+            Log::info('Number of support contract instances retrieved: ' . count($supportContractInstances));
+
+        // Loop through each support contract instance
+        foreach ($supportContractInstances as $instance) {
+            // Extract the month from the created_at timestamp
+            $month = $instance->created_at->format('m');
+
+            Log::info('Processing month: ' . $month);
+
+            // Find the latest ExtraChargers directly where the support_contract_instance_id matches
+            $extraChargers = ExtraCharger::where('support_contract_instance_id', $instance->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            Log::info('Extra chargers details: ' . json_encode($extraChargers));
+
+            if (!$extraChargers) {
+                // If no extra chargers found for the support contract instance, skip to the next instance
+                continue;
+            }
+
+            // Fetch support payment details based on the support contract instance ID
+            $supportPayment = SupportPayment::where('support_contract_instance_id', $instance->id)
+                ->first();
+
+            Log::info('Support payment details: ' . json_encode($supportPayment));
+
+            if (!$supportPayment) {
+                // If no support payment details found for the support contract instance, skip to the next instance
+                continue;
+            }
+
+            // Calculate charges for developer and engineer hours
+            $devChargers = $extraChargers->charging_dev_hours * $supportPayment->dev_rate_per_hour;
+            $engChargers = $extraChargers->charging_eng_hours * $supportPayment->eng_rate_per_hour;
+
+            // Fetch hourly rate for the user from emp_rates table
+            $hourlyRate = EmpRate::where('user_id', $extraChargers->user_id)->value('hourly_rate');
+
+            if (!$hourlyRate) {
+                // If hourly rate not found for the user, skip to the next instance
+                continue;
+            }
+
+            // Calculate total charges for the user
+            $totalDevCharge = $extraChargers->charging_dev_hours * $hourlyRate;
+            $totalEngCharge = $extraChargers->charging_eng_hours * $hourlyRate;
+
+            // Add monthly details to the array
+            $monthlyDetails[$month] = [
+                'supportContractInstance' => $instance,
+                'extraChargers' => $extraChargers,
+                'supportPayment' => $supportPayment,
+                'devChargers' => $devChargers,
+                'engChargers' => $engChargers,
+                'totalDevCharger' => $totalDevCharge,
+                'totalEngCharger' => $totalEngCharge,
+            ];
         }
 
-        // Find the latest ExtraChargers directly where the support_contract_instance_id matches
-        $extraChargers = ExtraCharger::where('support_contract_instance_id', $supportContractInstance->id)
-            ->orderBy('created_at', 'desc')
-            ->first();
-
-
-        if (!$extraChargers) {
-            return response()->json(['error' => 'No extra chargers found for the support contract instance'], 404);
-        }
-
-        // Fetch support payment details based on the support contract instance ID
-        $supportPayment = SupportPayment::where('support_contract_instance_id', $supportContractInstance->id)
-            ->first();
-
-        if (!$supportPayment) {
-            return response()->json(['error' => 'No support payment details found for the support contract instance'], 404);
-        }
-
-        // Calculate charges for developer and engineer hours
-        $devChargers = $extraChargers->charging_dev_hours * $supportPayment->dev_rate_per_hour;
-        $engChargers = $extraChargers->charging_eng_hours * $supportPayment->eng_rate_per_hour;
-
-        // Prepare an array to store total charges for each user
-        $userCharges = [];
-
-        // Ensure $extraChargers is an object
-        if (!is_object($extraChargers)) {
-            return response()->json(['error' => '$extraChargers is not an object'], 500); // Return an error response
-        }
-
-        // Fetch hourly rate for the user from emp_rates table
-        $hourlyRate = EmpRate::where('user_id', $extraChargers->user_id)->value('hourly_rate');
-
-        // Check if hourly rate exists
-        if (!$hourlyRate) {
-            return response()->json(['error' => 'Hourly rate not found for user ' . $extraChargers->user_id], 404); // Return an error response
-        }
-
-        // Calculate total charges for the user
-        $totalDevCharge = $extraChargers->charging_dev_hours * $hourlyRate;
-        $totalEngCharge = $extraChargers->charging_eng_hours * $hourlyRate;
-
-        // Add total charges to the array using user_id as key
-        $userCharges[$extraChargers->user_id] = [
-            'totalDevCharge' => $totalDevCharge,
-            'totalEngCharge' => $totalEngCharge,
-        ];
-
-        // Calculate total developer and engineer charges for all users
-        $totalDevCharger = $totalDevCharge;
-        $totalEngCharger = $totalEngCharge;
-
-        // Prepare the data to be returned
-        $responseData = [
-            'supportContractInstance' => $supportContractInstance,
-            'extraChargers' => $extraChargers,
-            'supportPayment' => $supportPayment,
-            'devChargers' => $devChargers,
-            'engChargers' => $engChargers,
-            'userCharges' => $userCharges,
-            'totalDevCharger' => $totalDevCharger,
-            'totalEngCharger' => $totalEngCharger,
-        ];
-
-        // Return the response
-        return response()->json($responseData);
-    }*/
-
-    public function getFinancialData(Request $request)
-{
-    $supportContractId = $request->input('supportContractId');
-    $year = $request->input('year');
-
-    // Prepare an array to store monthly details
-    $monthlyDetails = [];
-
-    // Retrieve data for the specified year and support contract
-    $supportContractInstances = SupportContractInstance::where('support_contract_id', $supportContractId)
-        ->whereYear('created_at', $year)
-        ->get();
-
-        Log::info('Number of support contract instances retrieved: ' . count($supportContractInstances));
-
-    // Loop through each support contract instance
-    foreach ($supportContractInstances as $instance) {
-        // Extract the month from the created_at timestamp
-        $month = $instance->created_at->format('m');
-
-        Log::info('Processing month: ' . $month);
-
-        // Find the latest ExtraChargers directly where the support_contract_instance_id matches
-        $extraChargers = ExtraCharger::where('support_contract_instance_id', $instance->id)
-            ->orderBy('created_at', 'desc')
-            ->first();
-
-        Log::info('Extra chargers details: ' . json_encode($extraChargers));
-
-        if (!$extraChargers) {
-            // If no extra chargers found for the support contract instance, skip to the next instance
-            continue;
-        }
-
-        // Fetch support payment details based on the support contract instance ID
-        $supportPayment = SupportPayment::where('support_contract_instance_id', $instance->id)
-            ->first();
-
-        Log::info('Support payment details: ' . json_encode($supportPayment));
-
-        if (!$supportPayment) {
-            // If no support payment details found for the support contract instance, skip to the next instance
-            continue;
-        }
-
-        // Calculate charges for developer and engineer hours
-        $devChargers = $extraChargers->charging_dev_hours * $supportPayment->dev_rate_per_hour;
-        $engChargers = $extraChargers->charging_eng_hours * $supportPayment->eng_rate_per_hour;
-
-        // Fetch hourly rate for the user from emp_rates table
-        $hourlyRate = EmpRate::where('user_id', $extraChargers->user_id)->value('hourly_rate');
-
-        if (!$hourlyRate) {
-            // If hourly rate not found for the user, skip to the next instance
-            continue;
-        }
-
-        // Calculate total charges for the user
-        $totalDevCharge = $extraChargers->charging_dev_hours * $hourlyRate;
-        $totalEngCharge = $extraChargers->charging_eng_hours * $hourlyRate;
-
-        // Add monthly details to the array
-        $monthlyDetails[$month] = [
-            'supportContractInstance' => $instance,
-            'extraChargers' => $extraChargers,
-            'supportPayment' => $supportPayment,
-            'devChargers' => $devChargers,
-            'engChargers' => $engChargers,
-            'totalDevCharger' => $totalDevCharge,
-            'totalEngCharger' => $totalEngCharge,
-        ];
+        // Return the response with monthly details
+        return response()->json($monthlyDetails);
     }
-
-    // Return the response with monthly details
-    return response()->json($monthlyDetails);
-}
 
 }

@@ -34,75 +34,15 @@
             background: #97d7ff;
             transition: 0.5s;
         }
+
+        .canvas-container {
+            max-width: 400px;
+            max-height: 300px;
+            display: inline-block;
+             overflow: hidden;
+
+        }
     </style>
-
-    <script>
-        $(document).ready(function() {
-            //Form display and toggle functions
-            $('#createSupportContractInstanceForm').hide();
-            $('#instancewidgets').show();
-
-            $('#addSupportContractInstanceBtn').click(function() {
-                $('#createSupportContractInstanceForm').toggle(100);
-                $('#supportContractInstanceTable').toggle();
-                $('#instancewidgets').toggle();
-                $('#supportContractInstanceForm')[0].reset();
-
-            });
-
-            $('#closeFormBtn').click(function() {
-                $('#createSupportContractInstanceForm').hide();
-                $('#supportContractInstanceTable').show();
-                $('#instancewidgets').show();
-                $('#supportContractInstanceForm')[0].reset();
-
-            });
-
-            // Handle form submission
-            $('#supportContractInstanceForm').submit(function(event) {
-                event.preventDefault();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                var formData = $(this).serialize();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/support-contract-instances-create',
-                    data: formData,
-                    success: function(response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Support Contract Instance created successfully!'
-                        });
-
-                        $('#createSupportContractInstanceForm').hide();
-                        $('#supportContractInstanceForm')[0].reset();
-                        $('#supportContractInstanceTable').show();
-                        $(location.reload());
-                    },
-                    error: function(xhr, status, error) {
-                        $('#createSupportContractInstanceForm').hide();
-                        var errorMessage = xhr.responseJSON.error;
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: errorMessage
-                        });
-                        $('#createSupportContractInstanceForm').hide();
-                        $('#supportContractInstanceForm')[0].reset();
-                        $('#supportContractInstanceTable').show();
-                    }
-
-                });
-            });
-        });
-    </script>
-
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4" style="overflow: hidden;">
             <div class="container-fluid">
@@ -164,10 +104,16 @@
                                 </div>
                             </div>
                         @endforeach
-
+                        <div class="container mt-4">
+                            @foreach ($instances as $instance)
+                                <canvas id="chart-{{ $instance->year }}" class="canvas-container"></canvas>
+                            @endforeach
+                        </div>
 
                     </div>
                 </div>
+
+
 
 
                 <!-- Form for creating support contract instances -->
@@ -228,28 +174,177 @@
         </div>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            // Initial load: display instances related to the first support contract
-            filterInstances($("#selectSupportContract").val());
+<script>
+    $(document).ready(function() {
+    //Form display and toggle functions
+    $('#createSupportContractInstanceForm').hide();
+    $('#instancewidgets').show();
 
-            // Event listener for dropdown change
-            $("#selectSupportContract").change(function() {
-                // Get the selected support contract ID
-                var selectedContractId = $(this).val();
+    $('#addSupportContractInstanceBtn').click(function() {
+        $('#createSupportContractInstanceForm').toggle(100);
+        $('#supportContractInstanceTable').toggle();
+        $('#instancewidgets').toggle();
+        $('#supportContractInstanceForm')[0].reset();
+    });
 
-                // Call the function to filter and display instances based on the selected support contract
-                filterInstances(selectedContractId);
-            });
+    $('#closeFormBtn').click(function() {
+        $('#createSupportContractInstanceForm').hide();
+        $('#supportContractInstanceTable').show();
+        $('#instancewidgets').show();
+        $('#supportContractInstanceForm')[0].reset();
+    });
 
-            // Function to filter and display instances based on the selected support contract
-            function filterInstances(contractId) {
-                // Hide all instances
-                $(".card").hide();
-
-                // Show instances related to the selected support contract
-                $(".card[data-contract-id='" + contractId + "']").show();
+    // Handle form submission
+    $('#supportContractInstanceForm').submit(function(event) {
+        event.preventDefault();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-    </script>
+
+        var formData = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: '/support-contract-instances-create',
+            data: formData,
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Support Contract Instance created successfully!'
+                });
+
+                $('#createSupportContractInstanceForm').hide();
+                $('#supportContractInstanceForm')[0].reset();
+                $('#supportContractInstanceTable').show();
+                fetchAndRenderCharts($("#selectSupportContract").val()); // Refresh charts after creating instance
+            },
+            error: function(xhr, status, error) {
+                $('#createSupportContractInstanceForm').hide();
+                var errorMessage = xhr.responseJSON.error;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage
+                });
+                $('#createSupportContractInstanceForm').hide();
+                $('#supportContractInstanceForm')[0].reset();
+                $('#supportContractInstanceTable').show();
+            }
+        });
+    });
+
+    // Function to render charts based on the instances data
+    function renderCharts(instances) {
+        // Loop through instances and render charts
+        instances.forEach(function(instance) {
+            var chartData = {
+                labels: [instance.year.toString()],
+                datasets: [{
+                        label: 'Given Dev Hours',
+                        data: [instance.instance.dev_hours],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Given Eng Hours',
+                        data: [instance.instance.eng_hours],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Remaining Dev Hours',
+                        data: [instance.total_rem_dev_hours],
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Remaining Eng Hours',
+                        data: [instance.total_rem_eng_hours],
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+
+            var ctx = document.getElementById('chart-' + instance.year).getContext('2d');
+
+            // Check if a Chart instance already exists on the canvas
+            /*if (window.myCharts && window.myCharts['chart-' + instance.year]) {
+                window.myCharts['chart-' + instance.year].destroy();
+            }*/
+
+            // Create a new Chart instance
+            window.myCharts = window.myCharts || {};
+            window.myCharts['chart-' + instance.year] = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    }
+
+    // Initial load: fetch data and render charts for the default selected support contract instance and display instances related to the first support contract
+    var defaultSelectedContractId = $("#selectSupportContract").val();
+    fetchAndRenderCharts(defaultSelectedContractId);
+    filterInstances(defaultSelectedContractId);
+
+    // Event listener for dropdown change
+    $("#selectSupportContract").change(function() {
+        var selectedContractId = $(this).val();
+        fetchAndRenderCharts(selectedContractId);
+        filterInstances(selectedContractId);
+        destroyCharts();
+    });
+
+    function fetchAndRenderCharts(selectedContractId) {
+        $.ajax({
+            type: 'GET',
+            url: '/get-support-contract-instance-data/' + selectedContractId,
+            success: function(response) {
+                renderCharts(response.instances);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // Function to filter and display instances based on the selected support contract
+    function filterInstances(contractId) {
+        // Hide all instances
+        $(".card").hide();
+
+        // Show instances related to the selected support contract
+        $(".card[data-contract-id='" + contractId + "']").show();
+    }
+
+    function destroyCharts() {
+    // Define an array to store all chart instances
+        var allChartInstances = Object.values(window.myCharts || {});
+        // Loop through the array and destroy each chart instance
+        allChartInstances.forEach(function(chart) {
+            if (chart) {
+                chart.destroy();
+            }
+        });
+    }
+
+});
+</script>
+
 @endsection

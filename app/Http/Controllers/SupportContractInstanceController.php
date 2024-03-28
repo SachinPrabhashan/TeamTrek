@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\SupportContractInstance;
 use App\Models\SupportPayment;
-
 use App\Models\SupportContract;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use App\Models\Task;
+use App\Models\RemainingHour;
 
 class SupportContractInstanceController extends Controller
 {
@@ -100,7 +101,64 @@ class SupportContractInstanceController extends Controller
             return response()->json(['error' => 'An error occurred while fetching support contract instances.'], 500);
         }
     }*/
+    public function getSupportContractInstanceData($supportContractId)
+{
+    // Fetch support contract instances based on the support contract ID
+    $supportContractInstances = SupportContractInstance::where('support_contract_id', $supportContractId)->get();
+
+    // Initialize arrays to store support contract instances separately
+    $devHoursArray = [];
+    $engHoursArray = [];
+    $instancesArray = [];
+
+    // Iterate through each support contract instance
+    foreach ($supportContractInstances as $instance) {
+        // Store dev_hours, eng_hours, and year in separate arrays
+        $devHoursArray[] = $instance->dev_hours;
+        $engHoursArray[] = $instance->eng_hours;
+        
+        // Fetch the latest task associated with the current support contract instance
+        $latestTask = Task::where('support_contract_instance_id', $instance->id)
+        ->latest('updated_at') // Order tasks by updated_at field in descending order
+        ->first(); // Retrieve only the latest task
+
+        if ($latestTask) {
+        // Fetch the latest remaining hours for the current task
+        $latestRemainingHours = RemainingHour::where('task_id', $latestTask->id)
+            ->latest('updated_at')
+            ->first();
+
+        // Calculate total remaining hours
+        $totalRemDevHours = $latestRemainingHours->rem_dev_hours ?? 0;
+        $totalRemEngHours = $latestRemainingHours->rem_eng_hours ?? 0;
+        } else {
+        // If no tasks found, initialize total remaining hours as 0
+        $totalRemDevHours = 0;
+        $totalRemEngHours = 0;
+        }
 
 
+        // Store the instance, along with year, total remaining dev hours, and total remaining eng hours
+        $instancesArray[] = [
+            'instance' => $instance,
+            'year' => $instance->year,
+            'total_rem_dev_hours' => $totalRemDevHours,
+            'total_rem_eng_hours' => $totalRemEngHours,
+        ];
+    }
 
+    // Log the data before returning as JSON response
+    Log::info('Support contract instance data fetched:', [
+        'dev_hours' => $devHoursArray,
+        'eng_hours' => $engHoursArray,
+        'instances' => $instancesArray,
+    ]);
+
+    // Return arrays containing dev_hours, eng_hours, instances, and tasks as JSON response
+    return response()->json([
+        'dev_hours' => $devHoursArray,
+        'eng_hours' => $engHoursArray,
+        'instances' => $instancesArray,
+    ]);
+}
 }
