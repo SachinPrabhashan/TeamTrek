@@ -58,53 +58,6 @@ Blade view (Fetch from SESSION)
     title="Create SC Tasks"
 
 
-    4. Slider
-
-    {{-- Slider Bootstrap Start --}}
-
-        {{-- <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://static.dnschecker.org/og-images/image-to-text-converter.png" class="d-block w-100"
-                        alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="https://www.folio3.ai/blog/wp-content/uploads/2022/06/5-ai-tools-for-image-to-text-conversion.jpg"
-                        class="d-block w-100" alt="...">
-                </div>
-
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-        <script>
-            $(document).ready(function() {
-                // Set interval for auto sliding
-                $('#carouselExampleFade').carousel({
-                    interval: 100000 // Adjust the timing as needed (in milliseconds)
-                });
-
-                // Function to stop carousel auto sliding when the last slide is reached
-                $('#carouselExampleFade').on('slid.bs.carousel', function() {
-                    var currentIndex = $('div.carousel-item.active').index() + 1;
-                    var totalItems = $('div.carousel-item').length;
-                    if (currentIndex === totalItems) {
-                        // Stop carousel
-                        $('#carouselExampleFade').carousel('pause');
-                    }
-                });
-            });
-        </script> --}}
-        {{-- End Slider Bootstrap Start --}}
-
-
-
     @foreach ($scInstances as $scInstance)
     @foreach ($tasks as $task)
     @if ($scInstance->id == $task->support_contract_instance_id)

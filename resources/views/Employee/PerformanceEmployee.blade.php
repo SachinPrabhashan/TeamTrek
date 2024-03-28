@@ -63,7 +63,7 @@
             </div>
             {{-- end task service level widget --}}
             <div class="d-flex">
-                <div class="indworks card col-8 mt-3 me-3" style="height: 250px;">
+                <div class="indworks card col-8 mt-3 me-3"  style="height: 250px;">
                     <div class="m-3">
                         <div class="d-flex">
                             <h3 class="m-2">SubTask History<a href="" data-toggle="tooltip"
@@ -173,11 +173,7 @@
             </div>
         </div>
 
-        
-
     </div>
-
-
 
     <script>
         document.getElementById('selectEmployeeName').addEventListener('change', function() {
