@@ -93,6 +93,8 @@ Route::put('/support-contract/update/{id}', [SupportContractController::class,'u
 Route::get('/support-contract/admin-scinstance',[SupportContractInstanceController::class,'ScInstanceIndex'])->name('admin.ScInstance');
 Route::post('/support-contract-instances-create', [SupportContractInstanceController::class, 'addScInstances'])->name('support-contract-instances.add');
 Route::get('/get-support-contract-instances/{contractId}', [SupportContractInstanceController::class,'getSupportContractInstances']);
+Route::get('/get-support-contract-instance-data/{supportContractId}', [SupportContractInstanceController::class,'getSupportContractInstanceData']);
+
 
 
     //SC task monitor
@@ -124,6 +126,9 @@ Route::get('/getSupportContract-ReportData', [ScReportsViewController::class,'ge
     //Financial Health
 Route::get('/performance/financial-health', [SupportPaymentController::class, 'financialHealthIndex'])->name('financialHealth');
 Route::get('/getSupportContract-FinancialData', [SupportPaymentController::class,'getFinancialData']);
+
+    //Support Contract Analysis
+
 
 //All Users
 Route::get('/myprofile', [ProfileController::class, 'index'])->name('myprofile');
