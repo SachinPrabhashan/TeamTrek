@@ -36,72 +36,7 @@
         }
     </style>
 
-    <script>
-        $(document).ready(function() {
-            //Form display and toggle functions
-            $('#createSupportContractInstanceForm').hide();
-            $('#instancewidgets').show();
 
-            $('#addSupportContractInstanceBtn').click(function() {
-                $('#createSupportContractInstanceForm').toggle(100);
-                $('#supportContractInstanceTable').toggle();
-                $('#instancewidgets').toggle();
-                $('#supportContractInstanceForm')[0].reset();
-
-            });
-
-            $('#closeFormBtn').click(function() {
-                $('#createSupportContractInstanceForm').hide();
-                $('#supportContractInstanceTable').show();
-                $('#instancewidgets').show();
-                $('#supportContractInstanceForm')[0].reset();
-
-            });
-
-            // Handle form submission
-            $('#supportContractInstanceForm').submit(function(event) {
-                event.preventDefault();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                var formData = $(this).serialize();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/support-contract-instances-create',
-                    data: formData,
-                    success: function(response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Support Contract Instance created successfully!'
-                        });
-
-                        $('#createSupportContractInstanceForm').hide();
-                        $('#supportContractInstanceForm')[0].reset();
-                        $('#supportContractInstanceTable').show();
-                        $(location.reload());
-                    },
-                    error: function(xhr, status, error) {
-                        $('#createSupportContractInstanceForm').hide();
-                        var errorMessage = xhr.responseJSON.error;
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: errorMessage
-                        });
-                        $('#createSupportContractInstanceForm').hide();
-                        $('#supportContractInstanceForm')[0].reset();
-                        $('#supportContractInstanceTable').show();
-                    }
-
-                });
-            });
-        });
-    </script>
 
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4" style="overflow: hidden;">
@@ -250,6 +185,73 @@
                 // Show instances related to the selected support contract
                 $(".card[data-contract-id='" + contractId + "']").show();
             }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            //Form display and toggle functions
+            $('#createSupportContractInstanceForm').hide();
+            $('#instancewidgets').show();
+
+            $('#addSupportContractInstanceBtn').click(function() {
+                $('#createSupportContractInstanceForm').toggle(100);
+                $('#supportContractInstanceTable').toggle();
+                $('#instancewidgets').toggle();
+                $('#supportContractInstanceForm')[0].reset();
+
+            });
+
+            $('#closeFormBtn').click(function() {
+                $('#createSupportContractInstanceForm').hide();
+                $('#supportContractInstanceTable').show();
+                $('#instancewidgets').show();
+                $('#supportContractInstanceForm')[0].reset();
+
+            });
+
+            // Handle form submission
+            $('#supportContractInstanceForm').submit(function(event) {
+                event.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/support-contract-instances-create',
+                    data: formData,
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Support Contract Instance created successfully!'
+                        });
+
+                        $('#createSupportContractInstanceForm').hide();
+                        $('#supportContractInstanceForm')[0].reset();
+                        $('#supportContractInstanceTable').show();
+                        $(location.reload());
+                    },
+                    error: function(xhr, status, error) {
+                        $('#createSupportContractInstanceForm').hide();
+                        var errorMessage = xhr.responseJSON.error;
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: errorMessage
+                        });
+                        $('#createSupportContractInstanceForm').hide();
+                        $('#supportContractInstanceForm')[0].reset();
+                        $('#supportContractInstanceTable').show();
+                    }
+
+                });
+            });
         });
     </script>
 @endsection

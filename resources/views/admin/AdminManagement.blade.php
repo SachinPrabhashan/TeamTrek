@@ -1,6 +1,8 @@
 @extends('layouts.navitems')
 
 @section('content')
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -395,5 +397,4 @@
 
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 @endsection

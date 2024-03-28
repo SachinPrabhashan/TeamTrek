@@ -2,7 +2,6 @@
 
 @section('content')
     <!-- Add this in your HTML head section -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 
     <head>
@@ -202,7 +201,7 @@
                                         <div class="col-sm-3">
                                             <h6 class="mb-0">New Password</h6>
                                         </div>
-                                        <div class="col-sm-9 text-secondary" >
+                                        <div class="col-sm-9 text-secondary">
                                             <div class="input-group mb-3" id="show_hide_password">
                                                 <input type="password" class="form-control" id="newPassword" required>
                                                 <span class="input-group-text" id="basic-addon2">
@@ -283,4 +282,7 @@
             });
         </script>
     @endif
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 @endsection
