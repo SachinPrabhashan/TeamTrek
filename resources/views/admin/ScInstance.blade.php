@@ -313,6 +313,8 @@
         });
     }
 
+    
+
     // Initial load: fetch data and render charts for the default selected support contract instance and display instances related to the first support contract
     var defaultSelectedContractId = $("#selectSupportContract").val();
     fetchAndRenderCharts(defaultSelectedContractId);
