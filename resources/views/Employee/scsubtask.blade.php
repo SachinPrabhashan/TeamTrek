@@ -1,7 +1,9 @@
 @extends('layouts.navitems')
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -27,7 +29,90 @@
         }
     </style>
 
+    <script>
+        $(document).ready(function() {
+            $('input[type=radio][name=taskType]').change(function() {
+                if (this.value === 'create') {
+                    $('#createTaskForm').fadeIn(1000);
+                    $('#finishTaskForm').hide();
+                } else if (this.value === 'finish') {
+                    $('#createTaskForm').hide();
+                    $('#finishTaskForm').fadeIn(1000);
+                }
+            });
 
+            $('#closeFormBtn').click(function() {
+                $('#createTaskForm').hide();
+            });
+
+            $('#closeFinishFormBtn').click(function() {
+                $('#finishTaskForm').hide();
+            });
+
+            // Submit form via AJAX
+            $('#submitFormBtn').click(function(e) {
+                e.preventDefault();
+                var form = $(this).closest('form');
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        // Display SweetAlert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'SubTask created successfully!',
+                            showConfirmButton: true,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Redirect to another page
+                                window.location.href = '{{ route('scTaskMonitor') }}';
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.error(xhr.responseText);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'An error occurred! Please try again.',
+                        });
+                    }
+                });
+            });
+
+            // Submit finishTaskForm via AJAX
+            $('#submitFinishFormBtn').click(function(e) {
+                e.preventDefault();
+                var form = $(this).closest('form');
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Task Finished successfully!',
+                            showConfirmButton: true,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '{{ route('scTaskMonitor') }}';
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'An error occurred! Please try again.',
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4">
@@ -142,93 +227,4 @@
         </div>
     </div>
 
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('input[type=radio][name=taskType]').change(function() {
-                if (this.value === 'create') {
-                    $('#createTaskForm').fadeIn(1000);
-                    $('#finishTaskForm').hide();
-                } else if (this.value === 'finish') {
-                    $('#createTaskForm').hide();
-                    $('#finishTaskForm').fadeIn(1000);
-                }
-            });
-
-            $('#closeFormBtn').click(function() {
-                $('#createTaskForm').hide();
-            });
-
-            $('#closeFinishFormBtn').click(function() {
-                $('#finishTaskForm').hide();
-            });
-
-            // Submit form via AJAX
-            $('#submitFormBtn').click(function(e) {
-                e.preventDefault();
-                var form = $(this).closest('form');
-                $.ajax({
-                    type: form.attr('method'),
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(response) {
-                        // Display SweetAlert
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'SubTask created successfully!',
-                            showConfirmButton: true,
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                // Redirect to another page
-                                window.location.href = '{{ route('scTaskMonitor') }}';
-                            }
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error
-                        console.error(xhr.responseText);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'An error occurred! Please try again.',
-                        });
-                    }
-                });
-            });
-
-            // Submit finishTaskForm via AJAX
-            $('#submitFinishFormBtn').click(function(e) {
-                e.preventDefault();
-                var form = $(this).closest('form');
-                $.ajax({
-                    type: form.attr('method'),
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Task Finished successfully!',
-                            showConfirmButton: true,
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '{{ route('scTaskMonitor') }}';
-                            }
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'An error occurred! Please try again.',
-                        });
-                    }
-                });
-            });
-        });
-    </script>
 @endsection

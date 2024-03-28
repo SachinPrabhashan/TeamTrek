@@ -325,109 +325,10 @@
             width: 250px;
         }
 
-        .custom-swal-container div {
+        .custom-swal-container div{
             width: 700px;
         }
     </style>
-
-
-
-    <div class="container col-12">
-        <div class="bg-light rounded h-100 p-4">
-            <h1>On Going Tasks</h1>
-            <div class="float-end">
-                @RootOrAdmin
-                    <!--button class="btn btn-primary" id="openCreateTaskModalBtn" data-toggle="tooltip" data-bs-placement="bottom" title="Create SC Tasks">
-                                                            <i class="fa-solid fa-folder-plus"></i>
-                                                        </button-->
-                    <button class="btn btn-primary" id="openCreateTaskModalBtn" data-toggle="tooltip" data-bs-placement="bottom"
-                        title="Create SC Tasks">
-                        <i class="fa-solid fa-folder-plus"></i>
-                    </button>
-                    <a href="{{ route('scAllTaskMonitor') }}">
-                        <button class="btn btn-info" id="seeAllTaskBtn" data-toggle="tooltip" data-bs-placement="bottom"
-                            title="See All Tasks">
-                            <i class="fa-solid fa-folder-open"></i>
-                        </button>
-                    </a>
-                @endRootOrAdmin
-            </div>
-
-            <div class="rolebtn bg-light rounded h-100 p-4">
-                <label for="">Support Contract</label>
-                <select class="btn btn-secondary dropdown-toggle rounded-pill m-2" id="selectSupportContract">
-                    @foreach ($supportcontracts as $contract)
-                        <option value="{{ $contract->id }}">{{ $contract->name }}</option>
-                    @endforeach
-                </select>
-                <label for="">Year</label>
-                <select class="btn btn-secondary dropdown-toggle rounded-pill m-2" id="selectSupportContractYear">
-                    @foreach ($scInstances->unique('year') as $instance)
-                        <option value="{{ $instance->year }}">{{ $instance->year }}</option>
-                    @endforeach
-                </select>
-                <button class="btn btn-primary m-2" id="taskSearchBtn" data-toggle="tooltip" title="Search SC Tasks">Search
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>
-
-            <!--div id="TaskView">Available Tasks Will Display Here</div-->
-            <div class="row">
-
-            </div>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
-                        <button type="button" id="modalCloseheadBtn" class="btn-close" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="SupportContractDropInModal">Support Contract:</label><br>
-                            <select class="form-control" id="SupportContractDropInModal">
-                                @foreach ($supportcontracts as $contract)
-                                    <option value="{{ $contract->id }}">{{ $contract->name }}</option>
-                                @endforeach
-                            </select>
-                        </div><br>
-                        <div class="form-group">
-                            <label for="SupportContractYearDropInModal">Year:</label><br>
-                            <select class="form-control" id="SupportContractYearDropInModal">
-                                @foreach ($scInstances->unique('year') as $instance)
-                                    <option value="{{ $instance->year }}">{{ $instance->year }}</option>
-                                @endforeach
-                            </select>
-                        </div><br>
-                        <div class="form-group">
-                            <label for="taskName">Name:</label><br>
-                            <input type="text" class="form-control" id="taskName">
-                        </div><br>
-                        <div class="form-group">
-                            <label for="taskDescription">Description:</label><br>
-                            <textarea class="form-control" id="taskDescription"></textarea>
-                        </div><br>
-                        <div class="form-group">
-                            <label for="startDate">Start Date:</label><br>
-                            <input type="date" class="form-control" id="startDate">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm"
-                            id="modalCloseBtn"data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger btn-sm" id="submitTaskBtn">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
         $(document).ready(function() {
@@ -819,4 +720,100 @@
         });
     </script>
 
+    <div class="container col-12">
+        <div class="bg-light rounded h-100 p-4">
+            <h1>On Going Tasks</h1>
+            <div class="float-end">
+                @RootOrAdmin
+                    <!--button class="btn btn-primary" id="openCreateTaskModalBtn" data-toggle="tooltip" data-bs-placement="bottom" title="Create SC Tasks">
+                                            <i class="fa-solid fa-folder-plus"></i>
+                                        </button-->
+                    <button class="btn btn-primary" id="openCreateTaskModalBtn" data-toggle="tooltip" data-bs-placement="bottom"
+                        title="Create SC Tasks">
+                        <i class="fa-solid fa-folder-plus"></i>
+                    </button>
+                    <a href="{{ route('scAllTaskMonitor') }}">
+                        <button class="btn btn-info" id="seeAllTaskBtn" data-toggle="tooltip" data-bs-placement="bottom"
+                            title="See All Tasks">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </button>
+                    </a>
+                @endRootOrAdmin
+            </div>
+
+            <div class="rolebtn bg-light rounded h-100 p-4">
+                <label for="">Support Contract</label>
+                <select class="btn btn-secondary dropdown-toggle rounded-pill m-2" id="selectSupportContract">
+                    @foreach ($supportcontracts as $contract)
+                        <option value="{{ $contract->id }}">{{ $contract->name }}</option>
+                    @endforeach
+                </select>
+                <label for="">Year</label>
+                <select class="btn btn-secondary dropdown-toggle rounded-pill m-2" id="selectSupportContractYear">
+                    @foreach ($scInstances->unique('year') as $instance)
+                        <option value="{{ $instance->year }}">{{ $instance->year }}</option>
+                    @endforeach
+                </select>
+                <button class="btn btn-primary m-2" id="taskSearchBtn" data-toggle="tooltip" title="Search SC Tasks">Search
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
+            <!--div id="TaskView">Available Tasks Will Display Here</div-->
+            <div class="row">
+
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
+                        <button type="button" id="modalCloseheadBtn" class="btn-close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="SupportContractDropInModal">Support Contract:</label><br>
+                            <select class="form-control" id="SupportContractDropInModal">
+                                @foreach ($supportcontracts as $contract)
+                                    <option value="{{ $contract->id }}">{{ $contract->name }}</option>
+                                @endforeach
+                            </select>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="SupportContractYearDropInModal">Year:</label><br>
+                            <select class="form-control" id="SupportContractYearDropInModal">
+                                @foreach ($scInstances->unique('year') as $instance)
+                                    <option value="{{ $instance->year }}">{{ $instance->year }}</option>
+                                @endforeach
+                            </select>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="taskName">Name:</label><br>
+                            <input type="text" class="form-control" id="taskName">
+                        </div><br>
+                        <div class="form-group">
+                            <label for="taskDescription">Description:</label><br>
+                            <textarea class="form-control" id="taskDescription"></textarea>
+                        </div><br>
+                        <div class="form-group">
+                            <label for="startDate">Start Date:</label><br>
+                            <input type="date" class="form-control" id="startDate">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm"
+                            id="modalCloseBtn"data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger btn-sm" id="submitTaskBtn">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

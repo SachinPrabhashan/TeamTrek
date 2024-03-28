@@ -280,7 +280,11 @@ div.scReportarea{
     }
   }
 
- 
+  div.waveback{
+    background: url('../img/wave.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 
   div.content{
     background: transparent;

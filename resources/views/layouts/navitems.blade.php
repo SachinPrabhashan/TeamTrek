@@ -8,40 +8,6 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
-    {{-- Datatable --}}
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.semanticui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.2/semantic.min.js"></script>
-    <script src="{{ asset('lib/chart/chart.min.js') }}"></script>
-
-    <!-- JavaScript Libraries -->
-    <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('lib/chart/chart.min.js') }}"></script>
-    <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('lib/tempusdominus/js/moment.min.js') }}"></script>
-    <script src="{{ asset('lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
-    <script src="{{ asset('lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-
-    <script src="{{ asset('js/smain.js') }}"></script>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('lib/chart/chart.min.js') }}"></script>
-    <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('lib/tempusdominus/js/moment.min.js') }}"></script>
-    <script src="{{ asset('lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
-    <script src="{{ asset('lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-
-    <!-- Template Javascript -->
-    <script src="{{ asset('js/main.js') }}"></script>
-
     <!-- Favicon -->
     <link href="{{ asset('img/favicon.ico') }}" rel="icon">
     <link type="image/png" sizes="32x32" rel="icon" href="{{ asset('img/icons8-developer-32.png') }}">
@@ -64,14 +30,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.2/semantic.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.semanticui.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.bootstrap5.css">
-    <link rel="preload" href="{{ asset('img/wave.png') }}" as="image">
-    <style>
-        div.waveback {
-            background: url('../img/wave.png');
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-    </style>
 </head>
 
 <body>
@@ -82,7 +40,7 @@
             <!-- Spinner Start -->
             <div id="spinner"
                 class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-                <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
@@ -250,7 +208,7 @@
                     <input class="form-control border-0" type="search" placeholder="Search">
                 </form> --}}
                     <div class="navbar-nav align-items-center ms-auto">
-                        {{-- <div class="nav-item dropdown">
+                        <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                                 <i class="fa fa-envelope me-lg-2"></i>
                                 <span class="d-none d-lg-inline-flex">Message</span>
@@ -292,8 +250,8 @@
                                 <hr class="dropdown-divider">
                                 <a href="#" class="dropdown-item text-center">See all message</a>
                             </div>
-                        </div> --}}
-                        {{-- <div class="nav-item dropdown">
+                        </div>
+                        <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                                 <i class="fa fa-bell me-lg-2"></i>
                                 <span class="d-none d-lg-inline-flex">Notification</span>
@@ -317,7 +275,7 @@
                                 <hr class="dropdown-divider">
                                 <a href="#" class="dropdown-item text-center">See all notifications</a>
                             </div>
-                        </div> --}}
+                        </div>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                                 @if (Auth::user()->role->id == 1)
@@ -338,7 +296,7 @@
                             <div
                                 class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                                 <a href="{{ route('myprofile') }}" class="dropdown-item">My Profile</a>
-                                {{-- <a href="#" class="dropdown-item">Settings</a> --}}
+                                <a href="#" class="dropdown-item">Settings</a>
 
                             </div>
                         </div>
@@ -428,7 +386,39 @@
         </div>
 
 
+        {{-- Datatable --}}
+        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/dataTables.semanticui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.2/semantic.min.js"></script>
+        <script src="{{ asset('lib/chart/chart.min.js') }}"></script>
 
+        <!-- JavaScript Libraries -->
+        <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('lib/chart/chart.min.js') }}"></script>
+        <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
+        <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
+        <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+        <script src="{{ asset('lib/tempusdominus/js/moment.min.js') }}"></script>
+        <script src="{{ asset('lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
+        <script src="{{ asset('lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+
+        <script src="{{ asset('js/smain.js') }}"></script>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{{ asset('lib/chart/chart.min.js') }}"></script>
+        <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
+        <script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
+        <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+        <script src="{{ asset('lib/tempusdominus/js/moment.min.js') }}"></script>
+        <script src="{{ asset('lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
+        <script src="{{ asset('lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+
+        <!-- Template Javascript -->
+        <script src="{{ asset('js/main.js') }}"></script>
 
         {{-- ----------------------------------------------------- --}}
         {{-- Data Table Successfully Functioning Now --}}
@@ -547,5 +537,4 @@
             });
         </script>
 </body>
-
 </html>
