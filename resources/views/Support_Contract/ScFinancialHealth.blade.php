@@ -16,9 +16,23 @@
         }
 
         .chart-container {
-            width: 45%; /* Adjust width as needed */
-            margin-right: 5px; /* Add margin between charts */
-            display: inline-block; /* Display charts inline */
+            width: 100%;
+            /* Adjust width as needed */
+            margin-right: 5px;
+            /* Add margin between charts */
+            display: inline-block;
+            /* Display charts inline */
+        }
+
+        #devHoursChart,
+        #engHoursChart {
+            margin-left: 100px;
+            margin-right: 100px
+        }
+
+        div .chart-buttons{
+            display: flex;
+            justify-content: center;
         }
     </style>
     <script>
@@ -44,7 +58,9 @@
                         // Destroy previous charts before creating new ones
                         destroyCharts();
 
-                        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                        var months = ['January', 'February', 'March', 'April', 'May', 'June',
+                            'July', 'August', 'September', 'October', 'November', 'December'
+                        ];
 
                         // Initialize arrays to store data for each month
                         var devChargersData = new Array(12).fill(0);
@@ -55,7 +71,8 @@
                         // Loop through response data and update corresponding arrays
                         for (var monthKey in response) {
                             var monthData = response[monthKey];
-                            var monthIndex = parseInt(monthKey) - 1; // Convert month key to zero-based index
+                            var monthIndex = parseInt(monthKey) -
+                                1; // Convert month key to zero-based index
                             devChargersData[monthIndex] = monthData.devChargers;
                             totalDevChargerData[monthIndex] = monthData.totalDevCharger;
                             engChargersData[monthIndex] = monthData.engChargers;
@@ -126,7 +143,8 @@
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
-                        var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'An error occurred while fetching data.';
+                        var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr
+                            .responseJSON.message : 'An error occurred while fetching data.';
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -150,7 +168,7 @@
                 }
             }
         });
-        </script>
+    </script>
     <div class="container col-12">
         <div class="bg-light rounded h-100 p-4">
             <h1>Support Contract Financial Report</h1>
@@ -182,7 +200,36 @@
                 <div class="chart-container">
                     <canvas id="engHoursChart" width="400" height="200"></canvas>
                 </div>
+                <div class="chart-buttons">
+                    <img class="m-2" onclick="showDevChart()" role="button" width="30" height="30" src="https://img.icons8.com/fluency/48/circled-left-2--v1.png" data-toggle="tooltip" data-bs-placement="top"
+                    title="Developer Hour Chart"  alt="circled-left-2--v1"/>
+                    <img class="m-2" onclick="showEngChart()" role="button" width="30" height="30" src="https://img.icons8.com/fluency/48/circled-right-2.png" data-toggle="tooltip" data-bs-placement="top"
+                    title="Engineer Hour Chart" alt="circled-right-2"/>
+                </div>
             </div>
+
+            <script>
+                // Get references to the canvas elements
+                const devHoursChart = document.getElementById('devHoursChart');
+                const engHoursChart = document.getElementById('engHoursChart');
+
+                // Hide both charts initially
+                devHoursChart.style.display = 'default';
+                engHoursChart.style.display = 'none';
+
+                // Function to show the Development Hours Chart
+                function showDevChart() {
+                    devHoursChart.style.display = 'block';
+                    engHoursChart.style.display = 'none';
+                }
+
+                // Function to show the Engineering Hours Chart
+                function showEngChart() {
+                    devHoursChart.style.display = 'none';
+                    engHoursChart.style.display = 'block';
+                }
+            </script>
+
         </div>
     </div>
 @endsection
