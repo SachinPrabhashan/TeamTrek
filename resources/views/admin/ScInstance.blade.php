@@ -31,7 +31,7 @@
 
         .card:hover {
             cursor: pointer;
-            background: #97d7ff;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
             transition: 0.5s;
         }
 
@@ -40,6 +40,12 @@
             max-height: 300px;
             display: inline-block;
              overflow: hidden;
+
+        }
+
+        .instanceOption{
+            margin-right: auto;
+            margin-left: 20em;
 
         }
     </style>
@@ -74,10 +80,14 @@
                     <div class="row ms-4" style="width: 150%;">
 
                         @foreach ($instances->sortByDesc('created_at') as $instance)
-                            <div class="card me-2 mb-2" style="width: 18rem;"
+                            <div class="card me-2 mb-2" style="width: 33rem;"
                                 data-contract-id="{{ $instance->supportContract->id }}">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $instance->supportContract->name }}</h5>
+                                    <div class="d-flex">
+                                        <h5 class="card-title">{{ $instance->supportContract->name }}</h5>
+                                        <h6 role="button" class="instanceOption btn btn-primary btn-sm rounded-pill">Edit</h6>
+                                    </div>
+
                                     <h1 class="m-1">{{ $instance->year }} Year</h1>
                                     <div class="d-flex">
                                         <div class="me-3 d-flex" data-toggle="tooltip" data-bs-placement="bottom"
@@ -88,7 +98,7 @@
                                                     alt="meeting-time" /> |
                                             </div>
                                             {{-- {{ $instance->dev_hours + $instance->eng_hours }}H --}}
-                                            <div style="font-size: 9pt;">
+                                            <div class="ms-1" style="font-size: 9pt;">
                                                 Dev {{ $instance->dev_hours }}H
                                                 <br>
                                                 Eng {{ $instance->eng_hours }}H
@@ -102,16 +112,21 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="container mt-4" id="chartContainer">
+
+                                        <canvas id="chart-{{ $instance->year }}" class="canvas-container"></canvas>
+
+                                </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
 
-                <div class="container mt-4" id="chartContainer">
+                {{-- <div class="container mt-4" id="chartContainer">
                     @foreach ($instances as $instance)
                         <canvas id="chart-{{ $instance->year }}" class="canvas-container"></canvas>
                     @endforeach
-                </div>
+                </div> --}}
 
 
 
