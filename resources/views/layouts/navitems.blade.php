@@ -175,7 +175,7 @@
                             data-bs-toggle="dropdown"><i class="fa-solid fa-chart-simple me-2"></i>Performance</a>
                         <div
                             class="dropdown-menu  {{ request()->is('performance/*') ? ' show' : '' }} bg-transparent border-0">
-                            <a href="#" class="dropdown-item">SC Analysis View</a>
+                            <a href="{{ route('ScAnalysisView') }}" class="dropdown-item">SC Analysis View</a>
                             @AdminOrEmployee
                                 <a href="{{ route('employee.performanceemployee') }}"
                                     class="dropdown-item  {{ request()->is('performance/employee-performance') ? ' active' : '' }}">Employee
