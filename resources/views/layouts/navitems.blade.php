@@ -265,7 +265,7 @@
                                     <a href="{{ route('financialHealth') }}"
                                         class="dropdown-item   {{ request()->is('performance/financial-health') ? ' active' : '' }}">Financial
                                         Health</a>
-                                    <a href="#" class="dropdown-item">Resource Utilization</a>
+                                    {{-- <a href="#" class="dropdown-item">Resource Utilization</a> --}}
                                 @endAdminOrEmployee
                             </div>
                         </div>
@@ -281,7 +281,7 @@
                                     data-bs-toggle="dropdown"><i class="fa-solid fa-gears me-2"></i>Permissions</a>
                                 <div
                                     class="dropdown-menu {{ request()->is('permissions/*') ? ' show' : '' }} bg-transparent border-0">
-                                    <a href="#" class="dropdown-item">Roles</a>
+                                    {{-- <a href="#" class="dropdown-item">Roles</a> --}}
                                     <a href="{{ route('root.permissions') }}"
                                         class="dropdown-item {{ request()->is('permissions/manage-permissions') ? ' active' : '' }}">Permissions</a>
                                     <a href="{{ route('root.modules') }}"
