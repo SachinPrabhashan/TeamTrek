@@ -87,7 +87,7 @@
                                                     src="https://img.icons8.com/windows/32/meeting-time.png"
                                                     alt="meeting-time" /> |
                                             </div>
-                                            {{-- {{ $instance->dev_hours + $instance->eng_hours }}H --}}
+                                            {{-- {{ $instance->dev_hours + $instance->eng_hours }}H ----}}
                                             <div style="font-size: 9pt;">
                                                 Dev {{ $instance->dev_hours }}H
                                                 <br>
