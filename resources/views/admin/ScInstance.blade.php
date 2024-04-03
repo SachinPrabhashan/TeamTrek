@@ -368,23 +368,23 @@
                         window.myCharts['chart-' + instance.year].destroy();
                     }*/
 
-                    // Create a new Chart instance
-                    window.myCharts = window.myCharts || {};
-                    window.myCharts['chart-' + instance.year] = new Chart(ctx, {
-                        type: 'bar',
-                        data: chartData,
-                        options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
-                                    }
-                                }]
+            // Create a new Chart instance
+            window.myCharts = window.myCharts || {};
+            window.myCharts['chart-' + instance.year] = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
                             }
-                        }
-                    });
-                });
-            }
+                        }]
+                    }
+                }
+            });
+        });
+    }
 
 
 
