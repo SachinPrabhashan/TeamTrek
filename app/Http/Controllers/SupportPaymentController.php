@@ -154,10 +154,42 @@ class SupportPaymentController extends Controller
         }
 
         // Calculate dev_chargers and eng_chargers
-        $devChargers = ($extraChargers->charging_dev_hours ?? 0) * $devRatePerHour;
-        $engChargers = ($extraChargers->charging_eng_hours ?? 0) * $engRatePerHour;
+        $devSupportChargers = ($extraChargers->charging_dev_hours ?? 0) * $devRatePerHour;
+        $engSupportChargers = ($extraChargers->charging_eng_hours ?? 0) * $engRatePerHour;
 
         $empdevChargers = ($extraChargers->charging_dev_hours ?? 0) * $devRatePerHour;
+        $empengChargers = ($extraChargers->charging_eng_hours ?? 0) * $devRatePerHour;
+
+        // Retrieve tasks associated with the support contract instance
+        $tasks = Task::where('support_contract_instance_id', $supportContractInstance->id)->get();
+
+        // Initialize variables for total charges of employees who work for support hours
+        $totalSupportDevChargers = 0;
+        $totalSupportEngChargers = 0;
+
+        // Iterate through each task
+        foreach ($tasks as $task) {
+            // Retrieve the corresponding user's rates
+            $userRates = EmpRate::where('user_id', $task->user_id)->first();
+            if (!$userRates) {
+                continue; // Skip if user rates not found
+            }
+
+            // Calculate charges based on dev_hours or eng_hours multiplied by the respective rate
+            $devChargers = ($task->dev_hours ?? 0) * ($userRates->dev_rate_per_hour ?? 0);
+            $engChargers = ($task->eng_hours ?? 0) * ($userRates->eng_rate_per_hour ?? 0);
+
+            // Aggregate charges
+            $totalSupportDevChargers += $devChargers;
+            $totalSupportEngChargers += $engChargers;
+        }
+
+        $response = [
+            'devChargers' => $devChargers,
+            'engChargers' => $engChargers,
+        ];
+
+        return response()->json($response);
 
     }
 
