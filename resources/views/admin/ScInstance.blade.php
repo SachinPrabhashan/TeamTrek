@@ -247,9 +247,11 @@
                 //$('#createSupportContractInstanceForm').hide();
                 $('#supportContractInstanceForm')[0].reset();
 
-            }
-        });
-    });
+                    }
+                });
+            });
+
+
 
             // Function to render charts based on the instances data
             function renderCharts(instances) {
