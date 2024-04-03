@@ -251,42 +251,42 @@
         });
     });
 
-    // Function to render charts based on the instances data
-    function renderCharts(instances) {
-        // Loop through instances and render charts
-        instances.forEach(function(instance) {
-            var chartData = {
-                labels: [instance.year.toString()],
-                datasets: [{
-                        label: 'Given Dev Hours',
-                        data: [instance.instance.dev_hours],
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Given Eng Hours',
-                        data: [instance.instance.eng_hours],
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Remaining Dev Hours',
-                        data: [instance.total_rem_dev_hours],
-                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                        borderColor: 'rgba(255, 206, 86, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Remaining Eng Hours',
-                        data: [instance.total_rem_eng_hours],
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }
-                ]
-            };
+            // Function to render charts based on the instances data
+            function renderCharts(instances) {
+                // Loop through instances and render charts
+                instances.forEach(function(instance) {
+                    var chartData = {
+                        labels: [instance.year.toString()],
+                        datasets: [{
+                                label: 'Given Dev Hours',
+                                data: [instance.instance.dev_hours],
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Given Eng Hours',
+                                data: [instance.instance.eng_hours],
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Remaining Dev Hours',
+                                data: [instance.total_rem_dev_hours],
+                                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                                borderColor: 'rgba(255, 206, 86, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Remaining Eng Hours',
+                                data: [instance.total_rem_eng_hours],
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    };
 
             var ctx = document.getElementById('chart-' + instance.year).getContext('2d');
 
