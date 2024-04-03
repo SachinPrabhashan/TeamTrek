@@ -17,13 +17,12 @@ class SupportContractInstanceController extends Controller
     public function ScInstanceIndex(SupportContractInstance $supportcontractinstance)
     {
         //$this->authorize('view', $usermanagement);
-        $supportcontracts = SupportContract::All();
-        $supportcontractinstances = SupportContractInstance::All();
+        $supportcontracts=SupportContract::All();
+        $supportcontractinstances= SupportContractInstance::All();
         $instances = SupportContractInstance::all();
-        $users = User::All();
-        $supportpayment = SupportPayment::all();
+        $users=User::All();
 
-        return view('admin.ScInstance', compact('supportcontractinstances', 'users', 'supportcontracts', 'instances', 'supportpayment'));
+        return view('admin.ScInstance', compact('supportcontractinstances','users','supportcontracts', 'instances'));
     }
 
     public function addScInstances(Request $request)
@@ -55,7 +54,9 @@ class SupportContractInstanceController extends Controller
 
         try {
             $supportContractInstance->save();
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e)
+        {
             return response()->json(['message' => 'Failed to create Support Contract Instance'], 500);
         }
 
@@ -67,7 +68,9 @@ class SupportContractInstanceController extends Controller
 
         try {
             $supportPayment->save();
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e)
+        {
             return response()->json(['message' => 'Failed to save Support Contract Payment'], 500);
         }
         return response()->json(['message' => 'Support Contract Instance created successfully'], 200);
@@ -99,57 +102,57 @@ class SupportContractInstanceController extends Controller
         }
     }*/
     public function getSupportContractInstanceData($supportContractId)
-    {
-        // Fetch support contract instances based on the support contract ID
-        $supportContractInstances = SupportContractInstance::where('support_contract_id', $supportContractId)->get();
+{
+    // Fetch support contract instances based on the support contract ID
+    $supportContractInstances = SupportContractInstance::where('support_contract_id', $supportContractId)->get();
 
-        // Initialize arrays to store support contract instances separately
-        $devHoursArray = [];
-        $engHoursArray = [];
-        $instancesArray = [];
+    // Initialize arrays to store support contract instances separately
+    $devHoursArray = [];
+    $engHoursArray = [];
+    $instancesArray = [];
 
-        // Iterate through each support contract instance
-        foreach ($supportContractInstances as $instance) {
-            // Store dev_hours, eng_hours, and year in separate arrays
-            $devHoursArray[] = $instance->dev_hours;
-            $engHoursArray[] = $instance->eng_hours;
+    // Iterate through each support contract instance
+    foreach ($supportContractInstances as $instance) {
+        // Store dev_hours, eng_hours, and year in separate arrays
+        $devHoursArray[] = $instance->dev_hours;
+        $engHoursArray[] = $instance->eng_hours;
 
-            // Fetch the latest task associated with the current support contract instance
-            $latestTask = Task::where('support_contract_instance_id', $instance->id)
-                ->latest('updated_at') // Order tasks by updated_at field in descending order
-                ->first(); // Retrieve only the latest task
+        // Fetch the latest task associated with the current support contract instance
+        $latestTask = Task::where('support_contract_instance_id', $instance->id)
+        ->latest('updated_at') // Order tasks by updated_at field in descending order
+        ->first(); // Retrieve only the latest task
 
-            if ($latestTask) {
-                // Fetch the latest remaining hours for the current task
-                $latestRemainingHours = RemainingHour::where('task_id', $latestTask->id)
-                    ->latest('updated_at')
-                    ->first();
+        if ($latestTask) {
+        // Fetch the latest remaining hours for the current task
+        $latestRemainingHours = RemainingHour::where('task_id', $latestTask->id)
+            ->latest('updated_at')
+            ->first();
 
-                // Calculate total remaining hours
-                $totalRemDevHours = $latestRemainingHours->rem_dev_hours ?? 0;
-                $totalRemEngHours = $latestRemainingHours->rem_eng_hours ?? 0;
-            } else {
-                // If no tasks found, initialize total remaining hours as 0
-                $totalRemDevHours = 0;
-                $totalRemEngHours = 0;
-            }
-
-
-            // Store the instance, along with year, total remaining dev hours, and total remaining eng hours
-            $instancesArray[] = [
-                'instance' => $instance,
-                'year' => $instance->year,
-                'total_rem_dev_hours' => $totalRemDevHours,
-                'total_rem_eng_hours' => $totalRemEngHours,
-            ];
+        // Calculate total remaining hours
+        $totalRemDevHours = $latestRemainingHours->rem_dev_hours ?? 0;
+        $totalRemEngHours = $latestRemainingHours->rem_eng_hours ?? 0;
+        } else {
+        // If no tasks found, initialize total remaining hours as 0
+        $totalRemDevHours = 0;
+        $totalRemEngHours = 0;
         }
 
-        // Log the data before returning as JSON response
-        Log::info('Support contract instance data fetched:', [
-            'dev_hours' => $devHoursArray,
-            'eng_hours' => $engHoursArray,
-            'instances' => $instancesArray,
-        ]);
+
+        // Store the instance, along with year, total remaining dev hours, and total remaining eng hours
+        $instancesArray[] = [
+            'instance' => $instance,
+            'year' => $instance->year,
+            'total_rem_dev_hours' => $totalRemDevHours,
+            'total_rem_eng_hours' => $totalRemEngHours,
+        ];
+    }
+
+    // Log the data before returning as JSON response
+    Log::info('Support contract instance data fetched:', [
+        'dev_hours' => $devHoursArray,
+        'eng_hours' => $engHoursArray,
+        'instances' => $instancesArray,
+    ]);
 
         // Return arrays containing dev_hours, eng_hours, instances, and tasks as JSON response
         return response()->json([
@@ -170,19 +173,17 @@ class SupportContractInstanceController extends Controller
         ]);
 
         $instance = new SupportContractInstance();
-        $supportPayment = new SupportPayment();
 
         // Assign values to the dev_hours and eng_hours properties based on validated data
         $instance->dev_hours = $validatedData['devhour'];
         $instance->eng_hours = $validatedData['enghour'];
 
         // Set values for dev_rate_per_hour and eng_rate_per_hour properties of the supportPayment object
-        $supportPayment->dev_rate_per_hour = $validatedData['devhourcharge'];
-        $supportPayment->eng_rate_per_hour = $validatedData['enghourcharge'];
+        $instance->supportPayment->dev_rate_per_hour = $validatedData['devhourcharge'];
+        $instance->supportPayment->eng_rate_per_hour = $validatedData['enghourcharge'];
 
         dd($instance);
         $instance->save();
-        $supportPayment->save();
 
         return response()->json(['message' => 'Record created successfully'], 200);
     }
