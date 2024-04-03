@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                             @Employee
-                                {{-- <div class="col-lg-6 row me-3 mb-4">
+                                <div class="col-lg-6 row me-3 mb-4">
                                     <div class="col-sm-12">
                                         <div class="card bg-light">
                                             <div class="card-body">
@@ -89,7 +89,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
                             @endEmployee
                             <div class="col-lg-6">
                                 @AdminOrEmployee
