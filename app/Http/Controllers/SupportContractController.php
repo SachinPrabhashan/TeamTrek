@@ -17,7 +17,7 @@ class SupportContractController extends Controller
         $users=User::where('role_id',4)->get();
         $existingNames = $users->pluck('name')->toArray();
 
-        return view('admin.ScHandling', compact('supportcontracts','users'));
+        return view('admin.ScHandling', compact('supportcontracts','users','existingNames'));
     }
 
     public function addSC(Request $request)

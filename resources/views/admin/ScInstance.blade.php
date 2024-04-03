@@ -295,23 +295,23 @@
                 window.myCharts['chart-' + instance.year].destroy();
             }*/
 
-            // Create a new Chart instance
-            window.myCharts = window.myCharts || {};
-            window.myCharts['chart-' + instance.year] = new Chart(ctx, {
-                type: 'bar',
-                data: chartData,
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
+                    // Create a new Chart instance
+                    window.myCharts = window.myCharts || {};
+                    window.myCharts['chart-' + instance.year] = new Chart(ctx, {
+                        type: 'bar',
+                        data: chartData,
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
                             }
-                        }]
-                    }
-                }
-            });
-        });
-    }
+                        }
+                    });
+                });
+            }
 
     // Initial load: fetch data and render charts for the default selected support contract instance and display instances related to the first support contract
     var defaultSelectedContractId = $("#selectSupportContract").val();
