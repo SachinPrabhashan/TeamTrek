@@ -16,8 +16,13 @@ class SupportPayment extends Model
         'year',
     ];
 
-    public function instances()
+    // public function instances()
+    // {
+    //     return $this->hasMany(SupportContractInstance::class);
+    // }
+
+    public function supportContractInstance()
     {
-        return $this->hasMany(SupportContractInstance::class);
+        return $this->belongsTo(SupportContractInstance::class);
     }
 }

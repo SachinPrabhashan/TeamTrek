@@ -26,8 +26,14 @@ class SupportContractInstance extends Model
         return $this->belongsTo(SupportContract::class, 'support_contract_id');
     }
 
-    public function supportPayment(){
-        return $this->belongsTo(SupportPayment::class, 'id');
+    // public function supportPayment(){
+    //     return $this->belongsTo(SupportPayment::class, 'id');
+    // }
+
+
+    public function supportPayment()
+    {
+        return $this->hasOne(SupportPayment::class);
     }
 
     public function tasks()

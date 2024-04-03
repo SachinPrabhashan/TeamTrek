@@ -380,6 +380,7 @@ class TaskController extends Controller
         // Save the charging hours in the extra_chargers table
         $extraChargers = new ExtraCharger();
         $extraChargers->task_id = $taskId;
+        $extraChargers->sub_task_id = $subTask->id;
         $extraChargers->user_id = Auth::id();
         $extraChargers->support_contract_instance_id = $supportContractInstanceId;
         $extraChargers->charging_dev_hours = $chargingDevHours;
@@ -400,70 +401,6 @@ class TaskController extends Controller
 
         return response()->json(['success' => true]);
     }
-
-
-    /*public function finishTask(Request $request)
-    {
-        try {
-            $validatedData = $request->validate([
-                'finishDate' => 'required|date',
-                'developerHoursFinish' => 'required|integer',
-                'engineerHoursFinish' => 'required|integer',
-            ]);
-
-            $taskId = session('id');
-            $task = Task::find($taskId);
-
-            if (!$task) {
-                return response()->json(['error' => 'Task not found.'], 404);
-            }
-
-            if (empty($task->dev_hours) && empty($task->eng_hours)) {
-                $task->dev_hours = $validatedData['developerHoursFinish'];
-                $task->eng_hours = $validatedData['engineerHoursFinish'];
-            } else {
-                $task->dev_hours += $validatedData['developerHoursFinish'];
-                $task->eng_hours += $validatedData['engineerHoursFinish'];
-            }
-
-            $task->end_date = $validatedData['finishDate'];
-            $task->isCompleted = true;
-            $task->user_id = Auth::id();
-
-            $task->save();
-
-            // Retrieve the support_contract_instance_id associated with the task
-            $supportContractInstanceId = $task->support_contract_instance_id;
-
-            // Retrieve the SupportContractInstance model
-            $supportContractInstance = SupportContractInstance::findOrFail($supportContractInstanceId);
-
-            // Calculate remaining hours
-            $totalDevHoursSpent = Task::where('support_contract_instance_id', $supportContractInstanceId)->sum('dev_hours');
-            $totalEngHoursSpent = Task::where('support_contract_instance_id', $supportContractInstanceId)->sum('eng_hours');
-
-            $remainingDevHours = $supportContractInstance->dev_hours - $totalDevHoursSpent;
-            $remainingEngHours = $supportContractInstance->eng_hours - $totalEngHoursSpent;
-
-            // Save the remaining hours in the remaining_hours table
-            $remainingHours = new RemainingHour();
-            $remainingHours->task_id = $taskId;
-            //$remainingHours->sub_task_id = $subTask->id;
-            $remainingHours->rem_dev_hours = $remainingDevHours;
-            $remainingHours->rem_eng_hours = $remainingEngHours;
-            $remainingHours->save();
-
-
-
-            Session::flash('success', 'Task finished successfully!');
-
-            return response()->json(['success' => true]);
-        }
-        catch (\Exception $e)
-        {
-            return response()->json(['error' => 'An error occurred. Please try again.'], 500);
-        }
-    }*/
 
     public function finishTask(Request $request)
     {
