@@ -48,21 +48,15 @@ class SupportPaymentController extends Controller
             ->whereYear('created_at', $year)
             ->get();
 
-            Log::info('Number of support contract instances retrieved: ' . count($supportContractInstances));
-
         // Loop through each support contract instance
         foreach ($supportContractInstances as $instance) {
             // Extract the month from the created_at timestamp
             $month = $instance->created_at->format('m');
 
-            Log::info('Processing month: ' . $month);
-
             // Find the latest ExtraChargers directly where the support_contract_instance_id matches
             $extraChargers = ExtraCharger::where('support_contract_instance_id', $instance->id)
                 ->orderBy('created_at', 'desc')
                 ->first();
-
-            Log::info('Extra chargers details: ' . json_encode($extraChargers));
 
             if (!$extraChargers) {
                 // If no extra chargers found for the support contract instance, skip to the next instance
@@ -72,8 +66,6 @@ class SupportPaymentController extends Controller
             // Fetch support payment details based on the support contract instance ID
             $supportPayment = SupportPayment::where('support_contract_instance_id', $instance->id)
                 ->first();
-
-            Log::info('Support payment details: ' . json_encode($supportPayment));
 
             if (!$supportPayment) {
                 // If no support payment details found for the support contract instance, skip to the next instance
@@ -111,5 +103,64 @@ class SupportPaymentController extends Controller
         // Return the response with monthly details
         return response()->json($monthlyDetails);
     }
+
+    public function ScAnalysisIndex(SupportPayment $supportpayment)
+    {
+        //$this->authorize('view', $usermanagement);
+        $tasks = Task::All();
+        $scInstances=SupportContractInstance::All();
+        $supportcontracts=SupportContract::All();
+        $subtasks=SubTask::All();
+        $remainingHours=RemainingHour::All();
+        $extraChargers=ExtraCharger::All();
+
+        return view('Support_Contract.ScAnalysisView', compact('tasks','scInstances','supportcontracts','subtasks','remainingHours','extraChargers'));
+    }
+
+    public function getScAnalysisView(Request $request)
+    {
+        $supportContractId = $request->input('supportContractId');
+        $year = $request->input('year');
+
+
+        $supportContractInstances = SupportContractInstance::where('support_contract_id', $supportContractId)
+            ->whereYear('created_at', $year)
+            ->get();
+
+        if (!$supportContractInstance) {
+            // Display SweetAlert if no support contract instance is found
+            return response()->json(['error' => 'Support contract instance not found'], 404)
+                ->header('Content-Type', 'application/json')
+                ->header('X-Message-Type', 'error')
+                ->header('X-Message', 'No support contract instance found for the selected values');
+        }
+
+        // Fetch dev_rate_per_hour and eng_rate_per_hour from SupportPayment
+        $supportPayment = SupportPayment::where('support_contract_instance_id', $supportContractInstance->id)->first();
+        $devRatePerHour = $supportPayment->dev_rate_per_hour ?? null;
+        $engRatePerHour = $supportPayment->eng_rate_per_hour ?? null;
+
+        $devHours = $supportContractInstance->dev_hours ?? null;
+        $engHours = $supportContractInstance->eng_hours ?? null;
+
+        $task = Task::where('support_contract_instance_id', $supportContractInstance->id)->first();
+
+        // If task is null, set remainingHours and extraChargers to null
+        $remainingHours = $extraChargers = null;
+
+        if ($task) {
+            $remainingHours = RemainingHour::where('task_id', $task->id)->latest()->first();
+            $extraChargers = ExtraCharger::where('task_id', $task->id)->latest()->first();
+        }
+
+        // Calculate dev_chargers and eng_chargers
+        $devChargers = ($extraChargers->charging_dev_hours ?? 0) * $devRatePerHour;
+        $engChargers = ($extraChargers->charging_eng_hours ?? 0) * $engRatePerHour;
+
+        $empdevChargers = ($extraChargers->charging_dev_hours ?? 0) * $devRatePerHour;
+
+    }
+
+
 
 }

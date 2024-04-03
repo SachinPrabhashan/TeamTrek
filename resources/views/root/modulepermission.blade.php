@@ -117,13 +117,15 @@
             </select>
 
             <div class="float-end">
-                <a href="{{ route('root.modules') }}"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Module</button></a>
-                <a href="{{ route('root.permissions') }}"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Permission</button></a>
+                <a href="{{ route('root.modules') }}"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i>
+                        Module</button></a>
+                <a href="{{ route('root.permissions') }}"><button class="btn btn-primary"><i class="fa-solid fa-plus"></i>
+                        Permission</button></a>
 
             </div>
             <h3>Module Permissions</h3>
             <hr>
-            <table  class="table table-hover" style="width:100%">
+            <table class="table table-hover" style="width:100%">
                 <thead>
                     <tr>
                         <th>Modules/Permissions</th>
@@ -138,16 +140,34 @@
                             <td>{{ $module->name }}</td>
                             @foreach ($permissions as $permission)
                                 <td>
-                                    <input class="ms-2 module-permission-checkbox" type="checkbox"
-                                        data-module-id="{{ $module->id }}" data-permission-id="{{ $permission->id }}"
-                                        data-role-id="{{ $roleId }}"
-                                        {{ isset($existingModulePermissions[$module->id]) && in_array($permission->id, $existingModulePermissions[$module->id]) ? 'checked="checked"' : '' }}>
+                                    <div class="checkbox-wrapper-46">
+                                        <input class="ms-2 module-permission-checkbox inp-cbx" id="{{ $module->id }} {{ $permission->id }}"
+                                            type="checkbox" data-module-id="{{ $module->id }}"
+                                            data-permission-id="{{ $permission->id }}" data-role-id="{{ $roleId }}"
+                                            {{ isset($existingModulePermissions[$module->id]) && in_array($permission->id, $existingModulePermissions[$module->id]) ? 'checked="checked"' : '' }}>
+
+                                        <label class="cbx" for="{{ $module->id }} {{ $permission->id }}" ><span>
+                                                <svg width="12px" height="10px" viewbox="0 0 12 10">
+                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                </svg></span><span></span>
+                                        </label>
+                                    </div>
                                 </td>
                             @endforeach
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+
+            {{-- <div class="checkbox-wrapper-46">
+                <input class="inp-cbx" id="cbx-46" type="checkbox" />
+                <label class="cbx" for="cbx-46"><span>
+                        <svg width="12px" height="10px" viewbox="0 0 12 10">
+                            <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                        </svg></span><span></span>
+                </label>
+            </div> --}}
+
         </div>
     </div>
 @endsection

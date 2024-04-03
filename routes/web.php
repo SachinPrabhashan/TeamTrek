@@ -127,7 +127,8 @@ Route::get('/getSupportContract-ReportData', [ScReportsViewController::class,'ge
 Route::get('/performance/financial-health', [SupportPaymentController::class, 'financialHealthIndex'])->name('financialHealth');
 Route::get('/getSupportContract-FinancialData', [SupportPaymentController::class,'getFinancialData']);
 
-    //Support Contract Analysis
+    //Support Contract Analysis View
+Route::get('/performance/analysis-view', [SupportPaymentController::class, 'ScAnalysisIndex'])->name('ScAnalysisView');
 
 
 //All Users
@@ -140,3 +141,4 @@ Route::post('/myprofile/password-change', [ProfileController::class, 'resetPassw
 //performace Employee
 Route::get('/performance/employee-performance', [EmployeePerformanceController::class, 'index'])->name('employee.performanceemployee');
 Route::get('/performance/employee-performance-ind', [EmployeePerformanceController::class, 'subtaskhis']);
+Route::post('/support-contract/editinstance', [SupportContractInstanceController::class, 'editinstance']);

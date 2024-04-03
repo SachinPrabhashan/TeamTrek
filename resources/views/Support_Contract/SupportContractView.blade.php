@@ -63,102 +63,6 @@
 </style>
 
 <script>
-/*$(document).ready(function() {
-    $('#taskViewSearchBtn').click(function() {
-        var supportContractId = $('#selectSupportContract').val();
-        var year = $('#selectSupportContractYear').val();
-
-        $.ajax({
-            url: '/getSupportContract-ChartData',
-            type: 'GET',
-            dataType: 'json',
-            data: {
-                supportContractId: supportContractId,
-                year: year
-            },
-            success: function(response) {
-                var chartData = response.chartData;
-                var additionalData = response.additionalData;
-                displayChart(chartData);
-                $('#loadingAnimation').hide();
-                $('#developerHourChargers').text(chartData.datasets[0].data[2]);
-                $('#engineerHourChargers').text(chartData.datasets[1].data[2]);
-                $('#devRatePerHour').text(additionalData.dev_rate_per_hour);
-                $('#engRatePerHour').text(additionalData.eng_rate_per_hour);
-                $('#devChargers').text(additionalData.dev_chargers);
-                $('#engChargers').text(additionalData.eng_chargers);
-                $('#chargersInfo').show();
-
-                // Check if devChargers or engChargers are not equal to 0 and apply warning
-                if (additionalData.dev_chargers !== 0) {
-                    $('#devCard').addClass('warning');
-                } else {
-                    $('#devCard').removeClass('warning');
-                }
-
-                if (additionalData.eng_chargers !== 0) {
-                    $('#engCard').addClass('warning');
-                } else {
-                    $('#engCard').removeClass('warning');
-                }
-
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-                if (xhr.status === 404) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Support Contract Instance Not Found',
-                        text: 'There is no support contract instance for the selected values.',
-                        confirmButtonText: 'OK'
-                    });
-
-                    clearChart();
-                    $('#loadingAnimation').show();
-                    $('#chargersInfo').hide();
-                }
-            },
-        });
-    });
-
-    // Initialize myChart variable outside the function
-    var myChart = null;
-
-    function displayChart(chartData) {
-        var ctx = document.getElementById('myChart');
-
-        // If a chart instance exists, destroy it before rendering the new one
-        if (myChart !== null) {
-            myChart.destroy();
-        }
-        // Render the new chart
-        myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: chartData.labels,
-                datasets: chartData.datasets
-            },
-            options: {
-                scales: {
-                    x: {
-                        stacked: false
-                    },
-                    y: {
-                        stacked: false,
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-
-    function clearChart() {
-        if (myChart !== null) {
-            myChart.destroy();
-        }
-    }
-});*/
-
 $(document).ready(function() {
     $('#taskViewSearchBtn').click(function() {
         var supportContractId = $('#selectSupportContract').val();
@@ -257,26 +161,26 @@ $(document).ready(function() {
 
         // Render the new developer hours chart
         devChart = new Chart(ctxDev, {
-            type: 'pie',
+            type: 'doughnut',
             data: {
                 labels: [devHoursRemaining !== null ? (devHoursRemaining === SupportdevHours ? 'Dev Hours Used' : 'Remaining Dev Hours') : 'Remaining Dev Hours', 'Used Dev Hours'],
                 datasets: [{
                     label: 'Developer Hours',
                     data: [devHoursRemaining !== null ? devHoursRemaining : SupportdevHours, devHoursRemaining !== null ? devHoursDifference : 0],
-                    backgroundColor: ['#007bff', '#28a745'], // Blue for Used, Green for Remaining
+                    backgroundColor: ['#6F8BA4', '#55a7da'], // Blue for Used, Green for Remaining
                 }]
             }
         });
 
         // Render the new engineer hours chart
         engChart = new Chart(ctxEng, {
-            type: 'pie',
+            type: 'doughnut',
             data: {
                 labels: [engHoursRemaining !== null ? (engHoursRemaining === SupportengHours ? 'Eng Hours Used' : 'Remaining Eng Hours') : 'Remaining Eng Hours', 'Used Eng Hours'],
                 datasets: [{
                     label: 'Engineer Hours',
                     data: [engHoursRemaining !== null ? engHoursRemaining : SupportengHours, engHoursRemaining !== null ? engHoursDifference : 0],
-                    backgroundColor: ['#ff5733', '#ffc300'], // Red for Used, Yellow for Remaining
+                    backgroundColor: ['#6F8BA4', '#55a7da'], // Red for Used, Yellow for Remaining
                 }]
             }
         });
@@ -312,7 +216,7 @@ $(document).ready(function() {
 </script>
 <div class="container col-12">
     <div class="bg-light rounded h-100 p-4">
-        <h1>Support Hours Usage</h1>
+        <h1>Support Hours Usage</h1><hr>
         <div class="rolebtn bg-light rounded h-100 p-4">
             <label for="">Support Contract</label>
                 <select class="btn btn-secondary rounded-pill dropdown-toggle m-2" id="selectSupportContract">
@@ -340,11 +244,15 @@ $(document).ready(function() {
         <div id="downloadView">
         <div class="Graphs"style="display: none;">
             <div class="card col-6">
+                <div class="card-header bg-primary text-dark">Support Developer Hours Usage</div>
+                <!--h5 class="card-header">Support Developer Hours Usage</h5-->
                 <div class="card-body">
                     <canvas id="devChart"></canvas>
                 </div>
             </div>
             <div class="card col-6">
+                <div class="card-header bg-primary text-dark">Support Engineer Hours Usage</div>
+                <!--h5 class="card-header">Support Engineer Hours Usage</h5-->
                 <div class="card-body">
                     <canvas id="engChart"></canvas>
                 </div>
@@ -355,10 +263,9 @@ $(document).ready(function() {
 
         <!-- Tiles for developer and engineer hour chargers -->
         <div id="chargersInfo" class="row mt-4 col-12" style="display: none;">
-
                 <div class="card col-6 ms-3" id="devCard">
                     <div class="card-body">
-                        <h5 class="card-title">Invoice for Developer Hours</h5>
+                        <h5 class="card-title">Charging Details for Developer Hours</h5>
                         <div class="invoice-details">
                             <p>Charging Dev Hours: <span id="developerHourChargers"></span></p>
                             <p>Dev Rate Per Hour: Rs: <span id="devRatePerHour"></span></p>
@@ -370,7 +277,7 @@ $(document).ready(function() {
 
                 <div class="card warning" id="engCard">
                     <div class="card-body">
-                        <h5 class="card-title">Invoice for Engineer Hours</h5>
+                        <h5 class="card-title">Charging Details for Engineer Hours</h5>
                         <div class="invoice-details">
                             <p>Charging Eng Hours: <span id="engineerHourChargers"></span></p>
                             <p>Eng Rate Per Hour: Rs: <span id="engRatePerHour"></span></p>
