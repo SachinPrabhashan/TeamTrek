@@ -324,8 +324,7 @@
                 });
             });
 
-
-            
+// ABC
             // Function to render charts based on the instances data
             function renderCharts(instances) {
                 // Loop through instances and render charts
