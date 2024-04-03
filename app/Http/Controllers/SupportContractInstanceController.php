@@ -170,17 +170,19 @@ class SupportContractInstanceController extends Controller
         ]);
 
         $instance = new SupportContractInstance();
+        $supportPayment = new SupportPayment();
 
         // Assign values to the dev_hours and eng_hours properties based on validated data
         $instance->dev_hours = $validatedData['devhour'];
         $instance->eng_hours = $validatedData['enghour'];
 
         // Set values for dev_rate_per_hour and eng_rate_per_hour properties of the supportPayment object
-        $instance->supportPayment->dev_rate_per_hour = $validatedData['devhourcharge'];
-        $instance->supportPayment->eng_rate_per_hour = $validatedData['enghourcharge'];
+        $supportPayment->dev_rate_per_hour = $validatedData['devhourcharge'];
+        $supportPayment->eng_rate_per_hour = $validatedData['enghourcharge'];
 
         dd($instance);
         $instance->save();
+        $supportPayment->save();
 
         return response()->json(['message' => 'Record created successfully'], 200);
     }

@@ -38,25 +38,25 @@
                     <div class="d-flex">
                         <h3 class="m-2">Tasks Service Level</h3>
                         <div class="p-0 me-1 ms-auto m-2">
-                            <select class="btn btn-outline-primary btn-custom rounded-pill" name="" id="">
+                            {{-- <select class="btn btn-outline-primary btn-custom rounded-pill" name="" id="">
                                 <option value="">Last 7 Days </option>
                                 <option value="">Last 30 Days</option>
                                 <option value="">Year</option>
-                            </select>
+                            </select> --}}
                         </div>
                     </div>
                     <div class="d-flex">
                         <div class="set01">
                             <p class="m-0">Not Started</p>
-                            <p>20</p>
+                            <p>{{ $notstart }}</p>
                         </div>
                         <div class="set02">
                             <p class="m-0">Processing</p>
-                            <p>5</p>
+                            <p>{{ $processing }}</p>
                         </div>
                         <div class="set03">
                             <p class="m-0">Completed</p>
-                            <p>30</p>
+                            <p>{{ $completed }}</p>
                         </div>
                     </div>
                 </div>
