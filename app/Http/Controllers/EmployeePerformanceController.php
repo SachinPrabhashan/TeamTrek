@@ -14,8 +14,15 @@ class EmployeePerformanceController extends Controller
         $employees = DB::table('users')->where('role_id', 3)->get();
         $subtaskhistorys = DB::table('sub_tasks')->get();
 
+        // Task Service Level
+        $notstart = DB::table('tasks')->where('user_id', NULL)->count();
+        $processing = Task::join('task_accesses', 'tasks.id', '=', 'task_accesses.task_id')
+            ->whereNotNull('task_accesses.user_id')
+            ->whereNull('tasks.user_id')
+            ->count();
+        $completed = Task::where('isCompleted', 1)->count();
 
-        return view('employee.PerformanceEmployee', compact('employees', 'subtaskhistorys'));
+        return view('employee.PerformanceEmployee', compact('employees', 'subtaskhistorys', 'notstart', 'processing', 'completed'));
     }
 
     /*public function subtaskhis(Request $request)
@@ -34,8 +41,8 @@ class EmployeePerformanceController extends Controller
 
         // Retrieve subtask histories where user_id matches
         $subtaskhistorys = DB::table('sub_tasks')
-                            ->where('user_id', $userId)
-                            ->get();
+            ->where('user_id', $userId)
+            ->get();
 
         // Calculate total dev_hours and eng_hours for subtasks for that particular user
         $totalDevHours = $subtaskhistorys->sum('dev_hours');
@@ -47,9 +54,9 @@ class EmployeePerformanceController extends Controller
 
         // Retrieve all tasks with isOneDay true for this user_id
         $tasksWithOneDay = DB::table('tasks')
-                            ->where('user_id', $userId)
-                            ->where('isOneDay', true)
-                            ->get();
+            ->where('user_id', $userId)
+            ->where('isOneDay', true)
+            ->get();
 
         // Calculate sum of dev_hours and eng_hours for tasks with isOneDay true
         foreach ($tasksWithOneDay as $task) {
@@ -59,9 +66,9 @@ class EmployeePerformanceController extends Controller
 
         // Retrieve tasks with isLastDay true for the specified user_id
         $tasksWithLastDay = DB::table('tasks')
-                            ->where('user_id', $userId)
-                            ->where('isLastDay', true)
-                            ->get();
+            ->where('user_id', $userId)
+            ->where('isLastDay', true)
+            ->get();
 
         // Initialize arrays to store the sum of dev_hours and eng_hours for each task
         $lastDayTaskDevHours = [];
@@ -81,8 +88,8 @@ class EmployeePerformanceController extends Controller
 
             // Retrieve subtasks for the current task
             $subtasks = DB::table('sub_tasks')
-                        ->where('task_id', $task->id)
-                        ->get();
+                ->where('task_id', $task->id)
+                ->get();
 
             // Initialize variables to store the sum of dev_hours and eng_hours for the current task
             $sumDevHours = 0;
@@ -133,6 +140,4 @@ class EmployeePerformanceController extends Controller
 
         return response()->json($response);
     }
-
-
 }

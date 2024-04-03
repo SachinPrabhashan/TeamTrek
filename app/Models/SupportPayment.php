@@ -15,4 +15,9 @@ class SupportPayment extends Model
         'eng_rate_per_hour',
         'year',
     ];
+
+    public function instances()
+    {
+        return $this->hasMany(SupportContractInstance::class);
+    }
 }

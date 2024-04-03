@@ -116,7 +116,7 @@ class SupportContractInstanceController extends Controller
         // Store dev_hours, eng_hours, and year in separate arrays
         $devHoursArray[] = $instance->dev_hours;
         $engHoursArray[] = $instance->eng_hours;
-        
+
         // Fetch the latest task associated with the current support contract instance
         $latestTask = Task::where('support_contract_instance_id', $instance->id)
         ->latest('updated_at') // Order tasks by updated_at field in descending order
@@ -154,11 +154,37 @@ class SupportContractInstanceController extends Controller
         'instances' => $instancesArray,
     ]);
 
-    // Return arrays containing dev_hours, eng_hours, instances, and tasks as JSON response
-    return response()->json([
-        'dev_hours' => $devHoursArray,
-        'eng_hours' => $engHoursArray,
-        'instances' => $instancesArray,
-    ]);
-}
+        // Return arrays containing dev_hours, eng_hours, instances, and tasks as JSON response
+        return response()->json([
+            'dev_hours' => $devHoursArray,
+            'eng_hours' => $engHoursArray,
+            'instances' => $instancesArray,
+        ]);
+    }
+
+    public function editinstance(Request $request)
+    {
+        // Validate incoming request data
+        $validatedData = $request->validate([
+            'devhour' => 'required',
+            'enghour' => 'required',
+            'devhourcharge' => 'required',
+            'enghourcharge' => 'required',
+        ]);
+
+        $instance = new SupportContractInstance();
+
+        // Assign values to the dev_hours and eng_hours properties based on validated data
+        $instance->dev_hours = $validatedData['devhour'];
+        $instance->eng_hours = $validatedData['enghour'];
+
+        // Set values for dev_rate_per_hour and eng_rate_per_hour properties of the supportPayment object
+        $instance->supportPayment->dev_rate_per_hour = $validatedData['devhourcharge'];
+        $instance->supportPayment->eng_rate_per_hour = $validatedData['enghourcharge'];
+
+        dd($instance);
+        $instance->save();
+
+        return response()->json(['message' => 'Record created successfully'], 200);
+    }
 }
