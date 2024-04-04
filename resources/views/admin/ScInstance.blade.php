@@ -50,7 +50,7 @@
         }
     </style>
     <div class="container col-12">
-        <div class="bg-light rounded h-100 p-4" style="overflow: hidden;">
+        <div class="bg-light rounded h-100 p-4 mb-4" style="overflow: hidden;">
             <div class="container-fluid">
                 <h1>Support Contract Instance Handling</h1>
                 <hr>
@@ -77,10 +77,10 @@
 
 
                 <div class="scroll-container mt-2" id="instancewidgets" style="width: 100%; overflow-x: auto;">
-                    <div class="row ms-4" style="width: 150%;">
+                    <div class="row ms-4" style="width: 400%;">
 
                         @foreach ($instances as $instance)
-                            <div class="card me-2 mb-2" style="width: 33rem;"
+                            <div class="card me-3 mb-2" style="width: 33rem;"
                                 data-contract-id="{{ $instance->supportContract->id }}">
                                 <div class="card-body">
                                     <div class="d-flex">
@@ -90,7 +90,6 @@
                                             data-bs-target="#staticBackdrop{{ $instance->id }}">Edit
                                         </h6>
                                     </div>
-
                                     <h1 class="m-1">{{ $instance->year }} Year</h1>
                                     <div class="d-flex">
                                         <div class="me-3 d-flex" data-toggle="tooltip" data-bs-placement="bottom"
@@ -117,9 +116,9 @@
                                 </div>
                                 <!--div class="container mt-4" id="chartContainer">
 
-                                    <canvas id="chart-{{ $instance->year }}" class="canvas-container"></canvas>
+                                            <canvas id="chart-{{ $instance->year }}" class="canvas-container"></canvas>
 
-                                </div-->
+                                        </div-->
                             </div>
 
 
@@ -174,14 +173,21 @@
                             </div>
                         @endforeach
                     </div>
-                </div>
 
 
-                 <div class="container mt-4 d-flex" id="chartContainer">
-                    @foreach ($instances as $instance)
-                        <canvas id="chart-{{ $instance->year }}" class="canvas-container"></canvas>
-                    @endforeach
+                    {{-- <div class="scroll-container mt-2" id="instancewidgets" style="width: 100%; overflow-x: auto;"> --}}
+                    <div class="d-flex">
+                        @foreach ($instances as $instance)
+                            <div class="container mt-4" id="chartContainer" style="margin-right: 4em;">
+
+                                <canvas id="chart-{{ $instance->year }}" class="canvas-container"
+                                    style="height: 300px"></canvas>
+
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
+
 
 
 

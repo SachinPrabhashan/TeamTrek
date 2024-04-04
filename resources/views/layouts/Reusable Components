@@ -58,6 +58,10 @@ Blade view (Fetch from SESSION)
     title="Create SC Tasks"
 
 
+    4. Debug
+    Log::info('Monthly Deatils', $monthlyDetails);
+
+
     @foreach ($scInstances as $scInstance)
     @foreach ($tasks as $task)
     @if ($scInstance->id == $task->support_contract_instance_id)
