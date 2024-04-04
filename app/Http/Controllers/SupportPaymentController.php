@@ -99,10 +99,12 @@ class SupportPaymentController extends Controller
                 'totalEngCharger' => $totalEngCharge,
             ];
         }
+        //Log::info('Monthly Details:', $monthlyDetails);
 
         // Return the response with monthly details
         return response()->json($monthlyDetails);
     }
+
 
     public function ScAnalysisIndex(SupportPayment $supportpayment)
     {
@@ -127,8 +129,8 @@ class SupportPaymentController extends Controller
             ->whereYear('created_at', $year)
             ->get();
 
-        if (!$supportContractInstance) {
-            // Display SweetAlert if no support contract instance is found
+        if ($supportContractInstances->isEmpty()) {
+
             return response()->json(['error' => 'Support contract instance not found'], 404)
                 ->header('Content-Type', 'application/json')
                 ->header('X-Message-Type', 'error')
@@ -136,14 +138,14 @@ class SupportPaymentController extends Controller
         }
 
         // Fetch dev_rate_per_hour and eng_rate_per_hour from SupportPayment
-        $supportPayment = SupportPayment::where('support_contract_instance_id', $supportContractInstance->id)->first();
+        $supportPayment = SupportPayment::where('support_contract_instance_id', $supportContractInstances->first()->id)->first();
         $devRatePerHour = $supportPayment->dev_rate_per_hour ?? null;
         $engRatePerHour = $supportPayment->eng_rate_per_hour ?? null;
 
-        $devHours = $supportContractInstance->dev_hours ?? null;
-        $engHours = $supportContractInstance->eng_hours ?? null;
+        $devHours = $supportContractInstances->first()->dev_hours ?? null;
+        $engHours = $supportContractInstances->first()->eng_hours ?? null;
 
-        $task = Task::where('support_contract_instance_id', $supportContractInstance->id)->first();
+        $task = Task::where('support_contract_instance_id', $supportContractInstances->first()->id)->first();
 
         // If task is null, set remainingHours and extraChargers to null
         $remainingHours = $extraChargers = null;
@@ -161,7 +163,7 @@ class SupportPaymentController extends Controller
         $empengChargers = ($extraChargers->charging_eng_hours ?? 0) * $devRatePerHour;
 
         // Retrieve tasks associated with the support contract instance
-        $tasks = Task::where('support_contract_instance_id', $supportContractInstance->id)->get();
+        $tasks = Task::where('support_contract_instance_id', $supportContractInstances->first()->id)->get();
 
         // Initialize variables for total charges of employees who work for support hours
         $totalSupportDevChargers = 0;
@@ -184,14 +186,48 @@ class SupportPaymentController extends Controller
             $totalSupportEngChargers += $engChargers;
         }
 
+        $newTasks = Task::where('support_contract_instance_id', $supportContractInstances->first()->id)
+            ->where('isOneDay', true)
+            ->get();
+
+        // Initialize variables for total charges of employees for new tasks
+        $totalNewDevChargers = 0;
+        $totalNewEngChargers = 0;
+
+        // Iterate through each new task
+        foreach ($newTasks as $newTask) {
+            // Retrieve the corresponding user's rates
+            $userRates = EmpRate::where('user_id', $newTask->user_id)->first();
+            if (!$userRates) {
+                continue; // Skip if user rates not found
+            }
+
+            // Calculate charges based on dev_hours or eng_hours multiplied by the respective rate
+            $newdevChargers = ($newTask->dev_hours ?? 0) * ($userRates->dev_rate_per_hour ?? 0);
+            $newengChargers = ($newTask->eng_hours ?? 0) * ($userRates->eng_rate_per_hour ?? 0);
+
+            // Aggregate charges
+            $totalNewDevChargers += $newdevChargers;
+            $totalNewEngChargers += $newengChargers;
+        }
+
+    $totalRevenue= $empdevChargers + $empengChargers + $totalSupportDevChargers + $totalSupportEngChargers + $totalNewDevChargers + $totalNewEngChargers;
+    $totalExpense= $devSupportChargers + $engSupportChargers;
+
+        // Log calculated revenue and expense
+        Log::info('Total Revenue:', ['totalRevenue' => $totalRevenue]);
+        Log::info('Total Expense:', ['totalExpense' => $totalExpense]);
+
         $response = [
-            'devChargers' => $devChargers,
-            'engChargers' => $engChargers,
+            'totalSupportDevChargers' => $totalSupportDevChargers,
+            'totalSupportEngChargers' => $totalSupportEngChargers,
+            'totalRevenue' => $totalRevenue,
+            'totalExpense' => $totalExpense,
         ];
 
         return response()->json($response);
-
     }
+
 
 
 

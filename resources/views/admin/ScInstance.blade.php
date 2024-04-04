@@ -79,7 +79,7 @@
                 <div class="scroll-container mt-2" id="instancewidgets" style="width: 100%; overflow-x: auto;">
                     <div class="row ms-4" style="width: 150%;">
 
-                        @foreach ($instances->sortByDesc('created_at') as $instance)
+                        @foreach ($instances as $instance)
                             <div class="card me-2 mb-2" style="width: 33rem;"
                                 data-contract-id="{{ $instance->supportContract->id }}">
                                 <div class="card-body">
@@ -115,11 +115,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="container mt-4" id="chartContainer">
+                                <!--div class="container mt-4" id="chartContainer">
 
                                     <canvas id="chart-{{ $instance->year }}" class="canvas-container"></canvas>
 
-                                </div>
+                                </div-->
                             </div>
 
 
@@ -176,11 +176,12 @@
                     </div>
                 </div>
 
-                {{-- <div class="container mt-4" id="chartContainer">
+
+                 <div class="container mt-4 d-flex" id="chartContainer">
                     @foreach ($instances as $instance)
                         <canvas id="chart-{{ $instance->year }}" class="canvas-container"></canvas>
                     @endforeach
-                </div> --}}
+                </div>
 
 
 
