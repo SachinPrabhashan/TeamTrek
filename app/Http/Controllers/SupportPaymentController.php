@@ -214,9 +214,7 @@ class SupportPaymentController extends Controller
     $totalRevenue= $empdevChargers + $empengChargers + $totalSupportDevChargers + $totalSupportEngChargers + $totalNewDevChargers + $totalNewEngChargers;
     $totalExpense= $devSupportChargers + $engSupportChargers;
 
-        // Log calculated revenue and expense
-        Log::info('Total Revenue:', ['totalRevenue' => $totalRevenue]);
-        Log::info('Total Expense:', ['totalExpense' => $totalExpense]);
+        
 
         $response = [
             'totalSupportDevChargers' => $totalSupportDevChargers,
