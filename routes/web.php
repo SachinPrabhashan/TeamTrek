@@ -129,6 +129,7 @@ Route::get('/getSupportContract-FinancialData', [SupportPaymentController::class
 
     //Support Contract Analysis View
 Route::get('/performance/analysis-view', [SupportPaymentController::class, 'ScAnalysisIndex'])->name('ScAnalysisView');
+Route::get('/getSupportContract-AnalysisData', [SupportPaymentController::class,'getScAnalysisView']);
 
 
 //All Users

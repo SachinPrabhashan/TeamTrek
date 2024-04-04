@@ -27,12 +27,12 @@
                         <option value="{{ $instance->year }}">{{ $instance->year }}</option>
                     @endforeach
                 </select>
-                <button class="btn btn-primary m-2" id="scReportSearchBtn" data-toggle="tooltip"
-                    title="Search SC Report">Search
+                <button class="btn btn-primary m-2" id="scAnalysisSearchBtn" data-toggle="tooltip"
+                    title="Search SC Analysis">Search
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </div>
-            <div class="container mt-4">
+            <div class="container mt-4" id="dashboard">
                 <h2 class="mb-4">Profit and Loss Dashboard</h2>
                 <div class="row">
                     <div class="col-md-4 mb-4">
@@ -41,7 +41,7 @@
                                 <h5 class="card-title">Total Revenue</h5>
                             </div>
                             <div class="card-body">
-                                <h3 class="text-success">$ 15,000</h3>
+                                <h3 class="text-success total-revenue"></h3>
                             </div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                                 <h5 class="card-title">Total Expenses</h5>
                             </div>
                             <div class="card-body">
-                                <h3 class="text-danger">$ 7,000</h3>
+                                <h3 class="text-danger total-expense"></h3>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                                 <h5 class="card-title">Net Profit</h5>
                             </div>
                             <div class="card-body">
-                                <h3 class="text-success">$ 8,000</h3>
+                                <h3 class="text net-profit"></h3>
                             </div>
                         </div>
                     </div>
@@ -158,34 +158,47 @@
                 $revenue = 15000;
                 $expenses = 7000;
             @endphp
-
-            <script>
-                // Include Chart.js library
-                document.addEventListener("DOMContentLoaded", function() {
-                    var ctx = document.getElementById('profitLossChart').getContext('2d');
-                    var profitLossChart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['Revenue', 'Expenses'],
-                            datasets: [{
-                                label: 'Profit vs Expenses',
-                                data: [{{ $revenue }}, {{ $expenses }}],
-                                backgroundColor: ['#28a745', '#dc3545']
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            legend: {
-                                display: true,
-                                position: 'bottom'
-                            }
-                        }
-                    });
-                });
-            </script>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#scAnalysisSearchBtn').click(function() {
+                var supportContractId = $('#selectSupportContract').val();
+                var year = $('#selectSupportContractYear').val();
+
+                $.ajax({
+                    url: '/getSupportContract-AnalysisData',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        supportContractId: supportContractId,
+                        year: year
+                    },
+                    success: function(response) {
+                        console.log("The response is",response);
+                        // Update total revenue and total expense
+                        $('.total-revenue').text(response.totalRevenue +'Lkr' );
+                        $('.total-expense').text(response.totalExpense +'Lkr' );
+
+                        // Calculate net profit
+                        var netProfit = response.totalRevenue - response.totalExpense;
+
+                        // Update net profit on the webpage
+                        var $netProfitElement = $('.net-profit');
+                        $netProfitElement.text(netProfit +'Lkr' );
+
+                        // Apply red color if net profit is negative
+                        if (netProfit < 0) {
+                            $netProfitElement.css('color', 'red');
+                        } else {
+                            $netProfitElement.css('color', ''); // Reset color if positive or zero
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 
 
 @endsection
