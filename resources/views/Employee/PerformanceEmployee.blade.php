@@ -111,7 +111,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
                 {{-- end Subtask View Table widget --}}
