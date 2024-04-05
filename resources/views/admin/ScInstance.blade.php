@@ -45,7 +45,7 @@
 
         .instanceOption {
             margin-right: auto;
-            margin-left: 20em;
+            margin-left: 100px;
 
         }
     </style>
@@ -76,117 +76,126 @@
                 </div>
 
 
+
+
+
                 <div class="scroll-container mt-2" id="instancewidgets" style="width: 100%; overflow-x: auto;">
-                    <div class="row ms-4" style="width: 400%;">
 
-                        @foreach ($instances as $instance)
-                            <div class="card me-3 mb-2" style="width: 33rem;"
-                                data-contract-id="{{ $instance->supportContract->id }}">
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <h5 class="card-title">{{ $instance->supportContract->name }}</h5>
-                                        <h6 role="button" class="instanceOption btn btn-primary btn-sm rounded-pill"
-                                            type="button" data-bs-toggle="modal"
-                                            data-bs-target="#staticBackdrop{{ $instance->id }}">Edit
-                                        </h6>
-                                    </div>
-                                    <h1 class="m-1">{{ $instance->year }} Year</h1>
-                                    <div class="d-flex">
-                                        <div class="me-3 d-flex" data-toggle="tooltip" data-bs-placement="bottom"
-                                            title="Support Hours">
-                                            <div class="mt-2">
-                                                <img width="24" height="24"
-                                                    src="https://img.icons8.com/windows/32/meeting-time.png"
-                                                    alt="meeting-time" /> |
+                    <table>
+                        <tr>
+                            <div class="row ms-4" style="width: 400%;">
+
+                                @foreach ($instances as $instance)
+                                    <td>
+                                        <div class="card me-3 mb-2" style="width: 300px;"
+                                            data-contract-id="{{ $instance->supportContract->id }}">
+                                            <div class="card-body">
+                                                <div class="d-flex">
+                                                    <h5 class="card-title">{{ $instance->supportContract->name }}</h5>
+                                                    <h6 role="button"
+                                                        class="instanceOption btn btn-primary btn-sm rounded-pill"
+                                                        type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop{{ $instance->id }}">Edit
+                                                    </h6>
+                                                </div>
+                                                <h1 class="m-1">{{ $instance->year }} Year</h1>
+                                                <div class="d-flex">
+                                                    <div class="me-3 d-flex" data-toggle="tooltip"
+                                                        data-bs-placement="bottom" title="Support Hours">
+                                                        <div class="mt-2">
+                                                            <img width="24" height="24"
+                                                                src="https://img.icons8.com/windows/32/meeting-time.png"
+                                                                alt="meeting-time" /> |
+                                                        </div>
+                                                        {{-- {{ $instance->dev_hours + $instance->eng_hours }}H --}}
+                                                        <div class="ms-1" style="font-size: 9pt;">
+                                                            Dev {{ $instance->dev_hours }}H
+                                                            <br>
+                                                            Eng {{ $instance->eng_hours }}H
+                                                        </div>
+                                                    </div>
+                                                    <div class="me-3 mt-2"data-toggle="tooltip" data-bs-placement="bottom"
+                                                        title="Owner">
+                                                        <img width="24" height="24"
+                                                            src="https://img.icons8.com/windows/32/landlord.png"
+                                                            alt="landlord" /> |
+                                                        {{ $instance->owner }}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            {{-- {{ $instance->dev_hours + $instance->eng_hours }}H --}}
-                                            <div class="ms-1" style="font-size: 9pt;">
-                                                Dev {{ $instance->dev_hours }}H
-                                                <br>
-                                                Eng {{ $instance->eng_hours }}H
+                                        </div>
+
+
+                                        {{-- Instance Edit Button --}}
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="staticBackdrop{{ $instance->id }}"
+                                            data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header m-0 pb-1">
+                                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                                                            {{ $instance->supportContract->name }} | {{ $instance->year }}
+                                                        </h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p class="mt-3 mb-1">Support Contract Hours</p>
+                                                        <label for="devhour">
+                                                            Developer Hour :
+                                                        </label>
+                                                        <input class="form-control w-50" id="devhour" type="text"
+                                                            value="{{ $instance->dev_hours }}">
+                                                        <label for="enghour">
+                                                            Engineer Hour :
+                                                        </label>
+                                                        <input class="form-control w-50" id="enghour" type="text"
+                                                            value="{{ $instance->eng_hours }}">
+                                                        <p class="mt-3 mb-1">Support Contract Charges</p>
+                                                        <label for="devhourcharge">
+                                                            Developer wage Per/Hr :
+                                                        </label>
+                                                        <input class="form-control w-50" id="devhourcharge" type="text"
+                                                            value="{{ $instance->supportPayment->dev_rate_per_hour }}">
+                                                        <label for="enghourcharge">
+                                                            Engineer wage Per/Hr :
+                                                        </label>
+                                                        <input class="form-control w-50" id="enghourcharge" type="text"
+                                                            value="{{ $instance->supportPayment->eng_rate_per_hour }}">
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary btn-sm"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button id="instanceupdate" type="button"
+                                                            class="btn btn-danger btn-sm">Update</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="me-3 mt-2"data-toggle="tooltip" data-bs-placement="bottom"
-                                            title="Owner">
-                                            <img width="24" height="24"
-                                                src="https://img.icons8.com/windows/32/landlord.png" alt="landlord" /> |
-                                            {{ $instance->owner }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--div class="container mt-4" id="chartContainer">
-
-                                            <canvas id="chart-{{ $instance->year }}" class="canvas-container"></canvas>
-
-                                        </div-->
+                                    </td>
+                                @endforeach
                             </div>
-
-
-                            {{-- Instance Edit Button --}}
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="staticBackdrop{{ $instance->id }}" data-bs-backdrop="static"
-                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header m-0 pb-1">
-                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">
-                                                {{ $instance->supportContract->name }} | {{ $instance->year }}
-                                            </h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
+                        </tr>
+                        <tr>
+                            <div class=" d-flex" style="width: 400%;">
+                                @foreach ($instances as $instance)
+                                    <td>
+                                        <div class="container mt-4" id="chartContainer">
+                                            <canvas id="chart-{{ $instance->year }}" class="canvas-container"
+                                                style="height: 300px"></canvas>
                                         </div>
-                                        <div class="modal-body">
-                                            <p class="mt-3 mb-1">Support Contract Hours</p>
-                                            <label for="devhour">
-                                                Developer Hour :
-                                            </label>
-                                            <input class="form-control w-50" id="devhour" type="text"
-                                                value="{{ $instance->dev_hours }}">
-                                            <label for="enghour">
-                                                Engineer Hour :
-                                            </label>
-                                            <input class="form-control w-50" id="enghour" type="text"
-                                                value="{{ $instance->eng_hours }}">
-                                            <p class="mt-3 mb-1">Support Contract Charges</p>
-                                            <label for="devhourcharge">
-                                                Developer wage Per/Hr :
-                                            </label>
-                                            <input class="form-control w-50" id="devhourcharge" type="text"
-                                                value="{{ $instance->supportPayment->dev_rate_per_hour }}">
-                                            <label for="enghourcharge">
-                                                Engineer wage Per/Hr :
-                                            </label>
-                                            <input class="form-control w-50" id="enghourcharge" type="text"
-                                                value="{{ $instance->supportPayment->eng_rate_per_hour }}">
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary btn-sm"
-                                                data-bs-dismiss="modal">Close</button>
-                                            <button id="instanceupdate" type="button"
-                                                class="btn btn-danger btn-sm">Update</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                    </td>
+                                @endforeach
                             </div>
-                        @endforeach
-                    </div>
+                        </tr>
+                    </table>
 
-
-                    {{-- <div class="scroll-container mt-2" id="instancewidgets" style="width: 100%; overflow-x: auto;"> --}}
-                    <div class="d-flex">
-                        @foreach ($instances as $instance)
-                            <div class="container mt-4" id="chartContainer" style="margin-right: 4em;">
-
-                                <canvas id="chart-{{ $instance->year }}" class="canvas-container"
-                                    style="height: 300px"></canvas>
-
-                            </div>
-                        @endforeach
-                    </div>
                 </div>
+
+
 
 
 
