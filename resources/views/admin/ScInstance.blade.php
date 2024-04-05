@@ -45,7 +45,7 @@
 
         .instanceOption {
             margin-right: auto;
-            margin-left: 100px;
+            margin-left: 220px;
 
         }
     </style>
@@ -81,13 +81,13 @@
 
                 <div class="scroll-container mt-2" id="instancewidgets" style="width: 100%; overflow-x: auto;">
 
-                    <table>
+                    <table class="instancetableorder">
                         <tr>
                             <div class="row ms-4" style="width: 400%;">
 
                                 @foreach ($instances as $instance)
                                     <td>
-                                        <div class="card me-3 mb-2" style="width: 300px;"
+                                        <div class="card me-3 mb-2" style="width: 420px;"
                                             data-contract-id="{{ $instance->supportContract->id }}">
                                             <div class="card-body">
                                                 <div class="d-flex">
