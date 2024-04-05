@@ -68,98 +68,59 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="card">
-                            <div class="card-header bg-info text-white">
-                                <h5 class="card-title">Top Selling Products</h5>
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-group">
-                                    <li class="list-group-item">Product A - $2,000</li>
-                                    <li class="list-group-item">Product B - $1,500</li>
-                                    <li class="list-group-item">Product C - $1,200</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="card">
-                            <div class="card-header bg-secondary text-white">
-                                <h5 class="card-title">Recent Orders</h5>
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-group">
-                                    <li class="list-group-item">Order #001 - $500</li>
-                                    <li class="list-group-item">Order #002 - $700</li>
-                                    <li class="list-group-item">Order #003 - $900</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
                     <div class="col-md-12 mb-4">
                         <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title">Losses and Profits Details</h5>
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title">First Five Finished Tasks</h5>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
-                                                <th>Description</th>
-                                                <th>Amount</th>
-                                                <th>Type</th>
+                                                <th>Task</th>
+                                                <th>Dev Hours</th>
+                                                <th>Eng Hours</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>2024-03-29</td>
-                                                <td>Product purchase</td>
-                                                <td class="text-danger">-$500</td>
-                                                <td>Expense</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2024-03-28</td>
-                                                <td>Product sale</td>
-                                                <td class="text-success">$1000</td>
-                                                <td>Revenue</td>
-                                            </tr>
-                                            <!-- Add more rows as needed -->
+                                        <tbody id="firstFiveTasks">
+                                            <!-- Tasks will be appended here dynamically -->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title">Profit and Loss Overview</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-container">
-                                    <canvas id="profitLossChart"></canvas>
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <div class="card">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="card-title">First Five Ongoing Tasks</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Task</th>
+                                                    <th>Dev Hours</th>
+                                                    <th>Eng Hours</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="ongoingfirstFiveTasks">
+                                                <!-- Tasks will be appended here dynamically -->
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Dummy data for Chart.js -->
-            @php
-                $revenue = 15000;
-                $expenses = 7000;
-            @endphp
         </div>
     </div>
+    
 
     <script>
         $(document).ready(function() {
@@ -194,6 +155,27 @@
                         } else {
                             $netProfitElement.css('color', ''); // Reset color if positive or zero
                         }
+
+                         // Display first five tasks with dev_hours and eng_hours
+                        var tasksHtml = '';
+                        response.tasksfirstfive.forEach(function(tasksfirstfive, index) {
+                            tasksHtml += '<tr>' +
+                                '<td>' + tasksfirstfive.name + '</td>' +
+                                '<td>' + tasksfirstfive.dev_hours + '</td>' +
+                                '<td>' + tasksfirstfive.eng_hours + '</td>' +
+                                '</tr>';
+                        });
+                        $('#firstFiveTasks').html(tasksHtml);
+
+                        var ongoingtasksHtml = '';
+                        response.ongoingtasksfirstfive.forEach(function(ongoingtasksfirstfive, index) {
+                            ongoingtasksHtml += '<tr>' +
+                                '<td>' + ongoingtasksfirstfive.name + '</td>' +
+                                '<td>' + ongoingtasksfirstfive.dev_hours + '</td>' +
+                                '<td>' + ongoingtasksfirstfive.eng_hours + '</td>' +
+                                '</tr>';
+                        });
+                        $('#ongoingfirstFiveTasks').html(ongoingtasksHtml);
                     }
                 });
             });

@@ -85,7 +85,7 @@
                                 <thead>
                                     <tr>
                                         <th>Date</th>
-                                        <th>Client</th>
+                                        <!--th>Client</th-->
                                         <th>Subtask</th>
                                         <th>Support Hours</th>
                                     </tr>
@@ -93,16 +93,16 @@
 
                                 <tbody>
                                     @foreach ($subtaskhistorys->filter(function ($subtaskhistory) {
-            $user = auth()->user();
-            if ($user->role_id == 3) {
-                return $subtaskhistory->user_id == $user->id;
-            } else {
-                return true; // Display all data for other roles (role_id 1 and 2)
-            }
-        }) as $subtaskhistory)
-                                        <tr class="subtaskhistoryRow">
+                                $user = auth()->user();
+                                if ($user->role_id == 3) {
+                                    return $subtaskhistory->user_id == $user->id;
+                                } else {
+                                    return true; // Display all data for other roles (role_id 1 and 2)
+                                }
+                            }) as $subtaskhistory)
+                                            <tr class="subtaskhistoryRow">
                                             <td>{{ $subtaskhistory->date }}</td>
-                                            <td>NULL</td>
+                                            <!--td>NULL</td-->
                                             <td>{{ $subtaskhistory->name }}</td>
                                             <td>{{ $subtaskhistory->dev_hours + $subtaskhistory->eng_hours }}</td>
                                         </tr>

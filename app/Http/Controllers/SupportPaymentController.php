@@ -137,6 +137,22 @@ class SupportPaymentController extends Controller
                 ->header('X-Message', 'No support contract instance found for the selected values');
         }
 
+        $supportContractInstanceId = $supportContractInstances->first()->id;
+
+        // Retrieve the first five tasks with dev_hours and eng_hours
+        $tasksfirstfive = Task::where('support_contract_instance_id', $supportContractInstanceId)
+            ->where('isCompleted', true)
+            ->orderBy('id')
+            ->take(5)
+            ->get(['dev_hours', 'eng_hours', 'name']);
+
+        $ongoingtasksfirstfive = Task::where('support_contract_instance_id', $supportContractInstanceId)
+            ->where('isCompleted', false)
+            ->orderBy('id')
+            ->take(5)
+            ->get(['dev_hours', 'eng_hours', 'name']);
+
+
         // Fetch dev_rate_per_hour and eng_rate_per_hour from SupportPayment
         $supportPayment = SupportPayment::where('support_contract_instance_id', $supportContractInstances->first()->id)->first();
         $devRatePerHour = $supportPayment->dev_rate_per_hour ?? null;
@@ -214,9 +230,11 @@ class SupportPaymentController extends Controller
     $totalRevenue= $empdevChargers + $empengChargers + $totalSupportDevChargers + $totalSupportEngChargers + $totalNewDevChargers + $totalNewEngChargers;
     $totalExpense= $devSupportChargers + $engSupportChargers;
 
-        
+
 
         $response = [
+            'tasksfirstfive' => $tasksfirstfive,
+            'ongoingtasksfirstfive' => $ongoingtasksfirstfive,
             'totalSupportDevChargers' => $totalSupportDevChargers,
             'totalSupportEngChargers' => $totalSupportEngChargers,
             'totalRevenue' => $totalRevenue,
